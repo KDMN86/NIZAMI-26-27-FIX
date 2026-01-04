@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cek Status Paket - Nizami</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* === GLOBAL STYLES === */
+    body {
+      background-color: #050505; color: #fff;
+      font-family: 'Poppins', sans-serif;
+      display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh; margin: 0; padding: 20px;
+      background-image: radial-gradient(circle at top, #1a2f23 0%, #000 70%);
+    }
+    
+    .back-menu { position: absolute; top: 20px; left: 20px; color: #aaa; text-decoration: none; font-size: 0.9rem; z-index: 10; display: flex; align-items: center; gap: 5px; }
+    .back-menu:hover { color: #fff; }
+
+    /* === SEARCH BOX === */
+    .search-container {
+      background: #111; padding: 25px; border-radius: 15px;
+      width: 100%; max-width: 400px; text-align: center;
+      border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      margin-top: 40px; margin-bottom: 25px;
+    }
+    .search-container h2 { margin: 0 0 20px; color: #ffd700; font-size: 1.2rem; }
+    
+    input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; background: #000; color: #fff; text-align: center; font-size: 1rem; box-sizing: border-box; }
+    input:focus { border-color: #007bff; outline: none; }
+
+    .btn-search { width: 100%; padding: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; background: linear-gradient(90deg, #007bff, #0056b3); color: #fff; font-size: 1rem; margin-bottom: 10px; transition: 0.2s; }
+    .btn-search:hover { transform: scale(1.02); }
+    
+    .btn-reset { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #444; font-weight: bold; cursor: pointer; background: #222; color: #aaa; font-size: 0.9rem; transition: 0.2s; }
+    .btn-reset:hover { background: #333; color: #fff; }
+
+    /* === RESULT CARD (PESERTA SINGLE) === */
+    .result-card { background: #151515; width: 100%; max-width: 400px; border-radius: 16px; padding: 25px; border: 1px solid #333; display: none; box-sizing: border-box; animation: fadeIn 0.5s; position: relative; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+    .header-info { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 15px; }
+    .badge-blue { background: #007bff; color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
+    .main-name { font-size: 1.5rem; font-weight: 700; text-align: center; margin: 10px 0; color: #fff; }
+    .sub-info { text-align: center; color: #aaa; font-size: 0.85rem; margin-bottom: 20px; }
+
+    /* Progress Bar Box */
+    .progress-box { background: #222; border-radius: 10px; padding: 15px; margin-bottom: 20px; border: 1px solid #333; }
+    .progress-labels { display: flex; justify-content: space-between; font-size: 0.8rem; color: #ccc; margin-bottom: 8px; }
+    .progress-track { background: #444; height: 10px; border-radius: 10px; overflow: hidden; }
+    .progress-fill { height: 100%; background: #28a745; width: 0%; transition: width 1s ease-in-out; border-radius: 10px; }
+    .progress-text { text-align: right; color: #ff6b6b; font-size: 0.8rem; margin-top: 8px; font-weight: bold; }
+
+    .btn-calendar { width: 100%; padding: 12px; background: linear-gradient(90deg, #073116, #0b5e2a); color: #fff; border: 1px solid #28a745; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 15px; transition: 0.2s; }
+    .btn-calendar:hover { background: #0a4f1d; transform: translateY(-2px); }
+
+    /* === RESULT CARD (MITRA LIST) === */
+    .mitra-list { max-height: 500px; overflow-y: auto; margin-top: 10px; padding-right: 5px; }
+    
+    /* Scrollbar Custom */
+    .mitra-list::-webkit-scrollbar { width: 5px; }
+    .mitra-list::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
+
+    .mitra-item { 
+      background: #222; padding: 12px; border-radius: 8px; margin-bottom: 10px; 
+      border: 1px solid #333; position: relative;
+    }
+    
+    .m-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .m-name { font-weight: bold; font-size: 0.95rem; color: #fff; }
+    .m-id { font-size: 0.75rem; color: #888; }
+    .m-paket { font-size: 0.75rem; color: #007bff; display: block; margin-top: 2px; }
+
+    /* Progress Mini */
+    .m-prog-text { display: flex; justify-content: space-between; font-size: 0.75rem; color: #aaa; margin-bottom: 3px; }
+    .m-prog-bg { width: 100%; height: 6px; background: #444; border-radius: 10px; overflow: hidden; }
+    .m-prog-fill { height: 100%; background: #28a745; border-radius: 10px; }
+
+    /* Action Buttons Mitra */
+    .m-actions { display: flex; gap: 8px; margin-top: 10px; }
+    .btn-mini { flex: 1; padding: 6px; border-radius: 4px; border: none; font-size: 0.75rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; text-decoration: none; }
+    .btn-cal-mini { background: #053b15; color: #4ade80; border: 1px solid #0a4f1d; }
+    .btn-pay-mini { background: #0d2a4d; color: #4dabf7; border: 1px solid #0056b3; }
+
+    /* === MODAL KALENDER === */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 10px; box-sizing: border-box; overflow-y: auto; }
+    .calendar-container { width: 100%; max-width: 400px; margin-top: 20px; }
+    .cal-header-card { background: #111; border-radius: 15px; padding: 20px; text-align: center; border: 1px solid #333; margin-bottom: 20px; }
+    .btn-back-cal { background: #dc3545; color: white; border: none; padding: 8px 25px; border-radius: 20px; font-size: 0.9rem; cursor: pointer; margin-top: 15px; font-weight: bold; }
+    .month-card { background: #1a1a1a; border-radius: 10px; padding: 15px; margin-bottom: 15px; border: 1px solid #333; }
+    .month-title { text-align: center; font-weight: bold; color: #48dbfb; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; }
+    .days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; font-size: 0.8rem; }
+    .day-name { color: #888; font-size: 0.7rem; margin-bottom: 5px; }
+    .date-box { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; background: #222; border-radius: 4px; color: #555; position: relative; font-size: 0.8rem; }
+    .date-box.active { background: #28a745; color: #fff; font-weight: bold; box-shadow: 0 0 8px rgba(40, 167, 69, 0.5); border: 1px solid #28a745; }
+    
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="back-menu"><i class="fas fa-arrow-left"></i> Kembali</a>
+
+  <div class="search-container">
+    <h2>Cek Status Paket 2026</h2>
+    <input type="text" id="inputId" placeholder="Masukkan ID Peserta / Mitra">
+    <button class="btn-search" onclick="cekStatus()">
+      <i class="fas fa-search"></i> Cek Sekarang
+    </button>
+    <button class="btn-reset" onclick="location.reload()">Reset</button>
+  </div>
+
+  <div id="viewPeserta" class="result-card">
+    <div class="header-info">
+      <span style="color:#aaa; font-size:0.85rem;" id="pId">#ID</span>
+      <span class="badge-blue" id="pPaket">NAMA PAKET</span>
+    </div>
+
+    <div class="main-name" id="pNama">NAMA PESERTA</div>
+    
+    <div class="sub-info">
+        Saldo Efektif: <span style="color:#ffd700; font-weight:bold;" id="pSaldo">Rp 0</span>
+    </div>
+
+    <div class="progress-box">
+      <div class="progress-labels">
+        <span>Terkumpul: <b id="pCount" style="color:#fff;">0</b>x</span>
+        <span>Target: <b id="pTarget">0</b>x</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="pBar" style="width: 0%;"></div>
+      </div>
+      <div class="progress-text" id="pKurang">Kurang: 0 lagi</div>
+    </div>
+
+    <button class="btn-calendar" onclick="openCalendar()">
+      <i class="far fa-calendar-alt"></i> Lihat Kalender Setoran
+    </button>
+  </div>
+
+  <div id="viewMitra" class="result-card" style="max-width: 450px;">
+    <div class="header-info">
+      <span style="font-weight:bold; font-size:1.1rem; color:#ffd700;">Data Mitra</span>
+      <span class="badge-blue">MITRA AKTIF</span>
+    </div>
+    <h3 id="mNama" style="text-align:center; margin-top:0;">Nama Mitra</h3>
+    <div style="text-align:center; color:#888; font-size:0.9rem; margin-bottom:15px;">
+      Total Peserta: <span id="mTotal" style="color:#fff; font-weight:bold;">0</span>
+    </div>
+    <div class="mitra-list" id="mList">
+      </div>
+  </div>
+
+  <div id="modalKalender" class="modal-overlay">
+    <div class="calendar-container">
+      
+      <div class="cal-header-card">
+        <span class="badge-blue" id="cPaket">PAKET</span>
+        <h2 id="cNama" style="margin: 10px 0; color:#fff;">NAMA</h2>
+        <div style="color:#888; font-size:0.9rem;" id="cId">ID</div>
+        
+        <div style="display:flex; justify-content:space-around; margin-top:20px; border-top:1px solid #333; padding-top:15px;">
+          <div>
+            <div style="font-size:1.5rem; font-weight:bold; color:#28a745;" id="cTerbayar">0</div>
+            <div style="font-size:0.7rem; color:#aaa;">Terbayar</div>
+          </div>
+          <div>
+            <div style="font-size:1.5rem; font-weight:bold; color:#fff;" id="cTarget">0</div>
+            <div style="font-size:0.7rem; color:#aaa;">Target Hari</div>
+          </div>
+        </div>
+
+        <button class="btn-back-cal" onclick="closeCalendar()">
+          <i class="fas fa-arrow-left"></i> Kembali
+        </button>
+      </div>
+
+      <div id="calendarArea"></div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    let currentTrxDates = []; 
+
+    // --- 1. FITUR BARU: AUTO RUN SAAT KEMBALI ---
+    window.addEventListener('load', () => {
+      // Cek apakah ada ID di URL? (Misal: cek-status.html?id=MITRA-001)
+      const params = new URLSearchParams(window.location.search);
+      const savedId = params.get('id');
+
+      if (savedId) {
+        document.getElementById('inputId').value = savedId;
+        cekStatus(false); // Jalankan pencarian tanpa update URL lagi
+      }
+    });
+
+    // --- 2. FUNGSI CEK STATUS UTAMA ---
+    async function cekStatus(updateUrl = true) {
+      const id = document.getElementById('inputId').value.trim();
+      if(!id) return alert("Masukkan ID dulu!");
+
+      // SIMPAN ID KE URL (Agar saat di-refresh/kembali, data tidak hilang)
+      if (updateUrl) {
+        const newUrl = `${window.location.pathname}?id=${id}`;
+        window.history.pushState({ path: newUrl }, '', newUrl);
+      }
+
+      // Reset UI
+      document.getElementById('viewPeserta').style.display = 'none';
+      document.getElementById('viewMitra').style.display = 'none';
+      
+      const btn = document.querySelector('.btn-search');
+      const oldText = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mencari...';
+      btn.disabled = true;
+
+      // Panggil API Backend
+      const data = await fetchData('cekStatusDetail', {id: id});
+      
+      btn.innerHTML = oldText;
+      btn.disabled = false;
+
+      if(!data || data.error) {
+        alert("ID Tidak Ditemukan. Periksa kembali penulisan ID.");
+        return;
+      }
+
+      if(data.type === 'MITRA') {
+        renderMitra(data);
+      } else {
+        renderPeserta(data);
+      }
+    }
+
+    // --- RENDER PESERTA SINGLE ---
+    function renderPeserta(data) {
+      document.getElementById('pId').innerText = '#' + data.idPeserta;
+      document.getElementById('pPaket').innerText = data.jenisPaket;
+      document.getElementById('pNama').innerText = data.nama;
+      document.getElementById('pSaldo').innerText = formatRupiah(data.nilaiSetoran);
+
+      currentTrxDates = data.trxDates || [];
+      document.getElementById('cId').innerText = data.idPeserta;
+      document.getElementById('cNama').innerText = data.nama;
+      document.getElementById('cPaket').innerText = data.jenisPaket;
+
+      const terbayar = data.setoranDilakukan || 0;
+      const target = data.totalSetoran || 330; 
+      const percent = Math.min(100, (terbayar / target) * 100);
+      const kurang = target - terbayar;
+
+      document.getElementById('pCount').innerText = terbayar;
+      document.getElementById('pTarget').innerText = target;
+      document.getElementById('pBar').style.width = percent + '%';
+      
+      const pKurang = document.getElementById('pKurang');
+      if (kurang <= 0) {
+          pKurang.innerText = "🎉 LUNAS! ALHAMDULILLAH";
+          pKurang.style.color = "#4ade80";
+      } else {
+          pKurang.innerText = `Kurang: ${kurang}x lagi`;
+          pKurang.style.color = "#ff6b6b";
+      }
+      
+      document.getElementById('cTerbayar').innerText = terbayar;
+      document.getElementById('cTarget').innerText = target;
+
+      document.getElementById('viewPeserta').style.display = 'block';
+    }
+
+    // --- RENDER MITRA LIST ---
+    function renderMitra(data) {
+      document.getElementById('mNama').innerText = data.nama;
+      document.getElementById('mTotal').innerText = data.data.length;
+      
+      const list = document.getElementById('mList');
+      list.innerHTML = '';
+      
+      if(data.data.length === 0) {
+        list.innerHTML = '<div style="text-align:center; padding:20px; color:#666;">Belum ada peserta.</div>';
+      } else {
+        data.data.forEach(p => {
+          let persen = Math.round((p.setoranDilakukan / p.totalSetoran) * 100);
+          if (persen > 100) persen = 100;
+          let colorClass = p.sisaSetoran <= 0 ? '#4ade80' : '#ffd700';
+
+          // Link Kalender
+          const params = `id=${p.idPeserta}&nama=${encodeURIComponent(p.nama)}&paket=${encodeURIComponent(p.jenisPaket)}&jumlah=${p.setoranDilakukan}`;
+          const linkKalender = `kalender.html?${params}`;
+          
+          // Link Setoran WA Admin
+          const pesanSetor = `Halo Admin, saya mau setor untuk peserta: ${p.nama} (${p.idPeserta})`;
+          const linkSetor = `https://wa.me/628122261036?text=${encodeURIComponent(pesanSetor)}`;
+
+          list.innerHTML += `
+            <div class="mitra-item">
+              <div class="m-head">
+                <div>
+                    <div class="m-name">${p.nama}</div>
+                    <span class="m-id">#${p.idPeserta}</span>
+                    <span class="m-paket">${p.jenisPaket}</span>
+                </div>
+              </div>
+              
+              <div class="m-prog-text">
+                 <span>${p.setoranDilakukan} / ${p.totalSetoran}</span>
+                 <span style="color:${colorClass}">${p.sisaSetoran <= 0 ? 'LUNAS' : p.sisaSetoran + ' lagi'}</span>
+              </div>
+              <div class="m-prog-bg">
+                 <div class="m-prog-fill" style="width:${persen}%; background:${colorClass}"></div>
+              </div>
+
+              <div class="m-actions">
+                 <a href="${linkKalender}" class="btn-mini btn-cal-mini">
+                    <i class="far fa-calendar-alt"></i> Kalender
+                 </a>
+                 <a href="${linkSetor}" target="_blank" class="btn-mini btn-pay-mini">
+                    <i class="fas fa-plus-circle"></i> Tambah Setoran
+                 </a>
+              </div>
+            </div>
+          `;
+        });
+      }
+      document.getElementById('viewMitra').style.display = 'block';
+    }
+
+    // --- KALENDER LOGIC (MODAL) ---
+    function openCalendar() {
+      renderCalendarGrid();
+      document.getElementById('modalKalender').style.display = 'flex';
+    }
+
+    function closeCalendar() {
+      document.getElementById('modalKalender').style.display = 'none';
+    }
+
+    function renderCalendarGrid() {
+      const container = document.getElementById('calendarArea');
+      container.innerHTML = '';
+      const startYear = 2026;
+      const startMonth = 3; 
+      const monthsToShow = 12;
+      const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+      for(let i=0; i<monthsToShow; i++) {
+        const d = new Date(startYear, startMonth + i, 1);
+        const year = d.getFullYear();
+        const monthIndex = d.getMonth();
+        const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+        
+        let html = `
+          <div class="month-card">
+            <div class="month-title">${monthNames[monthIndex]} ${year}</div>
+            <div class="days-grid">
+              <div class="day-name">Mg</div><div class="day-name">Sn</div><div class="day-name">Sl</div>
+              <div class="day-name">Rb</div><div class="day-name">Km</div><div class="day-name">Jm</div><div class="day-name">Sb</div>
+        `;
+
+        const firstDay = new Date(year, monthIndex, 1).getDay(); 
+        for(let j=0; j<firstDay; j++) html += `<div></div>`;
+
+        for(let day=1; day<=daysInMonth; day++) {
+          const isPaid = currentTrxDates.some(ts => {
+            const trx = new Date(ts);
+            return trx.getDate() === day && trx.getMonth() === monthIndex && trx.getFullYear() === year;
+          });
+          const activeClass = isPaid ? 'active' : '';
+          html += `<div class="date-box ${activeClass}">${day}</div>`;
+        }
+        html += `</div></div>`;
+        container.innerHTML += html;
+      }
+    }
+  </script>
+</body>
+</html>

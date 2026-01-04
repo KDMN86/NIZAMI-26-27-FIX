@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tentang Owner - NIZAMI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    
+    <style>
+      /* === 1. BASIS TAMPILAN (DARK MODE) === */
+      * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+      
+      body {
+        background-color: #0a0a0a;
+        background-image: radial-gradient(circle at top right, #1a4d2e 0%, transparent 40%),
+                          radial-gradient(circle at bottom left, #0f2b18 0%, transparent 40%);
+        color: #fff;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+      }
+
+      /* === 2. PROFILE CARD CONTAINER === */
+      .profile-card {
+        background: rgba(30, 30, 30, 0.6);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 30px 20px;
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        margin-top: 20px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .profile-card::before {
+        content: '';
+        position: absolute;
+        top: -50px; left: -50px;
+        width: 100px; height: 100px;
+        background: rgba(40, 167, 69, 0.3);
+        filter: blur(40px);
+        border-radius: 50%;
+      }
+
+      /* === 3. FOTO PROFIL (ZOOMABLE) === */
+      .photo-wrapper {
+        position: relative;
+        width: 140px;
+        height: 140px;
+        margin: 0 auto 20px;
+        cursor: pointer; /* Menandakan bisa diklik */
+      }
+
+      .owner-photo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 4px solid #28a745;
+        box-shadow: 0 0 20px rgba(40, 167, 69, 0.4);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      /* Efek Hover pada Foto */
+      .photo-wrapper:hover .owner-photo {
+        transform: scale(1.05);
+        box-shadow: 0 0 25px rgba(40, 167, 69, 0.6);
+      }
+      
+      .verified-badge {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        background: #007bff;
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #1a1a1a;
+        font-size: 0.8rem;
+        pointer-events: none; /* Agar klik tembus ke foto */
+      }
+
+      /* === 4. TEXT CONTENT === */
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+        color: #fff;
+      }
+      
+      .role-badge {
+        background: rgba(255, 215, 0, 0.15);
+        color: #ffd700;
+        padding: 4px 12px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: inline-block;
+        margin-bottom: 20px;
+        border: 1px solid rgba(255, 215, 0, 0.3);
+      }
+
+      .owner-desc {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: #ccc;
+        margin-bottom: 25px;
+        text-align: justify;
+        text-align-last: center;
+      }
+
+      hr.divider {
+        border: 0;
+        height: 1px;
+        background: rgba(255,255,255,0.1);
+        margin: 20px 0;
+      }
+
+      /* === 5. INFO LOKASI & RUMAH === */
+      .info-section {
+        background: rgba(0,0,0,0.3);
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 20px;
+        text-align: left;
+      }
+
+      .info-label {
+        font-size: 0.8rem;
+        color: #888;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      .address-text {
+        font-size: 0.9rem;
+        color: #eee;
+        margin-bottom: 12px;
+        line-height: 1.4;
+      }
+
+      .house-photo {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.2);
+        margin-bottom: 10px;
+        filter: brightness(0.9);
+        transition: 0.3s;
+        cursor: pointer; /* Rumah juga bisa di-zoom */
+      }
+      .house-photo:hover { filter: brightness(1); }
+
+      /* === 6. BUTTONS === */
+      .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 14px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: transform 0.2s;
+        border: none;
+      }
+      .btn:active { transform: scale(0.98); }
+
+      .btn-wa {
+        background: linear-gradient(90deg, #25D366, #128C7E);
+        color: white;
+        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+      }
+      .btn-maps {
+        background: #2a2a2a;
+        color: #ccc;
+        border: 1px solid #444;
+      }
+
+      /* === 7. NAVIGASI === */
+      .back-nav { margin-top: 25px; }
+      .back-link {
+        color: #888;
+        text-decoration: none;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      /* === 8. MODAL ZOOM IMAGE (NEW) === */
+      .preview-overlay {
+        display: none; /* Hidden default */
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 9999;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .preview-overlay.show {
+        display: flex;
+        opacity: 1;
+      }
+      #preview-img {
+        max-width: 90%;
+        max-height: 80vh;
+        border-radius: 10px;
+        box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        transform: scale(0.8);
+        transition: transform 0.3s ease;
+      }
+      .preview-overlay.show #preview-img {
+        transform: scale(1);
+      }
+      .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 40px;
+        color: #fff;
+        cursor: pointer;
+        z-index: 10000;
+        background: none;
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="profile-card">
+      
+      <div class="photo-wrapper">
+        <img src="image/owner.jpg" alt="Evi Fitriawati" class="owner-photo zoomable" />
+        <div class="verified-badge"><i class="fas fa-check"></i></div>
+      </div>
+
+      <h1>Evi Fitriawati</h1>
+      <span class="role-badge">Owner & Founder Nizami</span>
+
+      <p class="owner-desc">
+        Selamat datang! Saya perancang dan pengelola paket NIZAMI. 
+        Sejak 2021, kami berkomitmen menjaga amanah peserta untuk persiapan 
+        Ramadhan & Lebaran yang lebih tenang dan terencana.
+      </p>
+
+      <hr class="divider" />
+
+      <div class="info-section">
+        <div class="info-label"><i class="fas fa-map-marker-alt" style="color:#ff6b6b;"></i> Alamat Rumah</div>
+        <p class="address-text">
+          Kp. Cinangka Rt.04 Rw.01, Ds. Mandalasari, Kec. Cikancung, Kab. Bandung
+        </p>
+        
+        <img src="image/rumah.jpg" alt="Rumah Owner" class="house-photo zoomable" />
+        
+        <a href="https://goo.gl/maps/YOUR_MAP_ID_HERE" target="_blank" class="btn btn-maps">
+          <i class="fas fa-map-marked-alt"></i> Buka di Google Maps
+        </a>
+      </div>
+
+      <div class="action-buttons">
+        <a href="https://wa.me/628122261036" class="btn btn-wa">
+          <i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Hubungi via WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <div class="back-nav">
+      <a href="index.html" class="back-link">
+        <i class="fas fa-arrow-left"></i> Kembali ke Menu Utama
+      </a>
+    </div>
+
+    <div id="image-preview" class="preview-overlay">
+      <button class="close-btn">&times;</button>
+      <img id="preview-img" src="" alt="Preview">
+    </div>
+
+    <script src="script.js"></script>
+
+  </body>
+</html>

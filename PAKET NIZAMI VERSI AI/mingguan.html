@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Belanja Paket Mingguan - Nizami</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* 1. SETUP DASAR */
+    body { background: #050505; color: #fff; font-family: 'Poppins', sans-serif; padding-bottom: 180px; margin: 0; }
+    
+    /* 2. HEADER */
+    header { 
+        background: rgba(10, 30, 15, 0.95); 
+        padding: 15px; 
+        position: sticky; top:0; z-index:99; 
+        backdrop-filter: blur(10px); 
+        border-bottom: 1px solid #222;
+        display: flex; align-items: center; justify-content: space-between;
+    }
+    header h1 { margin: 0; font-size: 1rem; color: #ffd700; display: flex; align-items: center; gap: 10px; }
+    
+    /* 3. FILTER KATEGORI (Lebih Kecil & Rapat) */
+    .category-nav {
+        background: #0a0a0a;
+        padding: 10px;
+        position: sticky; top: 60px; z-index: 98;
+        border-bottom: 1px solid #222;
+        display: flex; gap: 8px;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+    .cat-pill {
+        background: #222; color: #aaa; border: 1px solid #333;
+        padding: 6px 14px; border-radius: 50px; font-size: 0.8rem;
+        white-space: nowrap; cursor: pointer; transition: 0.3s;
+    }
+    .cat-pill.active {
+        background: #ffd700; color: #000; border-color: #ffd700; font-weight: 600;
+    }
+
+    /* 4. LIST ITEM (TAMPILAN KOMPAK & RAPAT) */
+    .product-list {
+        max-width: 600px; margin: 0 auto; padding: 10px;
+    }
+    
+    .list-item {
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center;
+        background: #111;
+        padding: 10px 12px; /* Padding diperkecil */
+        margin-bottom: 6px; /* Jarak antar barang diperkecil */
+        border-radius: 8px;
+        border: 1px solid #222;
+        transition: 0.2s;
+    }
+    
+    .list-item.in-cart {
+        border-color: #ffd700;
+        background: #15150a;
+    }
+
+    .item-info { flex: 1; padding-right: 10px; }
+    /* Nama barang lebih rapat */
+    .item-name { font-size: 0.9rem; font-weight: 500; color: #eee; margin-bottom: 2px; line-height: 1.2; }
+    /* Harga lebih menonjol */
+    .item-price { color: #4ade80; font-size: 0.85rem; font-weight: 600; }
+    .item-unit { font-size: 0.75rem; color: #666; font-weight: normal; }
+
+    /* CONTROLLER (+ -) */
+    .qty-control {
+        display: flex; align-items: center; gap: 5px;
+        background: #222; padding: 3px; border-radius: 50px; border: 1px solid #333;
+    }
+    .qty-btn {
+        width: 24px; height: 24px; /* Tombol diperkecil */
+        background: #333; border: none; color: #fff;
+        border-radius: 50%; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        font-weight: bold; font-size: 1rem;
+    }
+    .qty-btn:active { background: #ffd700; color: #000; }
+    .qty-val { font-weight: 600; width: 20px; text-align: center; font-size: 0.85rem; }
+
+    /* 5. FOOTER KERANJANG (POPUP RINCIAN) */
+    .cart-bar {
+        position: fixed; bottom: 0; left: 0; width: 100%;
+        background: rgba(20, 20, 20, 0.95);
+        border-top: 1px solid #333;
+        backdrop-filter: blur(10px);
+        z-index: 100;
+        box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+        transform: translateY(100%);
+        transition: transform 0.3s ease-out;
+        display: flex; flex-direction: column;
+    }
+    .cart-bar.show { transform: translateY(0); }
+
+    /* Area Rincian Barang di Popup */
+    .cart-preview {
+        max-height: 150px; overflow-y: auto;
+        padding: 15px 20px 5px;
+        border-bottom: 1px solid #333;
+    }
+    .mini-item {
+        display: flex; justify-content: space-between;
+        font-size: 0.8rem; color: #ccc; margin-bottom: 5px;
+    }
+    .mini-price { color: #ffd700; }
+
+    /* Area Total & Tombol */
+    .cart-actions {
+        padding: 15px 20px;
+        display: flex; justify-content: space-between; align-items: center;
+        background: #000;
+    }
+    .cart-total-label { font-size: 0.7rem; color: #888; display: block; }
+    .cart-total-value { font-size: 1.2rem; font-weight: bold; color: #4ade80; }
+
+    .btn-checkout {
+        background: linear-gradient(90deg, #ffd700, #ffaa00); color: #000;
+        border: none; padding: 10px 25px; border-radius: 50px;
+        font-weight: 700; cursor: pointer; display: flex; gap: 8px; align-items: center;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    .loader { text-align: center; padding: 50px; color: #666; font-size: 0.9rem; }
+    .back-btn { color: #fff; font-size: 1.2rem; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>
+      <i class="fas fa-arrow-left back-btn" onclick="window.location.href='index.html'"></i>
+      Paket Mingguan
+    </h1>
+    <div style="font-size:0.75rem; color:#888;">Cicilan 40 Minggu</div>
+  </header>
+
+  <nav class="category-nav">
+    <div class="cat-pill active" onclick="filterBarang('all')">Semua</div>
+    <div class="cat-pill" onclick="filterBarang('Sembako')">Sembako</div>
+    <div class="cat-pill" onclick="filterBarang('Daging')">Daging</div>
+    <div class="cat-pill" onclick="filterBarang('Mie')">Mie Instan</div>
+    <div class="cat-pill" onclick="filterBarang('Minuman')">Minuman</div>
+    <div class="cat-pill" onclick="filterBarang('Bumbu')">Bumbu</div>
+    <div class="cat-pill" onclick="filterBarang('Kue Kaleng')">Kue Kaleng</div>
+  </nav>
+
+  <div id="productContainer" class="product-list">
+    <div class="loader">
+      <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 10px; color:#ffd700;"></i><br>
+      Mengambil data...
+    </div>
+  </div>
+
+  <div id="cartBar" class="cart-bar">
+    <div id="cartPreview" class="cart-preview">
+      </div>
+
+    <div class="cart-actions">
+      <div>
+        <span class="cart-total-label">Total Setoran Mingguan</span>
+        <span class="cart-total-value" id="totalPrice">Rp 0</span>
+      </div>
+      <button class="btn-checkout" onclick="checkoutWA()">
+        Pesan <i class="fab fa-whatsapp"></i>
+      </button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    let allProducts = [];
+    let cart = {}; 
+    const TENOR_MINGGUAN = 40; 
+
+    // 1. Load Data
+    window.onload = async () => {
+      const data = await fetchData('getBarang');
+      if(data && data.length > 0) {
+        allProducts = data;
+        renderProducts(allProducts);
+      } else {
+        document.getElementById('productContainer').innerHTML = 
+          '<div style="text-align:center; padding:50px; color:#666;">Data kosong.<br>Cek Database.</div>';
+      }
+    };
+
+    // 2. Render List (Compact Mode)
+    function renderProducts(products) {
+      const container = document.getElementById('productContainer');
+      container.innerHTML = '';
+
+      products.forEach(item => {
+        const id = item.nama.replace(/\s+/g, '-').toLowerCase();
+        const currentQty = cart[item.nama] ? cart[item.nama].qty : 0;
+        const activeClass = currentQty > 0 ? 'in-cart' : '';
+
+        // Hitung Harga Mingguan
+        const hargaTotal = item.harga;
+        const hargaPerMinggu = Math.ceil(hargaTotal / TENOR_MINGGUAN); 
+
+        const html = `
+          <div class="list-item ${activeClass}" id="card-${id}">
+            <div class="item-info">
+              <div class="item-name">${item.nama}</div>
+              <div class="item-price">
+                ${formatRupiah(hargaPerMinggu)} <span class="item-unit">/mgg</span>
+              </div>
+              </div>
+            
+            <div class="qty-control">
+              <button class="qty-btn" onclick="updateCart('${item.nama}', ${hargaTotal}, '${item.satuan}', -1)">-</button>
+              <div class="qty-val" id="qty-${id}">${currentQty}</div>
+              <button class="qty-btn" onclick="updateCart('${item.nama}', ${hargaTotal}, '${item.satuan}', 1)" style="background:#ffd700; color:#000;">+</button>
+            </div>
+          </div>
+        `;
+        container.innerHTML += html;
+      });
+    }
+
+    // 3. Filter
+    function filterBarang(cat) {
+      document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      if(cat === 'all') {
+        renderProducts(allProducts);
+      } else {
+        const filtered = allProducts.filter(p => p.kategori === cat || (cat === 'Mie' && p.kategori === 'Mie Instan'));
+        renderProducts(filtered);
+      }
+    }
+
+    // 4. Update Cart
+    function updateCart(name, priceTotal, unit, change) {
+      if(!cart[name]) cart[name] = { qty: 0, price: priceTotal, unit: unit };
+      
+      cart[name].qty += change;
+      if(cart[name].qty < 0) cart[name].qty = 0;
+
+      const id = name.replace(/\s+/g, '-').toLowerCase();
+      const qtyEl = document.getElementById(`qty-${id}`);
+      const cardEl = document.getElementById(`card-${id}`);
+      
+      if(qtyEl) qtyEl.innerText = cart[name].qty;
+
+      if(cart[name].qty > 0) {
+        if(cardEl) cardEl.classList.add('in-cart');
+      } else {
+        delete cart[name];
+        if(cardEl) cardEl.classList.remove('in-cart');
+      }
+
+      hitungTotal();
+    }
+
+    // 5. Hitung Total & Update Popup Rincian
+    function hitungTotal() {
+      let totalSemuaBarang = 0;
+      let count = 0;
+      let previewHTML = '';
+      
+      for(let key in cart) {
+        let qty = cart[key].qty;
+        let price = cart[key].price;
+        
+        totalSemuaBarang += qty * price;
+        count += qty;
+
+        // Tambahkan ke List Popup
+        let hargaMingguanItem = Math.ceil(price / TENOR_MINGGUAN);
+        previewHTML += `
+            <div class="mini-item">
+                <span>${key} <b>x${qty}</b></span>
+                <span class="mini-price">${formatRupiah(hargaMingguanItem * qty)}</span>
+            </div>
+        `;
+      }
+      
+      const totalMingguan = Math.ceil(totalSemuaBarang / TENOR_MINGGUAN);
+
+      // Update Tampilan Popup
+      document.getElementById('totalPrice').innerText = formatRupiah(totalMingguan);
+      document.getElementById('cartPreview').innerHTML = previewHTML;
+      
+      const cartBar = document.getElementById('cartBar');
+      if(count > 0) {
+        cartBar.classList.add('show');
+      } else {
+        cartBar.classList.remove('show');
+      }
+    }
+
+    // 6. Checkout
+    function checkoutWA() {
+      if(Object.keys(cart).length === 0) return;
+
+      let pesan = `Halo Admin, saya mau daftar *PAKET MINGGUAN (40 Minggu)*:%0A%0A`;
+      let totalHargaCash = 0;
+
+      for(let key in cart) {
+        let subtotal = cart[key].qty * cart[key].price;
+        let hargaMingguanItem = Math.ceil(cart[key].price / TENOR_MINGGUAN);
+        totalHargaCash += subtotal;
+        
+        pesan += `▫️ ${key} (${cart[key].qty} ${cart[key].unit}) - ${formatRupiah(hargaMingguanItem * cart[key].qty)}%0A`;
+      }
+
+      const totalSetoran = Math.ceil(totalHargaCash / TENOR_MINGGUAN);
+
+      pesan += `%0A💰 *TOTAL SETORAN: ${formatRupiah(totalSetoran)} / minggu*%0A`;
+      pesan += `(Selama 40x Kocokan)%0A%0AMohon dibantu pendaftarannya.`;
+
+      kirimWA('628122261036', decodeURIComponent(pesan)); 
+    }
+  </script>
+</body>
+</html>

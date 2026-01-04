@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paket KIDS - NIZAMI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* 1. SETUP HALAMAN */
+        body {
+            background-color: #051a0f; /* Hijau Gelap */
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding-bottom: 100px; /* Ruang untuk tombol WA */
+            overflow-x: hidden; 
+        }
+
+        /* 2. HEADER */
+        header {
+            padding: 15px;
+            text-align: center;
+            background: rgba(5, 26, 15, 0.95);
+            position: sticky; top: 0; z-index: 10;
+            border-bottom: 1px solid #222;
+            backdrop-filter: blur(5px);
+            display: flex; align-items: center; justify-content: center;
+        }
+        header h1 {
+            margin: 0; color: #ffd700; font-size: 1.1rem;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        
+        .back-icon {
+            position: absolute; left: 20px;
+            color: #fff; font-size: 1.2rem; cursor: pointer;
+        }
+
+        /* 3. LIST GAMBAR (VERTIKAL BERSIH) */
+        .gallery-list {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Jarak antar gambar */
+            max-width: 600px; 
+            margin: 0 auto;
+        }
+
+        .brochure-card {
+            background: transparent;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            cursor: pointer;
+        }
+
+        .brochure-card img {
+            width: 100%; 
+            height: auto;
+            display: block;
+            border-radius: 15px;
+        }
+
+        /* Ikon Zoom Kecil */
+        .zoom-hint {
+            position: absolute; top: 10px; right: 10px;
+            background: rgba(0,0,0,0.6); color: #fff;
+            padding: 5px 10px; border-radius: 20px;
+            font-size: 0.7rem; backdrop-filter: blur(3px);
+            display: flex; align-items: center; gap: 5px;
+        }
+
+        /* 4. TOMBOL WA MELAYANG */
+        .fab-wa {
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(90deg, #25D366, #128C7E);
+            color: #fff;
+            padding: 14px 30px; border-radius: 50px;
+            text-decoration: none; font-weight: bold;
+            display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            z-index: 100; font-size: 1rem; white-space: nowrap;
+            border: 1px solid #444;
+        }
+        .fab-wa:active { transform: translateX(-50%) scale(0.95); }
+
+        /* 5. MODAL ZOOM */
+        .zoom-modal {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 9999;
+            justify-content: center; align-items: center;
+            flex-direction: column;
+        }
+        .zoom-modal img {
+            width: 100%; max-height: 80vh; object-fit: contain;
+        }
+        .close-zoom {
+            margin-top: 20px; padding: 10px 30px;
+            background: transparent; border: 1px solid #fff; color: #fff;
+            border-radius: 50px; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <i class="fas fa-arrow-left back-icon" onclick="window.location.href='index.html'"></i>
+        <h1>Katalog Paket KIDS</h1>
+    </header>
+
+    <div class="gallery-list">
+        
+        <div class="brochure-card" onclick="openZoom(this)">
+            <img src="image/kids/kids1.jpg" alt="Paket Kids 1">
+            <div class="zoom-hint"><i class="fas fa-search-plus"></i> Zoom</div>
+        </div>
+
+        <div class="brochure-card" onclick="openZoom(this)">
+            <img src="image/kids/kids2.jpg" alt="Paket Kids 2">
+            <div class="zoom-hint"><i class="fas fa-search-plus"></i> Zoom</div>
+        </div>
+
+        <div class="brochure-card" onclick="openZoom(this)">
+            <img src="image/kids/kids3.jpg" alt="Paket Kids 3">
+            <div class="zoom-hint"><i class="fas fa-search-plus"></i> Zoom</div>
+        </div>
+
+        <div class="brochure-card" onclick="openZoom(this)">
+            <img src="image/kids/kids4.jpg" alt="Paket Kids 4">
+            <div class="zoom-hint"><i class="fas fa-search-plus"></i> Zoom</div>
+        </div>
+
+    </div>
+
+    <a href="https://wa.me/628122261036?text=Halo%20Admin%2C%20saya%20tertarik%20dengan%20Paket%20KIDS..." class="fab-wa">
+        <i class="fab fa-whatsapp" style="font-size: 1.3rem;"></i> Tanya Admin
+    </a>
+
+    <div id="zoomModal" class="zoom-modal" onclick="closeZoom()">
+        <img id="zoomImg" src="" alt="Zoom">
+        <button class="close-zoom">Tutup</button>
+    </div>
+
+    <script>
+        function openZoom(el) {
+            const imgSrc = el.querySelector('img').src;
+            document.getElementById('zoomImg').src = imgSrc;
+            document.getElementById('zoomModal').style.display = 'flex';
+        }
+        function closeZoom() {
+            document.getElementById('zoomModal').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>

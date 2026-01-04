@@ -1,0 +1,290 @@
+/* =========================================
+   1. RESET & BASIC SETUP
+   ========================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    -webkit-tap-highlight-color: transparent; /* Hilangkan highlight biru saat klik di HP */
+}
+
+body {
+    background-color: #051a0f; /* Hijau Gelap Pekat */
+    /* Efek sorot cahaya hijau di latar belakang */
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(20, 255, 0, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 40%);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 120px; /* Ruang kosong bawah untuk tombol melayang */
+    overflow-x: hidden;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* =========================================
+   2. HEADER & LOGO
+   ========================================= */
+header {
+    text-align: center;
+    padding: 40px 20px 20px;
+    width: 100%;
+    max-width: 600px;
+    animation: fadeInDown 0.8s ease-out;
+}
+
+header h1 {
+    font-family: 'Pacifico', cursive; /* Font latin estetik */
+    font-size: 2.2rem;
+    color: #ffd700; /* Emas */
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    margin: 5px 0;
+}
+
+header p {
+    color: #a3c2a3; /* Hijau muda pucat */
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+/* =========================================
+   3. MENU GRID (TAMPILAN KARTU)
+   ========================================= */
+.menu-grid {
+    display: grid;
+    /* Membuat 2 kolom otomatis di HP, lebih banyak di layar besar */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 15px;
+    width: 90%;
+    max-width: 500px;
+    margin-top: 10px;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.menu-card {
+    background: rgba(255, 255, 255, 0.05); /* Kaca Transparan */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 20px 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    cursor: pointer;
+    min-height: 140px; /* Tinggi minimal kartu */
+    text-decoration: none;
+}
+
+/* Efek saat disentuh/hover */
+.menu-card:hover, .menu-card:active {
+    transform: translateY(-5px) scale(1.02);
+    border-color: #ffd700;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+.menu-card i {
+    font-size: 2.2rem; /* Ukuran Ikon */
+    margin-bottom: 5px;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.2));
+}
+
+.menu-card h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #eee;
+}
+
+.menu-card p, .menu-card span {
+    font-size: 0.7rem;
+    color: #aaa;
+    line-height: 1.2;
+}
+
+/* =========================================
+   4. FLOATING ACTION BUTTONS (TOMBOL BAWAH)
+   ========================================= */
+.fab-container {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 90%;
+    max-width: 400px;
+}
+
+.fab-join {
+    background: linear-gradient(90deg, #ffd700, #ffaa00); /* Gradasi Emas */
+    color: #000;
+    border: none;
+    padding: 16px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 0 20px rgba(255, 170, 0, 0.4);
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.fab-join:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 10px rgba(255, 170, 0, 0.6);
+}
+
+/* Animasi Kilau pada Tombol Gabung */
+.fab-join {
+    position: relative;
+    overflow: hidden;
+}
+.fab-join::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shine 3s infinite;
+}
+
+.fab-mitra {
+    background: rgba(10, 10, 10, 0.85);
+    border: 1px solid #ffd700;
+    color: #ffd700;
+    padding: 12px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: 0.3s;
+    width: 100%;
+}
+
+.fab-mitra:hover {
+    background: #ffd700;
+    color: #000;
+}
+
+/* =========================================
+   5. MODAL FORMULIR (POPUP)
+   ========================================= */
+.modal-overlay {
+    display: none; /* Hidden default */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    z-index: 9999;
+    justify-content: center;
+    align-items: flex-end; /* Muncul dari bawah di HP */
+}
+
+.modal-overlay.show {
+    display: flex;
+    animation: slideUp 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.modal-card {
+    background: #1a1a1a;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 25px 25px 0 0; /* Melengkung atas saja */
+    padding: 30px 25px 50px; /* Padding bawah lebih besar */
+    border-top: 3px solid #ffd700;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+}
+
+.close-x {
+    position: absolute;
+    top: 15px; right: 20px;
+    background: #333;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    width: 35px; height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+}
+
+/* Form Styles */
+.form-group { margin-bottom: 20px; text-align: left; }
+.form-label { display: block; font-size: 0.85rem; color: #aaa; margin-bottom: 8px; font-weight: 500; }
+.form-input {
+    width: 100%;
+    padding: 14px;
+    background: #252525;
+    border: 1px solid #444;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+.form-input:focus {
+    border-color: #ffd700;
+    background: #000;
+    outline: none;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #28a745, #218838);
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+}
+
+/* Checkbox Akad */
+.checkbox-akad {
+    background: rgba(255, 215, 0, 0.08);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px dashed rgba(255, 215, 0, 0.4);
+    margin-bottom: 25px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+.checkbox-akad input { margin-top: 4px; transform: scale(1.2); }
+
+/* =========================================
+   6. ANIMASI
+   ========================================= */
+@keyframes shine { 100% { left: 125%; } }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Responsif Tablet/PC */
+@media (min-width: 768px) {
+    .menu-grid { grid-template-columns: repeat(3, 1fr); } /* 3 Kolom di layar lebar */
+    .modal-overlay { align-items: center; }
+    .modal-card { border-radius: 20px; max-height: 90vh; }
+}

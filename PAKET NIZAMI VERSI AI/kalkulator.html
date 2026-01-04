@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kalkulator Mitra 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+      /* === 1. TAMPILAN WEB (DARK MODE MODERN) === */
+      * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+      
+      body {
+        background-color: #000;
+        background-image: url('image/bg2.png');
+        background-repeat: no-repeat;
+        background-position: bottom left;
+        background-size: 300px auto;
+        min-height: 100vh;
+        color: #fff;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        background: linear-gradient(90deg, #fff, #aaa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      /* Container Kaca */
+      .container {
+        width: 100%;
+        max-width: 900px;
+        background: rgba(20, 20, 20, 0.7);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      }
+
+      /* Area Input Pencarian */
+      .input-group {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 25px;
+      }
+      
+      input[type="text"] {
+        flex: 1;
+        padding: 14px;
+        border-radius: 10px;
+        border: 1px solid #444;
+        background: rgba(0,0,0,0.6);
+        color: #fff;
+        font-size: 1rem;
+        outline: none;
+      }
+      
+      button {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        color: white;
+        transition: 0.3s;
+      }
+      
+      .btn-cek { background: #007bff; }
+      .btn-cek:hover { background: #0056b3; }
+      
+      .btn-reset { background: #dc3545; }
+      .btn-reset:hover { background: #b02a37; }
+
+      .btn-save { 
+        background: linear-gradient(135deg, #28a745, #1e7e34); 
+        width: 100%; 
+        margin-top: 20px;
+        font-size: 1.1rem;
+        padding: 15px;
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+      }
+      .btn-save:hover { transform: translateY(-2px); }
+
+      /* Area Tabel Web */
+      #captureArea {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.1);
+        background: rgba(255,255,255,0.02);
+      }
+      
+      #dateDisplay {
+        padding: 15px;
+        text-align: center;
+        background: rgba(255,255,255,0.05);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        font-size: 0.9rem;
+        color: #ddd;
+      }
+
+      .table-responsive { overflow-x: auto; }
+      
+      table { width: 100%; border-collapse: collapse; }
+      
+      th {
+        background: rgba(0, 123, 255, 0.2);
+        color: #7aeaf7;
+        padding: 15px;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      
+      td {
+        padding: 12px 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        font-size: 0.95rem;
+        vertical-align: middle;
+        text-align: center;
+      }
+      
+      /* Badge Paket (Tampilan Web) */
+      .badge-paket {
+        background: #333;
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        border: 1px solid #555;
+      }
+
+      /* Input Angka */
+      input[type="number"] {
+        background: #111;
+        border: 1px solid #555;
+        color: #fff;
+        padding: 8px;
+        border-radius: 6px;
+        width: 70px;
+        text-align: center;
+        font-weight: bold;
+      }
+      input[type="number"]:focus { border-color: #28a745; outline: none; }
+
+      /* Footer Total */
+      tfoot td {
+        background: rgba(40, 167, 69, 0.2);
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: #fff;
+        padding: 20px;
+      }
+
+      .hidden { display: none; }
+      
+      /* Link Kembali */
+      .back-link {
+        margin-top: 20px;
+        color: #888;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: 0.3s;
+      }
+      .back-link:hover { color: #fff; }
+
+      @media(max-width: 600px) {
+        .input-group { flex-direction: column; }
+        th, td { padding: 10px 5px; font-size: 0.85rem; }
+      }
+    </style>
+  </head>
+  <body>
+    
+    <h2>Kalkulator Mitra</h2>
+
+    <div class="container">
+      <div class="input-group">
+        <input type="text" id="grupInput" placeholder="Masukkan Grup ID (Contoh: IBU)" />
+        <button class="btn-cek" onclick="cariGrup()">🔍 Cari</button>
+        <button class="btn-reset" onclick="resetTabel()">🔄 Reset</button>
+      </div>
+
+      <div id="captureArea">
+        <div id="dateDisplay"></div>
+        <div class="table-responsive">
+          <table id="resultTable" class="hidden">
+            <thead>
+              <tr>
+                <th width="5%">No</th>
+                <th width="25%" style="text-align:left; padding-left:20px;">Nama</th>
+                <th width="20%">Paket</th>
+                <th width="15%">Nilai</th>
+                <th width="10%">Masuk</th>
+                <th width="10%">Bayar (X)</th>
+                <th width="15%">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody id="resultBody"></tbody>
+            <tfoot>
+              <tr>
+                <td colspan="6" style="text-align:right; padding-right:20px;">Total Setoran:</td>
+                <td id="grandTotal">Rp 0</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <button class="btn-save" onclick="simpanSebagaiGambar()">📸 Simpan Sebagai Gambar (JPG)</button>
+    </div>
+
+    <a href="index.html" class="back-link">⬅ Kembali ke Menu Utama</a>
+
+    <script>
+      const dateEl = document.getElementById('dateDisplay');
+      const today = new Date();
+      dateEl.textContent = 'Tanggal Transaksi: ' + today.toLocaleDateString('id-ID', {
+          day: '2-digit', month: 'long', year: 'numeric'
+      });
+
+      const API_URL = 'https://script.google.com/macros/s/AKfycbzzLhqHCZH9ID4OyW9A9nCJTuWwKpdyTEMGlue6A0pATwALRz4xLwILX_rmf8MVmn0W/exec';
+
+      function cariGrup() {
+        const grupID = document.getElementById('grupInput').value.trim();
+        if (!grupID) return alert('Masukkan Grup ID!');
+
+        const table = document.getElementById('resultTable');
+        const tbody = document.getElementById('resultBody');
+        const grandTotal = document.getElementById('grandTotal');
+
+        tbody.innerHTML = '<tr><td colspan="7" style="padding:30px;">Memuat data...</td></tr>';
+        table.classList.remove('hidden');
+
+        fetch(`${API_URL}?group=${encodeURIComponent(grupID)}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.error || data.length === 0) {
+              tbody.innerHTML = `<tr><td colspan="7" style="color:#ff6b6b; padding:30px;">Data tidak ditemukan</td></tr>`;
+              grandTotal.textContent = 'Rp 0';
+              return;
+            }
+
+            let html = '';
+            data.forEach(p => {
+              const nilai = Number(p.nilaiSetoran) || 0;
+              
+              html += `
+                <tr>
+                  <td>${p.no}</td>
+                  <td style="text-align:left; padding-left:20px; font-weight:600;">${p.nama}</td>
+                  <td><span class="badge-paket">${p.jenisPaket}</span></td>
+                  <td>${nilai.toLocaleString()}</td>
+                  <td>${p.setoranDilakukan}x</td>
+                  <td>
+                    <input type="number" value="0" min="0" oninput="hitungSubtotal(this, ${nilai})" onfocus="this.select()"/>
+                  </td>
+                  <td class="subtotal" style="color:#ffd700; font-weight:bold;">Rp 0</td>
+                </tr>
+              `;
+            });
+            tbody.innerHTML = html;
+            hitungTotalSemua();
+          })
+          .catch(err => {
+            console.error(err);
+            tbody.innerHTML = `<tr><td colspan="7">Gagal koneksi.</td></tr>`;
+          });
+      }
+
+      function hitungSubtotal(input, nilai) {
+        const row = input.closest('tr');
+        const jumlah = Number(input.value) || 0;
+        const subtotal = jumlah * nilai;
+        
+        row.querySelector('.subtotal').textContent = `Rp ${subtotal.toLocaleString()}`;
+        
+        if(jumlah > 0) {
+            row.style.background = "rgba(40, 167, 69, 0.15)";
+        } else {
+            row.style.background = "transparent";
+        }
+        hitungTotalSemua();
+      }
+
+      function hitungTotalSemua() {
+        let total = 0;
+        document.querySelectorAll('.subtotal').forEach(el => {
+          total += Number(el.textContent.replace(/[^\d]/g, ''));
+        });
+        document.getElementById('grandTotal').textContent = `Rp ${total.toLocaleString('id-ID')}`;
+      }
+
+      function resetTabel() {
+        document.querySelectorAll('tbody input').forEach(el => {
+          el.value = 0;
+          el.dispatchEvent(new Event('input'));
+        });
+        document.getElementById('grupInput').value = '';
+      }
+
+      // === FUNGSI SIMPAN GAMBAR PROFESIONAL ===
+      function simpanSebagaiGambar() {
+        const area = document.getElementById('captureArea');
+        let adaData = false;
+        
+        // Cek input
+        document.querySelectorAll('#resultBody input').forEach(i => {
+            if(Number(i.value) > 0) adaData = true;
+        });
+        
+        if(!adaData) return alert("Isi minimal satu setoran untuk menyimpan.");
+
+        // 1. CLONE Element (Agar tampilan asli tidak berubah)
+        const clone = area.cloneNode(true);
+
+        // 2. BERSIHKAN DATA DI CLONE (Hanya ambil yang ada nilainya)
+        const rows = clone.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const input = row.querySelector('input');
+            if(!input || Number(input.value) <= 0) {
+                row.remove(); // Hapus baris kosong
+            } else {
+                // Ubah Input Box jadi Teks Biasa yang Besar & Jelas
+                const val = input.value;
+                input.parentNode.innerHTML = `<span style="font-size:1.4rem; font-weight:bold; color:#000;">${val}</span>`;
+                
+                // === FIX PENTING BAGIAN PAKET ===
+                // Hapus style badge hitam, ubah jadi teks biasa agar bersih
+                const badge = row.querySelector('.badge-paket');
+                if(badge) {
+                    badge.style.background = "transparent";
+                    badge.style.color = "#000"; // Hitam
+                    badge.style.border = "none";
+                    badge.style.padding = "0";
+                    badge.style.fontWeight = "normal";
+                    badge.style.fontSize = "1rem";
+                }
+            }
+        });
+
+        // 3. STYLING "KERTAS PUTIH" (Laporan Resmi)
+        clone.style.width = "800px"; // Lebar fix untuk gambar
+        clone.style.padding = "40px";
+        clone.style.backgroundColor = "#ffffff"; // Kertas Putih
+        clone.style.color = "#000000"; // Tinta Hitam
+        clone.style.borderRadius = "0";
+        clone.style.fontFamily = "Arial, sans-serif"; // Font standar dokumen
+
+        // Header Judul di Gambar
+        const grupID = document.getElementById('grupInput').value.toUpperCase();
+        const headerDiv = document.createElement('div');
+        headerDiv.innerHTML = `
+            <h1 style="text-align:center; margin:0; font-size:24px; color:#000; text-transform:uppercase;">LAPORAN SETORAN: ${grupID}</h1>
+            <p style="text-align:center; margin:5px 0 20px 0; color:#555; font-size:14px;">${dateEl.textContent}</p>
+            <hr style="border:1px solid #000; margin-bottom:20px;">
+        `;
+        clone.insertBefore(headerDiv, clone.firstChild);
+        
+        // Hapus header tanggal lama di clone karena sudah buat baru diatas
+        const oldDate = clone.querySelector('#dateDisplay');
+        if(oldDate) oldDate.remove();
+
+        // Styling Tabel Laporan
+        const table = clone.querySelector('table');
+        table.style.border = "2px solid #000";
+        table.style.width = "100%";
+        
+        // Header Tabel (Biru Tua Profesional)
+        clone.querySelectorAll('th').forEach(th => {
+            th.style.background = "#0d47a1"; // Biru Tua
+            th.style.color = "#ffffff";
+            th.style.border = "1px solid #000";
+            th.style.fontSize = "14px";
+            th.style.padding = "10px";
+        });
+
+        // Sel Tabel
+        clone.querySelectorAll('td').forEach(td => {
+            td.style.border = "1px solid #888"; // Border abu tua
+            td.style.color = "#000";
+            td.style.background = "#fff"; // Pastikan background putih
+            td.style.fontSize = "14px";
+        });
+
+        // Kolom Subtotal
+        clone.querySelectorAll('.subtotal').forEach(el => {
+            el.style.color = "#000";
+            el.style.fontWeight = "bold";
+            el.style.fontSize = "16px";
+        });
+
+        // Footer Total (Hijau)
+        const tfootTd = clone.querySelector('tfoot td:last-child');
+        tfootTd.style.background = "#198754"; // Hijau Sukses
+        tfootTd.style.color = "#fff";
+        tfootTd.style.fontSize = "22px";
+        tfootTd.style.fontWeight = "bold";
+        tfootTd.style.border = "2px solid #000";
+
+        // Render
+        clone.style.position = 'absolute';
+        clone.style.top = '-9999px';
+        document.body.appendChild(clone);
+
+        html2canvas(clone, { scale: 2 }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `Laporan-${grupID}.jpg`;
+            link.href = canvas.toDataURL('image/jpeg', 0.9);
+            link.click();
+            document.body.removeChild(clone);
+        });
+      }
+    </script>
+  </body>
+</html>
