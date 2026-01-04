@@ -24,46 +24,107 @@
         .nav-item i { font-size: 1.4rem; margin-bottom: 4px; }
         .nav-item.active { color: #ffd700; } .nav-item.active i { transform: translateY(-3px); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
 
-        /* TABS */
-        .tab-content { display: none; padding: 20px; animation: fadeIn 0.4s; }
-        .tab-content.active { display: block; }
+        /* === PERBAIKAN TAMPILAN KATALOG (PROFESIONAL) === */
 
-      /* === UPDATE STYLE KATALOG === */
+/* Pastikan semua elemen menghitung padding sebagai bagian dari lebar */
+* { box-sizing: border-box; }
 
-/* Grid Utama (Untuk Paket) */
+/* Sesuaikan padding container utama agar lebih lega di HP */
+.tab-content { 
+    padding: 15px; /* Padding standar HP */
+    max-width: 100%; 
+    overflow-x: hidden; /* Mencegah scroll samping */
+}
+
+/* TOMBOL AKAD (HERO SECTION) - Lebih Modern */
+.akad-hero {
+    background: linear-gradient(135deg, #ffd700, #ffb700);
+    color: #000;
+    padding: 15px 20px;
+    border-radius: 12px; /* Sudut lebih halus */
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2); /* Bayangan halus */
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+.akad-hero i { font-size: 1.5rem; margin-right: 15px; color: #111; }
+.akad-text h3 { margin: 0; font-size: 1rem; font-weight: 800; text-transform: uppercase; }
+.akad-text p { margin: 2px 0 0 0; font-size: 0.75rem; font-weight: 500; opacity: 0.8; }
+
+/* GRID MENU (3 KOLOM PRESISI) */
 .menu-grid { 
     display: grid; 
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 10px; /* Jarak antar kotak */
-    margin-bottom: 20px;
+    grid-template-columns: repeat(3, 1fr); /* Pasti 3 kolom */
+    gap: 8px; /* Jarak antar kotak diperkecil (sebelumnya 12px terlalu lebar) */
+    margin-bottom: 25px;
+    width: 100%;
 }
 
-/* Grid Kecil (Untuk Galeri & Owner) */
+/* KARTU MENU (KOTAK ELEGAN) */
+.menu-card { 
+    background: linear-gradient(145deg, #1a1a1a, #0d0d0d); /* Gradasi hitam premium */
+    border: 1px solid #2a2a2a; /* Border tipis halus */
+    border-radius: 12px; 
+    aspect-ratio: 1 / 1; /* Memaksa bentuk kotak sempurna */
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    text-decoration: none; 
+    color: #fff; 
+    transition: all 0.2s ease;
+    padding: 10px;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Efek saat ditekan */
+.menu-card:active { 
+    transform: scale(0.96); 
+    border-color: #ffd700; 
+    background: #222;
+}
+
+/* Ikon di dalam kartu */
+.menu-card i { 
+    font-size: 1.5rem; /* Ukuran ikon pas, tidak raksasa */
+    margin-bottom: 8px; 
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.1)); /* Glow tipis */
+}
+
+/* Teks di dalam kartu */
+.menu-card h3 { 
+    font-size: 0.75rem; /* Ukuran font pas di HP */
+    margin: 0; 
+    font-weight: 500; 
+    color: #ccc; 
+    letter-spacing: 0.5px;
+}
+
+/* GRID KECIL (GALERI & OWNER) */
 .menu-grid-small {
     display: grid; 
-    grid-template-columns: 1fr 1fr; /* Bagi 2 kolom */
+    grid-template-columns: 1fr 1fr; /* 2 Kolom rata */
     gap: 10px;
 }
-
-/* Card Style Standar (Kotak) */
-.menu-card { 
-    background: #151515; border: 1px solid #333; border-radius: 12px; 
-    aspect-ratio: 1/1; /* Tetap kotak untuk paket */
-    display: flex; flex-direction: column; align-items: center; justify-content: center; 
-    text-decoration: none; color: #fff; transition: 0.2s;
-    padding: 5px;
-}
-
-/* Card Style Compact (Untuk Galeri & Owner) */
 .menu-card-compact {
-    background: #151515; border: 1px solid #333; border-radius: 12px;
-    padding: 15px; /* Padding lebih kecil */
-    display: flex; flex-direction: row; /* Ikon di samping teks */
-    align-items: center; justify-content: center; gap: 10px;
-    text-decoration: none; color: #fff; transition: 0.2s;
+    background: #1a1a1a; 
+    border: 1px solid #333; 
+    border-radius: 12px;
+    padding: 12px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 10px;
+    text-decoration: none; 
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
-.menu-card-compact i { font-size: 1.2rem; margin: 0; }
-.menu-card-compact h3 { font-size: 0.85rem; margin: 0; font-weight: 500; }
 
 /* Video Thumbnail Card */
 /* === VIDEO LIST COMPACT (BARU) === */
@@ -1422,4 +1483,5 @@
 
 </script>
 </body>
+
 </html>
