@@ -10,520 +10,262 @@
     <link rel="stylesheet" href="styles.css">
 
     <style>
-        /* === GLOBAL STYLE (DARK PREMIUM) === */
-        body { background-color: #050505; color: #fff; font-family: 'Poppins', sans-serif; margin: 0; padding-bottom: 90px; overflow-x: hidden; }
+        /* === GLOBAL SETTINGS & RESET === */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            background-color: #050505; 
+            color: #fff; 
+            font-family: 'Poppins', sans-serif; 
+            margin: 0; 
+            padding-bottom: 90px; /* Space untuk navigasi bawah */
+            overflow-x: hidden; 
+        }
+
+        /* === HEADER === */
+        header { 
+            padding: 15px 20px; 
+            background: linear-gradient(180deg, #0a2015 0%, #050505 100%); 
+            text-align: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 50; 
+            border-bottom: 1px solid #1a1a1a; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .app-title { font-family: 'Pacifico', cursive; color: #ffd700; margin: 0; font-size: 1.5rem; text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3); }
+        .app-subtitle { font-size: 0.75rem; color: #4ade80; letter-spacing: 1px; margin-top: 2px; }
+
+        /* === NAVIGATION BAR (BOTTOM) === */
+        .bottom-nav { 
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
+            width: 90%; max-width: 400px; 
+            background: rgba(20, 20, 20, 0.95); backdrop-filter: blur(10px); 
+            border: 1px solid #333; border-radius: 50px; 
+            display: flex; justify-content: space-around; padding: 10px 0; 
+            z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #666; font-size: 0.65rem; cursor: pointer; transition: 0.3s; }
+        .nav-item i { font-size: 1.3rem; margin-bottom: 4px; transition: 0.3s; }
+        .nav-item.active { color: #ffd700; } 
+        .nav-item.active i { transform: translateY(-3px); text-shadow: 0 0 10px rgba(255, 215, 0, 0.6); }
+
+        /* === TAB CONTENT === */
+        .tab-content { display: none; padding: 15px; animation: fadeIn 0.4s; max-width: 100%; }
+        .tab-content.active { display: block; }
+
+        /* === KATALOG MENU (COMPACT MOBILE FIT) === */
+        /* Tombol Akad Hero */
+        .akad-hero {
+            background: linear-gradient(135deg, #ffd700, #f39c12);
+            color: #000;
+            padding: 12px 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+            position: relative; overflow: hidden;
+        }
+        .akad-hero:active { transform: scale(0.98); }
+        .akad-hero i { font-size: 1.5rem; margin-right: 12px; }
+        .akad-text h3 { margin: 0; font-size: 0.95rem; font-weight: 800; }
+        .akad-text p { margin: 0; font-size: 0.7rem; font-weight: 500; color: #222; }
+
+        /* Grid Utama (3 Kolom Rapat) */
+        .menu-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 8px; /* Jarak Rapat agar muat di HP */
+            margin-bottom: 25px;
+        }
         
-        /* HEADER */
-        header { padding: 15px 20px; background: linear-gradient(180deg, #0a2015 0%, #050505 100%); text-align: center; position: sticky; top: 0; z-index: 50; border-bottom: 1px solid #1a1a1a; }
-        .app-title { font-family: 'Pacifico', cursive; color: #ffd700; margin: 0; font-size: 1.5rem; }
-        .app-subtitle { font-size: 0.75rem; color: #4ade80; letter-spacing: 1px; }
-
-        /* NAVIGATION */
-        .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: rgba(20, 20, 20, 0.95); backdrop-filter: blur(10px); border: 1px solid #333; border-radius: 50px; display: flex; justify-content: space-around; padding: 10px 0; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: #888; font-size: 0.7rem; cursor: pointer; transition: 0.3s; }
-        .nav-item i { font-size: 1.4rem; margin-bottom: 4px; }
-        .nav-item.active { color: #ffd700; } .nav-item.active i { transform: translateY(-3px); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-
-        /* === PERBAIKAN TAMPILAN KATALOG (PROFESIONAL) === */
-
-/* Pastikan semua elemen menghitung padding sebagai bagian dari lebar */
-* { box-sizing: border-box; }
-
-/* Sesuaikan padding container utama agar lebih lega di HP */
-.tab-content { 
-    padding: 15px; /* Padding standar HP */
-    max-width: 100%; 
-    overflow-x: hidden; /* Mencegah scroll samping */
-}
-
-/* TOMBOL AKAD (HERO SECTION) - Lebih Modern */
-.akad-hero {
-    background: linear-gradient(135deg, #ffd700, #ffb700);
-    color: #000;
-    padding: 15px 20px;
-    border-radius: 12px; /* Sudut lebih halus */
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    text-decoration: none;
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2); /* Bayangan halus */
-    border: none;
-    position: relative;
-    overflow: hidden;
-}
-.akad-hero i { font-size: 1.5rem; margin-right: 15px; color: #111; }
-.akad-text h3 { margin: 0; font-size: 1rem; font-weight: 800; text-transform: uppercase; }
-.akad-text p { margin: 2px 0 0 0; font-size: 0.75rem; font-weight: 500; opacity: 0.8; }
-
-/* === PERBAIKAN TAMPILAN COMPACT (MOBILE FIT) === */
-
-/* Container Utama Grid - Jarak Rapat */
-.menu-grid { 
-    display: grid; 
-    grid-template-columns: repeat(3, 1fr); /* Tetap 3 Kolom */
-    gap: 8px; /* Jarak antar kotak dirapatkan */
-    margin-bottom: 20px;
-    width: 100%;
-}
-
-/* Kartu Menu - Versi Mungil & Rapi */
-.menu-card { 
-    background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
-    border: 1px solid #2a2a2a;
-    border-radius: 10px; /* Sudut sedikit lebih tajam agar rapi */
-    aspect-ratio: 1 / 0.9; /* Sedikit lebih pendek agar hemat tempat */
-    padding: 8px; /* Padding dalam dikecilkan */
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: center; 
-    text-decoration: none; 
-    color: #fff; 
-    transition: transform 0.2s;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-}
-
-.menu-card:active { transform: scale(0.95); background: #222; }
-
-/* Ikon di dalam kartu */
-.menu-card i { 
-    font-size: 1.2rem; /* Ukuran ikon dikecilkan */
-    margin-bottom: 6px; 
-    color: #eee;
-}
-
-/* Teks di dalam kartu */
-.menu-card h3 { 
-    font-size: 0.7rem; /* Ukuran huruf dikecilkan agar muat 1 baris */
-    margin: 0; 
-    font-weight: 500; 
-    color: #bbb; 
-    text-align: center;
-    line-height: 1.1;
-}
-
-/* Tombol Akad - Lebih Ramping */
-.akad-hero {
-    background: linear-gradient(135deg, #ffd700, #ffb700);
-    color: #000;
-    padding: 12px 15px; /* Lebih tipis */
-    border-radius: 10px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    text-decoration: none;
-    box-shadow: 0 3px 10px rgba(255, 215, 0, 0.2);
-    border: none;
-}
-.akad-hero i { font-size: 1.3rem; margin-right: 10px; }
-.akad-text h3 { margin: 0; font-size: 0.9rem; font-weight: 800; }
-.akad-text p { margin: 0; font-size: 0.7rem; font-weight: 500; opacity: 0.8; }
-
-/* Grid Galeri & Owner (Kecil) */
-.menu-grid-small {
-    display: grid; 
-    grid-template-columns: 1fr 1fr; /* 2 Kolom */
-    gap: 8px;
-}
-.menu-card-compact {
-    background: #1a1a1a; border: 1px solid #333; border-radius: 10px;
-    padding: 10px; /* Padding kecil */
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    text-decoration: none; color: #fff;
-}
-.menu-card-compact i { font-size: 1rem; margin: 0; }
-.menu-card-compact h3 { font-size: 0.75rem; margin: 0; font-weight: 500; }
-
-/* Video Thumbnail Card */
-/* === VIDEO LIST COMPACT (BARU) === */
-.video-compact-item {
-    display: flex; /* Menyusun ke samping */
-    align-items: center;
-    background: #151515;
-    border: 1px solid #333;
-    border-radius: 12px;
-    padding: 10px;
-    margin-bottom: 10px; /* Jarak antar video lebih rapat */
-    cursor: pointer;
-    transition: background 0.2s;
-    gap: 15px; /* Jarak antara gambar dan teks */
-}
-
-.video-compact-item:active {
-    background: #252525;
-    transform: scale(0.98);
-}
-
-/* Kotak Pembungkus Gambar Kecil */
-.v-thumb-box {
-    position: relative;
-    width: 90px;  /* Lebar gambar tetap */
-    height: 60px; /* Tinggi gambar tetap */
-    flex-shrink: 0; /* Agar gambar tidak gepeng */
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.v-thumb-img {
-    width: 100%; height: 100%; object-fit: cover;
-}
-
-/* Icon Play Kecil di tengah gambar */
-.v-play-mini {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 24px; height: 24px;
-    background: rgba(0,0,0,0.7); border-radius: 50%; 
-    border: 1px solid #ffd700; color: #ffd700; 
-    font-size: 0.6rem; display: flex; align-items: center; justify-content: center;
-}
-
-/* Bagian Judul di Kanan */
-.v-info {
-    flex: 1; /* Mengisi sisa ruang kosong */
-}
-
-.v-info h4 {
-    margin: 0; 
-    font-size: 0.85rem; 
-    color: #fff; 
-    font-weight: 500; 
-    line-height: 1.3;
-}
-
-.v-info span {
-    font-size: 0.7rem; 
-    color: #888; 
-    margin-top: 4px; 
-    display: block;
-}
-.v-info span i { color: #4ade80; margin-right:4px; }
-.video-thumb-img { width: 100%; height: auto; display: block; opacity: 0.8; transition: 0.3s; }
-.video-item:hover .video-thumb-img { opacity: 1; transform: scale(1.02); }
-.play-icon-overlay {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 50px; height: 50px; background: rgba(0,0,0,0.7);
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    border: 2px solid #ffd700; color: #ffd700; font-size: 1.2rem;
-}
-.video-title-overlay {
-    position: absolute; bottom: 0; left: 0; width: 100%;
-    background: linear-gradient(to top, #000, transparent);
-    padding: 20px 10px 10px 10px; box-sizing: border-box;
-    font-size: 0.85rem; color: #fff; font-weight: bold;
-}
-
-/* VIDEO FULLSCREEN MODAL */
-.video-modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: #000; z-index: 10000; display: none;
-    flex-direction: column; justify-content: center;
-}
-.video-modal-overlay.show { display: flex; animation: fadeIn 0.3s; }
-.video-frame-container { width: 100%; height: 100%; max-height: 80vh; background: #000; }
-.video-frame-container iframe { width: 100%; height: 100%; border: none; }
-.btn-close-video {
-    position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-    background: #c4302b; color: #fff; border: none;
-    padding: 10px 25px; border-radius: 50px; font-weight: bold;
-    display: flex; align-items: center; gap: 8px; cursor: pointer;
-    box-shadow: 0 0 20px rgba(0,0,0,0.8);
-}
-        .menu-card:active { transform: scale(0.95); background: #222; }
-        .menu-card i { font-size: 1.8rem; margin-bottom: 8px; }
-        .menu-card h3 { font-size: 0.75rem; margin: 0; font-weight: 500; }
-
-        /* === DASHBOARD SETORAN (REVISI RAPI) === */
-.dashboard-card { 
-    background: #151515; 
-    border: 1px solid #333; 
-    border-radius: 16px; 
-    padding: 20px; 
-    margin-bottom: 20px; 
-    display: flex; 
-    flex-direction: column;
-    text-align: left; /* Rata Kiri */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-
-/* Header: Nama & Info */
-.dash-header {
-    border-bottom: 1px dashed #333;
-    padding-bottom: 15px;
-    margin-bottom: 15px;
-}
-.dash-name { 
-    font-size: 1.5rem; 
-    font-weight: 700; 
-    margin: 0 0 8px 0; 
-    color: #fff; 
-    line-height: 1.2;
-}
-.dash-meta {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.dash-id { 
-    background: #222; color: #888; 
-    padding: 4px 8px; border-radius: 6px; 
-    font-size: 0.75rem; font-family: monospace; border: 1px solid #333;
-}
-.dash-badge { 
-    position: static; /* Tidak melayang lagi */
-    background: rgba(0, 123, 255, 0.15); 
-    color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3);
-    padding: 4px 8px; border-radius: 6px; 
-    font-size: 0.75rem; font-weight: bold; text-transform: uppercase; 
-}
-
-/* Area Progress Bar */
-.prog-area {
-    background: #0a0a0a;
-    border: 1px solid #252525;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 15px;
-}
-.prog-info-top { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem; color: #ccc; }
-.prog-track { background: #333; height: 10px; border-radius: 5px; overflow: hidden; width: 100%; }
-.prog-fill { height: 100%; background: linear-gradient(90deg, #ffd700, #ffb700); width: 0%; transition: width 1s ease; border-radius: 5px; }
-.prog-info-bottom { display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.8rem; }
-
-/* Tombol Full Width */
-.btn-action-group { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-.btn-primary, .btn-danger { width: 100%; justify-content: center; } /* Pastikan tombol rata tengah isinya */
-
-        /* Tombol Aksi */
-        .btn-action-group { display: grid; gap: 10px; }
-        .btn-primary { 
-            width: 100%; padding: 12px; background: #073116; color: #4ade80; 
-            border: 1px solid #28a745; border-radius: 10px; font-weight: bold; cursor: pointer; 
-            display: flex; align-items: center; justify-content: center; gap: 8px;
+        /* Kartu Menu (Kotak Kecil) */
+        .menu-card { 
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            border: 1px solid #2a2a2a;
+            border-radius: 12px; 
+            aspect-ratio: 1 / 0.95; /* Sedikit lebih pendek */
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            text-decoration: none; color: #fff; transition: 0.2s;
+            padding: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
-        .btn-danger { 
-            width: 100%; padding: 12px; background: rgba(255,0,0,0.1); color: #ff4d4d; 
-            border: 1px solid #ff4d4d; border-radius: 10px; font-weight: bold; cursor: pointer; 
-            display: flex; align-items: center; justify-content: center; gap: 8px;
+        .menu-card:active { transform: scale(0.95); background: #222; border-color: #ffd700; }
+        .menu-card i { font-size: 1.3rem; margin-bottom: 6px; color: #eee; }
+        .menu-card h3 { font-size: 0.7rem; margin: 0; font-weight: 500; text-align: center; color: #ccc; }
+
+        /* Grid Info (2 Kolom) */
+        .menu-grid-small { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .menu-card-compact {
+            background: #1a1a1a; border: 1px solid #333; border-radius: 12px;
+            padding: 12px; display: flex; align-items: center; justify-content: center; gap: 8px;
+            text-decoration: none; color: #fff;
+        }
+        .menu-card-compact i { font-size: 1rem; margin: 0; }
+        .menu-card-compact h3 { font-size: 0.75rem; margin: 0; font-weight: 500; }
+
+        /* Label Section */
+        .section-label {
+            color: #fff; font-size: 0.9rem; font-weight: 600;
+            margin: 20px 0 10px 0; border-left: 3px solid #ffd700;
+            padding-left: 10px; letter-spacing: 0.5px;
         }
 
-        /* MITRA DASHBOARD */
-        .mitra-list-item { background: #151515; border: 1px solid #333; border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .m-header { display: flex; justify-content: space-between; align-items: flex-start; }
-        .m-percent-badge { background: #222; border: 1px solid #444; color: #ffd700; padding: 6px 10px; border-radius: 8px; font-size: 0.85rem; font-weight: bold; }
-        .btn-mitra-cal { background: #073116; border: 1px solid #28a745; color: #fff; padding: 10px; border-radius: 8px; font-size: 0.8rem; width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        /* === VIDEO LIST (COMPACT) === */
+        .video-compact-item {
+            display: flex; align-items: center;
+            background: #151515; border: 1px solid #333;
+            border-radius: 12px; padding: 8px; margin-bottom: 10px;
+            cursor: pointer; gap: 12px;
+        }
+        .video-compact-item:active { background: #222; }
+        .v-thumb-box {
+            position: relative; width: 90px; height: 60px; flex-shrink: 0;
+            border-radius: 8px; overflow: hidden;
+        }
+        .v-thumb-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+        .v-play-mini {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 24px; height: 24px; background: rgba(0,0,0,0.7); border-radius: 50%; 
+            border: 1px solid #ffd700; color: #ffd700; font-size: 0.6rem; 
+            display: flex; align-items: center; justify-content: center;
+        }
+        .v-info h4 { margin: 0; font-size: 0.8rem; color: #fff; font-weight: 500; line-height: 1.3; }
+        .v-info span { font-size: 0.7rem; color: #888; display: block; margin-top: 3px; }
+        .v-info span i { color: #4ade80; margin-right: 4px; }
 
-        /* FORM LOGIN & DAFTAR */
+        /* Video Modal Overlay */
+        .video-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 9999; display: none;
+            flex-direction: column; justify-content: center;
+        }
+        .video-modal-overlay.show { display: flex; animation: fadeIn 0.3s; }
+        .video-frame-container { width: 100%; height: 100%; max-height: 80vh; background: #000; }
+        .video-frame-container iframe { width: 100%; height: 100%; border: none; }
+        .btn-close-video {
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: #c4302b; color: #fff; border: none; padding: 10px 25px; 
+            border-radius: 50px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px;
+        }
+
+        /* === DASHBOARD (SETORAN & MITRA) === */
+        .dashboard-card { 
+            background: #151515; border: 1px solid #333; border-radius: 16px; 
+            padding: 20px; margin-bottom: 20px; display: flex; flex-direction: column;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        .dash-header { border-bottom: 1px dashed #333; padding-bottom: 15px; margin-bottom: 15px; }
+        .dash-name { font-size: 1.4rem; font-weight: 700; margin: 0 0 5px 0; color: #fff; }
+        .dash-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .dash-id { background: #222; color: #888; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; border: 1px solid #333; }
+        .dash-badge { background: rgba(74, 222, 128, 0.1); color: #4ade80; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; border: 1px solid rgba(74, 222, 128, 0.2); }
+
+        .prog-area { background: #0a0a0a; border: 1px solid #252525; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
+        .prog-info-top { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.8rem; color: #ccc; }
+        .prog-track { background: #333; height: 8px; border-radius: 4px; overflow: hidden; width: 100%; }
+        .prog-fill { height: 100%; background: linear-gradient(90deg, #ffd700, #ffb700); width: 0%; transition: width 1s ease; border-radius: 4px; }
+        .prog-info-bottom { display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.75rem; }
+
+        .btn-action-group { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        .btn-primary { width: 100%; padding: 12px; background: #073116; color: #4ade80; border: 1px solid #28a745; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .btn-danger { width: 100%; padding: 12px; background: rgba(255, 77, 77, 0.1); color: #ff4d4d; border: 1px solid #ff4d4d; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; }
+
+        /* === PROFILE PAGE (PREMIUM) === */
+        .profile-container { padding: 5px; animation: fadeIn 0.5s ease; }
+        .profile-header-card {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d); border: 1px solid #333;
+            border-bottom: 3px solid #ffd700; border-radius: 20px; padding: 25px 20px;
+            text-align: center; margin-bottom: 20px; position: relative; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .profile-header-card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.05) 0%, transparent 70%); pointer-events: none;
+        }
+        .profile-avatar-box { margin: 0 auto 15px auto; width: 80px; height: 80px; position: relative; }
+        .profile-avatar-img {
+            width: 100%; height: 100%; background: #222; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 2rem;
+            color: #ffd700; border: 2px solid #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+        .profile-name { font-size: 1.3rem; font-weight: bold; margin: 0 0 5px 0; color: #fff; }
+        .profile-badges { display: flex; justify-content: center; gap: 5px; }
+        .badge-role { background: #ffd700; color: #000; font-size: 0.65rem; padding: 3px 8px; border-radius: 10px; font-weight: bold; }
+        .badge-id { background: #333; color: #ccc; font-size: 0.65rem; padding: 3px 8px; border-radius: 10px; border: 1px solid #444; }
+
+        .info-paket-box {
+            background: #151515; border: 1px solid #333; border-radius: 12px;
+            padding: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+        }
+        .ip-label { color: #888; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; }
+        .ip-value { color: #4ade80; font-weight: bold; font-size: 0.95rem; }
+
+        .profile-menu-list { background: #151515; border-radius: 12px; border: 1px solid #333; overflow: hidden; margin-bottom: 25px; }
+        .menu-row {
+            padding: 14px; border-bottom: 1px solid #222; display: flex; align-items: center; justify-content: space-between;
+            color: #ddd; cursor: pointer; font-size: 0.85rem;
+        }
+        .menu-row:last-child { border-bottom: none; }
+        .menu-row:active { background: #222; color: #ffd700; }
+        .menu-left { display: flex; align-items: center; gap: 10px; }
+        .menu-row i { color: #888; width: 20px; text-align: center; }
+
+        .btn-logout-fancy {
+            width: 100%; padding: 14px; background: transparent; color: #ff4d4d;
+            border: 1px solid #ff4d4d; border-radius: 12px; font-weight: bold; font-size: 0.9rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .app-version { text-align: center; color: #444; font-size: 0.7rem; margin-top: 20px; margin-bottom: 50px; }
+
+        /* === FORM & INPUTS === */
         .form-login { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #333; }
-        .input-dark { width: 100%; padding: 12px; background: #000; border: 1px solid #444; color: #fff; border-radius: 8px; margin-bottom: 15px; box-sizing: border-box; }
+        .input-dark { width: 100%; padding: 12px; background: #000; border: 1px solid #444; color: #fff; border-radius: 8px; margin-bottom: 15px; }
         .btn-gold { width: 100%; padding: 12px; background: #ffd700; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        
-        .form-content-locked { opacity: 0.3; pointer-events: none; transition: 0.3s; }
+        .form-content-locked { opacity: 0.3; pointer-events: none; }
         .form-content-active { opacity: 1; pointer-events: auto; }
         .akad-check-container { background: rgba(40, 167, 69, 0.1); border: 1px solid #28a745; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
 
-        /* MULTI SELECT PAKET LIST */
-        .paket-list-container {
-            max-height: 250px; overflow-y: auto; border: 1px solid #333; 
-            border-radius: 8px; padding: 10px; background: #000; margin-bottom: 15px;
-        }
-        .paket-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 8px 0; border-bottom: 1px dashed #333;
-        }
+        /* === DYNAMIC PRODUCT LIST === */
+        .paket-list-container { max-height: 200px; overflow-y: auto; border: 1px solid #333; border-radius: 8px; padding: 10px; background: #000; margin-bottom: 15px; }
+        .paket-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed #333; }
         .paket-item:last-child { border-bottom: none; }
-        .paket-label { font-size: 0.85rem; flex: 1; color: #ddd; }
+        .paket-label { font-size: 0.8rem; flex: 1; color: #ddd; }
+        
         .qty-controls { display: flex; align-items: center; gap: 8px; }
         .btn-qty-mini { width: 24px; height: 24px; background: #333; border: 1px solid #555; color: #fff; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; }
         .qty-val-mini { width: 20px; text-align: center; font-size: 0.9rem; font-weight: bold; color: #fff; }
-        .qty-active .qty-val-mini { color: #ffd700; }
 
-        /* DYNAMIC PRODUCT LIST */
-        .category-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; }
-        .cat-btn { background: #333; color: #ccc; border: 1px solid #444; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; white-space: nowrap; }
-        .cat-btn.active { background: #ffd700; color: #000; font-weight: bold; border-color: #ffd700; }
-        .prod-card { background: #222; border: 1px solid #333; padding: 10px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .prod-info h4 { margin: 0; font-size: 0.9rem; color: #fff; }
-        .prod-info p { margin: 0; font-size: 0.8rem; color: #4ade80; }
+        /* Mingguan / Cookies UI */
+        .mode-selector { display: flex; gap: 8px; margin-bottom: 15px; background: #222; padding: 4px; border-radius: 8px; }
+        .btn-mode { flex: 1; padding: 8px; border: 1px solid #444; background: #111; color: #888; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        .btn-mode.active { background: #ffd700; color: #000; font-weight: bold; border-color: #ffd700; }
         
-        /* CHECKOUT MODAL STYLES */
-        .checkout-option { display: flex; gap: 10px; margin-bottom: 15px; }
-        .chk-btn { flex: 1; padding: 15px; background: #222; border: 1px solid #444; border-radius: 10px; cursor: pointer; text-align: center; transition: 0.2s; }
-        .chk-btn.active { background: #ffd700; color: #000; border-color: #ffd700; font-weight: bold; }
-        .calc-table { width: 100%; font-size: 0.85rem; border-collapse: collapse; margin-bottom: 20px; }
-        .calc-table td { padding: 8px 0; border-bottom: 1px dashed #333; }
-        .calc-total { font-size: 1.2rem; color: #4ade80; font-weight: bold; text-align: right; }
-        .calc-danger { color: #ff4d4d; }
+        .prod-card { background: #222; border: 1px solid #333; padding: 10px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .prod-info h4 { margin: 0; font-size: 0.85rem; color: #fff; }
+        .prod-info p { margin: 2px 0 0 0; font-size: 0.75rem; color: #4ade80; }
+        
+        /* Summary Box */
+        .summary-box { background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 15px; margin-top: 15px; }
+        .summary-title { color: #ffd700; font-size: 0.85rem; margin-bottom: 10px; border-bottom: 1px dashed #444; padding-bottom: 5px; }
+        .summary-item { display: flex; justify-content: space-between; font-size: 0.75rem; color: #ccc; margin-bottom: 5px; }
+        .summary-total { display: flex; justify-content: space-between; font-size: 0.9rem; color: #4ade80; font-weight: bold; margin-top: 10px; border-top: 1px solid #444; padding-top: 10px; }
 
-        /* MODAL */
+        /* === MODALS === */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; display: none; justify-content: center; align-items: center; overflow-y: auto; padding: 20px 0; }
         .modal-overlay.show { display: flex; animation: fadeIn 0.3s; }
-        .modal-card { background: #1a1a1a; padding: 25px; border-radius: 15px; width: 90%; max-width: 500px; border: 1px solid #333; position: relative; max-height: 90vh; overflow-y: auto; }
+        .modal-card { background: #1a1a1a; padding: 20px; border-radius: 15px; width: 90%; max-width: 450px; border: 1px solid #333; position: relative; max-height: 90vh; overflow-y: auto; }
         .close-x { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #aaa; font-size: 1.5rem; cursor: pointer; }
 
+        /* Checkout Specific */
+        .checkout-option { display: flex; gap: 10px; margin-bottom: 15px; }
+        .chk-btn { flex: 1; padding: 12px; background: #222; border: 1px solid #444; border-radius: 10px; cursor: pointer; text-align: center; font-size: 0.85rem; }
+        .chk-btn.active { background: #ffd700; color: #000; border-color: #ffd700; font-weight: bold; }
+        .calc-table { width: 100%; font-size: 0.85rem; border-collapse: collapse; margin-bottom: 15px; }
+        .calc-table td { padding: 6px 0; border-bottom: 1px dashed #333; }
+        .calc-total { font-size: 1.1rem; color: #4ade80; font-weight: bold; text-align: right; }
+
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* === TAMBAHAN STYLE BARU === */
-
-/* Tombol Mode Kemasan (Cookies) */
-.mode-selector { display: flex; gap: 10px; margin-bottom: 15px; background: #222; padding: 5px; border-radius: 10px; }
-.btn-mode { flex: 1; padding: 10px; border: 1px solid #444; background: #111; color: #888; border-radius: 8px; cursor: pointer; font-size: 0.85rem; transition: 0.3s; }
-.btn-mode.active { background: #ffd700; color: #000; font-weight: bold; border-color: #ffd700; }
-
-/* Kotak Rincian (Summary) */
-.summary-box { 
-    background: #1a1a1a; border: 1px solid #333; border-radius: 12px; 
-    padding: 15px; margin-top: 20px; 
-}
-.summary-title { color: #ffd700; font-size: 0.9rem; margin-bottom: 10px; border-bottom: 1px dashed #444; padding-bottom: 5px; }
-.summary-item { display: flex; justify-content: space-between; font-size: 0.8rem; color: #ccc; margin-bottom: 6px; }
-.summary-total { display: flex; justify-content: space-between; font-size: 1rem; color: #4ade80; font-weight: bold; margin-top: 10px; border-top: 1px solid #444; padding-top: 10px; }
-
-/* === NEW KATALOG LAYOUT === */
-
-/* Tombol Akad (Hero Section) */
-.akad-hero {
-    background: linear-gradient(135deg, #ffd700, #f39c12);
-    color: #000;
-    padding: 20px;
-    border-radius: 16px;
-    margin-bottom: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    text-decoration: none;
-    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
-    border: 1px solid #ffe159;
-    transition: transform 0.2s;
-    position: relative;
-    overflow: hidden;
-}
-.akad-hero:active { transform: scale(0.97); }
-/* Efek kilau */
-.akad-hero::after {
-    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
-    transform: rotate(30deg); animation: shine 3s infinite; pointer-events: none;
-}
-@keyframes shine { 0% {transform: translateX(-100%) rotate(30deg);} 100% {transform: translateX(100%) rotate(30deg);} }
-
-.akad-hero i { font-size: 2rem; margin-right: 15px; }
-.akad-text h3 { margin: 0; font-size: 1.1rem; font-weight: 800; letter-spacing: 0.5px; }
-.akad-text p { margin: 0; font-size: 0.8rem; font-weight: 500; color: #333; }
-
-/* Label Section */
-.section-label {
-    color: #fff; font-size: 0.95rem; font-weight: 600;
-    margin: 25px 0 15px 0; border-left: 4px solid #ffd700;
-    padding-left: 12px; letter-spacing: 0.5px;
-}
-
-/* Grid Khusus 2 Kolom (Untuk Galeri & Owner) */
-.menu-grid-2 {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-    max-width: 600px; margin: 0 auto;
-}
-
-/* Video Player Style (Embed) */
-.video-list { display: flex; flex-direction: column; gap: 20px; }
-.video-card-new { 
-    background: #151515; border: 1px solid #333; border-radius: 16px; overflow: hidden; 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-}
-.video-header-new {
-    padding: 12px 15px; background: linear-gradient(90deg, #111, #1a1a1a);
-    color: #ffd700; font-size: 0.85rem; font-weight: bold;
-    border-bottom: 1px solid #333; display: flex; align-items: center; gap: 10px;
-}
-.video-wrapper { 
-    position: relative; padding-bottom: 56.25%; /* Rasio 16:9 */ height: 0; overflow: hidden; background: #000;
-}
-.video-wrapper iframe { 
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; 
-}
-
-
-/* === NEW PROFILE UI (PREMIUM) === */
-
-/* Container Profil */
-.profile-container {
-    padding: 10px;
-    animation: fadeIn 0.5s ease;
-}
-
-/* Kartu Utama (Header) */
-.profile-header-card {
-    background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
-    border: 1px solid #333;
-    border-bottom: 3px solid #ffd700; /* Aksen Emas di bawah */
-    border-radius: 20px;
-    padding: 30px 20px;
-    text-align: center;
-    position: relative;
-    margin-bottom: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    overflow: hidden;
-}
-
-/* Background Pattern (Hiasan) */
-.profile-header-card::before {
-    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-    background: radial-gradient(circle, rgba(255,215,0,0.05) 0%, transparent 70%);
-    pointer-events: none;
-}
-
-/* Avatar dengan Glow */
-.profile-avatar-box {
-    position: relative; margin: 0 auto 15px auto; width: 90px; height: 90px;
-}
-.profile-avatar-img {
-    width: 100%; height: 100%; background: #222; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 2.5rem; color: #ffd700; border: 2px solid #ffd700;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-    position: relative; z-index: 2;
-}
-
-/* Teks Nama & ID */
-.profile-name { font-size: 1.4rem; font-weight: bold; color: #fff; margin: 0 0 5px 0; letter-spacing: 0.5px; position: relative; z-index: 2; }
-.profile-badges { display: flex; justify-content: center; gap: 8px; position: relative; z-index: 2; }
-.badge-role { background: #ffd700; color: #000; font-size: 0.7rem; padding: 4px 10px; border-radius: 15px; font-weight: bold; }
-.badge-id { background: #333; color: #ccc; font-size: 0.7rem; padding: 4px 10px; border-radius: 15px; border: 1px solid #444; }
-
-/* Info Paket Box */
-.info-paket-box {
-    background: #151515; border: 1px solid #333; border-radius: 15px;
-    padding: 15px; display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 20px;
-}
-.ip-label { color: #888; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; }
-.ip-value { color: #4ade80; font-weight: bold; font-size: 1rem; text-align: right; }
-
-/* Menu List Style */
-.profile-menu-list { background: #151515; border-radius: 15px; border: 1px solid #333; overflow: hidden; margin-bottom: 25px; }
-.menu-row {
-    padding: 16px; border-bottom: 1px solid #222;
-    display: flex; align-items: center; justify-content: space-between;
-    color: #ddd; cursor: pointer; transition: 0.2s; font-size: 0.9rem;
-}
-.menu-row:last-child { border-bottom: none; }
-.menu-row:active { background: #222; color: #ffd700; }
-.menu-left { display: flex; align-items: center; gap: 12px; }
-.menu-row i { color: #888; width: 20px; text-align: center; }
-
-/* Logout Button */
-.btn-logout-fancy {
-    width: 100%; padding: 15px;
-    background: transparent; color: #ff4d4d;
-    border: 1px solid #ff4d4d; border-radius: 12px;
-    font-weight: bold; font-size: 0.9rem; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    transition: 0.2s;
-}
-.btn-logout-fancy:active { background: rgba(255, 77, 77, 0.1); transform: scale(0.98); }
-
-.app-version { text-align: center; color: #444; font-size: 0.75rem; margin-top: 20px; margin-bottom: 80px; }
     </style>
 </head>
 <body>
@@ -1493,6 +1235,4 @@
 
 </script>
 </body>
-
 </html>
-
