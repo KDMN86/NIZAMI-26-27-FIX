@@ -4,191 +4,254 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Akad Resmi - NIZAMI 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <style>
-        /* Gaya Khusus Dokumen Akad */
+        /* === VARIABLES (SAMA DENGAN INDEX) === */
+        :root {
+            --primary: #ffd700;
+            --primary-dim: #b39700;
+            --accent: #4ade80;
+            --danger: #ff6b6b;
+            --bg-dark: #09090b;
+            --bg-card: #18181b;
+            --text-main: #e4e4e7;
+            --text-muted: #a1a1aa;
+            --radius-xl: 24px;
+            --radius-md: 12px;
+        }
+
+        /* === GLOBAL RESET === */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body {
-            background-color: #f4f4f4; /* Latar terang agar mudah dibaca */
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             font-family: 'Poppins', sans-serif;
-            color: #333;
-            line-height: 1.6;
+            line-height: 1.8; /* Jarak antar baris lebih lega */
             margin: 0;
             padding: 20px;
+            background-image: radial-gradient(circle at top right, rgba(255, 215, 0, 0.05), transparent 40%);
+            padding-bottom: 100px; /* Space untuk tombol kembali */
         }
-        .akad-paper {
-            background: #fff;
+
+        /* === CONTAINER KARTU === */
+        .akad-container {
+            background: var(--bg-card);
             max-width: 800px;
             margin: 0 auto;
             padding: 40px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            border-radius: 8px;
-            border-top: 10px solid #074c28; /* Hijau Nizami */
+            border-radius: var(--radius-xl);
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
         }
+
+        /* Hiasan Atas (Garis Emas) */
+        .akad-container::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+            background: linear-gradient(90deg, var(--primary), #e67e22);
+        }
+
+        /* === TYPOGRAPHY === */
         h1 {
             text-align: center;
-            color: #074c28;
-            margin-bottom: 5px;
-            text-transform: uppercase;
+            color: var(--primary);
+            margin: 10px 0 5px 0;
             font-size: 1.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
+        
         .bismillah {
             text-align: center;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            font-family: serif;
-            color: #555;
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+            font-family: 'Amiri', serif; /* Font arab style jika ada, fallback serif */
+            color: var(--text-muted);
+            font-weight: 300;
         }
-        h3 {
-            background-color: #e8f5e9;
-            padding: 10px;
-            border-left: 5px solid #074c28;
-            color: #074c28;
-            margin-top: 25px;
-            border-radius: 0 5px 5px 0;
-        }
-        ul, ol {
-            padding-left: 20px;
-        }
-        li {
-            margin-bottom: 10px;
-        }
-        .highlight {
-            font-weight: bold;
-            color: #d32f2f; /* Merah untuk peringatan */
-        }
-        .highlight-green {
-            font-weight: bold;
-            color: #2e7d32;
-        }
-        .note-box {
-            background: #fff3cd;
-            border: 1px solid #ffeeba;
-            padding: 15px;
-            border-radius: 5px;
+
+        .intro-text {
+            text-align: center; 
+            font-style: italic; 
+            color: var(--text-muted);
+            margin-bottom: 40px;
             font-size: 0.9rem;
-            margin-top: 10px;
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
+            padding-bottom: 20px;
         }
-        /* Tombol Kembali Floating */
-        .btn-back {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #074c28;
+
+        /* === SECTIONS === */
+        h3 {
+            display: flex; align-items: center; gap: 10px;
             color: #fff;
-            padding: 12px 25px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        h3 i { color: var(--primary); font-size: 1.2rem; }
+
+        ul, ol { padding-left: 20px; margin-top: 0; }
+        li { margin-bottom: 12px; color: #d4d4d8; }
+
+        /* Custom Bullet untuk UL */
+        ul.custom-list { list-style: none; padding-left: 0; }
+        ul.custom-list li {
+            position: relative; padding-left: 25px;
+        }
+        ul.custom-list li::before {
+            content: '•'; color: var(--primary); 
+            font-size: 1.5rem; line-height: 1;
+            position: absolute; left: 0; top: -2px;
+        }
+
+        /* === HIGHLIGHTS & BOXES === */
+        .highlight-red { color: var(--danger); font-weight: 700; background: rgba(255, 107, 107, 0.1); padding: 0 4px; border-radius: 4px; }
+        .highlight-gold { color: var(--primary); font-weight: 700; }
+        .highlight-green { color: var(--accent); font-weight: 700; }
+
+        .note-box {
+            background: rgba(255, 215, 0, 0.05); /* Emas transparan */
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            margin: 15px 0;
+            display: flex; gap: 15px; align-items: flex-start;
+        }
+        .note-box i { color: var(--primary); font-size: 1.2rem; margin-top: 3px; }
+
+        /* === BUTTON KEMBALI (FIXED BOTTOM) === */
+        .btn-back-container {
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+            z-index: 100;
+        }
+        .btn-back {
+            background: var(--primary);
+            color: #000;
+            padding: 14px 30px;
             border-radius: 50px;
             text-decoration: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 99;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+            font-weight: 700;
+            display: flex; align-items: center; gap: 10px;
+            transition: transform 0.2s;
         }
-        .btn-back:hover { background: #053a1e; }
+        .btn-back:active { transform: scale(0.95); }
 
+        /* === TANDA TANGAN === */
+        .signature-box {
+            text-align: center; margin-top: 60px; margin-bottom: 20px;
+            padding-top: 30px; border-top: 1px dashed rgba(255,255,255,0.1);
+        }
+        .sign-name { 
+            font-family: 'Pacifico', cursive; 
+            font-size: 1.5rem; 
+            color: var(--primary); 
+            margin-top: 20px;
+        }
+
+        /* Mobile Adjustments */
         @media (max-width: 600px) {
-            .akad-paper { padding: 20px; }
-            h1 { font-size: 1.4rem; }
+            .akad-container { padding: 25px 20px; }
+            h1 { font-size: 1.5rem; }
+            .bismillah { font-size: 1.2rem; }
+            body { padding: 15px; padding-bottom: 90px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="akad-paper">
-        <h1>Akad & Perjanjian Peserta</h1>
+    <div class="akad-container">
+        <h1>Akad & Perjanjian</h1>
         <div class="bismillah">Bismillahirrahmanirrahim</div>
         
-        <p style="text-align: center; font-style: italic;">
-            Akad ini mengikat antara <strong>Pengelola Paket Nizami</strong> dan <strong>Peserta Program</strong> 
-            demi mewujudkan transaksi yang transparan, adil, amanah, dan berkah.
+        <p class="intro-text">
+            Dokumen ini adalah ikatan resmi antara <strong>Pengelola Paket Nizami</strong> dan <strong>Anda (Peserta)</strong>. 
+            Dengan melanjutkan pendaftaran, Anda dianggap telah membaca, memahami, dan menyetujui seluruh poin berikut demi keberkahan bersama.
         </p>
 
-        <h3>1. Sifat Akad</h3>
-        <ul>
-            <li>Akad ini bersifat <strong>Tabungan Pengadaan Barang & Jasa</strong>.</li>
-            <li>Peserta menyetorkan dana secara bertahap (cicilan) untuk tujuan pembelian paket lebaran atau pengambilan uang tunai pada waktu yang ditentukan.</li>
-            <li>Dengan mendaftar, peserta dianggap telah membaca, memahami, dan menyetujui seluruh isi akad ini (An-Taradhin / Saling Ridho).</li>
+        <h3><i class="fas fa-hand-holding-heart"></i> 1. Sifat Akad</h3>
+        <ul class="custom-list">
+            <li>Program ini bersifat <strong>Tabungan Pengadaan Barang & Jasa</strong>.</li>
+            <li>Dana yang disetor dicicil bertahap untuk tujuan pembelian Paket Lebaran atau pengambilan Uang Tunai.</li>
+            <li>Akad didasarkan pada prinsip <em>An-Taradhin</em> (Saling Ridho) dan transparansi.</li>
         </ul>
 
-        <h3>2. Pengelolaan Dana</h3>
-        <ul>
-            <li>Selama dana mengendap, Peserta mengizinkan Pengelola (Nizami) untuk menggunakan dana tersebut sebagai modal usaha produktif yang halal.</li>
-            <li>Pengelola <strong>menjamin 100% keutuhan saldo pokok</strong> peserta dan wajib mengembalikannya dalam bentuk Barang atau Uang sesuai jenis paket yang dipilih saat pembagian.</li>
+        <h3><i class="fas fa-coins"></i> 2. Pengelolaan Dana</h3>
+        <ul class="custom-list">
+            <li>Peserta mengizinkan Pengelola (Nizami) untuk memutarkan dana pada sektor usaha produktif yang halal selama masa tabungan.</li>
+            <li>Pengelola <span class="highlight-green">MENJAMIN 100% KEUTUHAN POKOK</span> tabungan peserta dalam bentuk Barang/Uang sesuai waktu pembagian.</li>
         </ul>
 
-        <h3>3. Ketentuan Paket Barang (Mom, Kids, Cookies, Sembako)</h3>
-        <ul>
-            <li>Harga paket yang tertera adalah harga final (sudah termasuk margin keuntungan, biaya operasional, admin, dan jasa kurir mitra).</li>
-            <li><strong>Tidak ada biaya pendaftaran</strong> di awal.</li>
-            <li>Rencana pembelanjaan dan distribusi barang dilakukan mulai <strong>Januari 2027</strong>.</li>
-            <li>Jika barang discontinue (tidak produksi lagi), pengelola berhak mengganti dengan merk sejenis yang setara nilainya.</li>
+        <h3><i class="fas fa-box-open"></i> 3. Ketentuan Paket Barang</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top:-10px;">(Termasuk: Paket Mom, Kids, Cookies, & Mingguan)</p>
+        <ul class="custom-list">
+            <li>Harga yang tertera adalah <strong>Harga Final</strong> (Sudah termasuk margin, admin, operasional, dan ongkos kurir mitra).</li>
+            <li><span class="highlight-green">GRATIS</span> biaya pendaftaran.</li>
+            <li>Estimasi pembagian barang: <strong>Awal Desember 2026</strong>.</li>
+            <li>Jika produk pabrik <em>discontinue</em>, akan diganti dengan merek lain yang setara kualitas dan nilainya.</li>
         </ul>
 
-        <h3>4. Ketentuan Paket Uang (Tabungan Tunai)</h3>
+        <h3><i class="fas fa-money-bill-wave"></i> 4. Ketentuan Paket Uang</h3>
         <div class="note-box">
-            <i class="fas fa-info-circle"></i> <strong>PENTING:</strong> Paket ini menggunakan sistem <em>Ujrah</em> (Upah Jasa Simpanan) yang dipotong langsung saat setoran.
+            <i class="fas fa-info-circle"></i> 
+            <div>
+                <strong>SISTEM UJRAH (Jasa Titip):</strong><br>
+                Paket uang dikenakan biaya jasa pengelolaan yang dipotong langsung saat setoran harian.
+            </div>
         </div>
-        <ul>
-            <li><strong>Paket 5.000:</strong> Setoran Rp 5.000/hari. Biaya jasa simpanan Rp 300. Nilai tabungan efektif yang tercatat adalah <strong>Rp 4.700</strong>.</li>
-            <li><strong>Paket 10.000:</strong> Setoran Rp 10.000/hari. Biaya jasa simpanan Rp 400. Nilai tabungan efektif yang tercatat adalah <strong>Rp 9.600</strong>.</li>
-            <li>Dan seterusnya.</li>
-            <li>Karena biaya jasa sudah dipotong di awal, maka saldo tabungan efektif <strong>BISA DIAMBIL KAPAN SAJA</strong> (Full atau Sebagian) tanpa potongan biaya admin lagi.</li>
+        <ul class="custom-list">
+            <li><strong>Paket 5.000:</strong> Setor Rp 5.000 (Biaya Rp 300) <i class="fas fa-arrow-right" style="font-size:0.7rem; color:#666;"></i> Masuk Tabungan: <span class="highlight-gold">Rp 4.700</span>.</li>
+            <li><strong>Paket 10.000:</strong> Setor Rp 10.000 (Biaya Rp 400) <i class="fas fa-arrow-right" style="font-size:0.7rem; color:#666;"></i> Masuk Tabungan: <span class="highlight-gold">Rp 9.600</span>.</li>
+            <li>Kelebihan: Saldo efektif dapat diambil <strong>KAPAN SAJA</strong> (sebagian/full) tanpa potongan admin tambahan saat penarikan.</li>
         </ul>
 
-        <h3>5. Aturan Berhenti / Putus Kontrak (Refund)</h3>
-        <p>Apabila peserta berhenti di tengah jalan sebelum masa pembagian, berlaku ketentuan sebagai berikut:</p>
+        <h3><i class="fas fa-exclamation-triangle" style="color:var(--danger);"></i> 5. Pembatalan / Putus Kontrak</h3>
+        <p style="color:#d4d4d8;">Jika berhenti sebelum masa pembagian (Desember 2026):</p>
         
-        <ol>
-            <li><strong>UNTUK PAKET BARANG (Mom, Kids, dll):</strong>
-                <ul>
-                    <li>Jika Saldo < Rp 200.000: Dikenakan biaya administrasi penutupan akun sebesar <span class="highlight">Rp 20.000</span> (Flat). Jika sisa saldo kurang dari 20rb, maka saldo hangus.</li>
-                    <li>Jika Saldo ≥ Rp 200.000: Dikenakan biaya admin <span class="highlight">10%</span> dari total saldo (dengan nilai admin maksimal Rp 100.000).</li>
-                    <li><em>Contoh: Saldo 1 Juta, berhenti di tengah jalan, maka uang kembali Rp 900.000 (Dipotong 100rb).</em></li>
-                    <li><em>Contoh: Saldo 2 Juta, berhenti di tengah jalan, maka uang kembali Rp 1.900.000 (Tetap Dipotong 100rb).</em></li>
-                    <li>Sisa saldo bisa di ambil berupa barang bisa request paling lambat akhir November 2026, jika lewat tanggal tersebut maka akan ditentukan oleh aplikasi / admin</li>
-                    <li>sebagai Catatan: biaya admin merupakan bentuk kompensasi Upah Jasa Simpanan, catatan, biaya aplikasi, jasa pengantaran barang dll.</li>
-                    
+        <ol style="color:#d4d4d8;">
+            <li><strong>PAKET BARANG (Mom/Kids/Cookies):</strong>
+                <ul style="margin-top:5px; font-size:0.9rem; color:var(--text-muted);">
+                    <li>Saldo < Rp 200rb: Potongan Admin Flat <span class="highlight-red">Rp 20.000</span>.</li>
+                    <li>Saldo ≥ Rp 200rb: Potongan Admin <span class="highlight-red">10%</span> (Maksimal Rp 100.000).</li>
+                    <li><em>Contoh: Saldo Rp 2.000.000 berhenti, uang kembali Rp 1.900.000.</em></li>
+                    <li>Sisa saldo dikembalikan Tunai. Namun, jika lewat batas konfirmasi, saldo wajib diambil berupa Barang.</li>
                 </ul>
             </li>
-            <li><strong>UNTUK PAKET UANG:</strong>
-                <ul>
-                    <li> Uang dikembalikan sesuai saldo efektif yang tercatat di aplikasi, yang sudah terpotong jasa kelola.</li>
-                </ul>
+            <li style="margin-top:10px;"><strong>PAKET UANG:</strong>
+                <br>Dikembalikan sesuai saldo efektif yang tercatat di aplikasi (Sudah bersih).
             </li>
-            <li><strong>UNTUK PAKET MINGGUAN:</strong>
-                <ul>
-                    <li>Tidak ada pengembalian uang tunai. Saldo yang sudah masuk akan dikembalikan dalam bentuk <strong>BARANG</strong> (Sembako/Produk) senilai saldo tersebut.</li>
-                </ul>
+            <li style="margin-top:10px;"><strong>PAKET MINGGUAN:</strong>
+                <br><span class="highlight-red">TIDAK BISA UANG KEMBALI</span>. Saldo yang sudah masuk akan dikembalikan dalam bentuk Sembako/Barang senilai saldo.
             </li>
         </ol>
-        <p><strong>Batas Konfirmasi Berhenti:</strong> Paling lambat akhir <strong>November 2026</strong>. Lewat dari tanggal tersebut, uang tidak bisa ditarik dan akan dibelanjakan barang.</p>
-
-        <h3>6. Klausul Ihsan (Musibah)</h3>
-        <p>
-            Apabila peserta meninggal dunia atau mengalami musibah berat (sakit permanen/bencana alam) yang menyebabkan tidak mampu melanjutkan, 
-            maka seluruh saldo akan dikembalikan <strong>100% UTUH</strong> (Tanpa potongan apapun) kepada ahli waris sebagai bentuk solidaritas.
+        
+        <p style="font-size:0.85rem; color:var(--primary); text-align:center; border:1px dashed var(--primary); padding:10px; border-radius:10px; margin-top:15px;">
+            <strong>Batas Konfirmasi Berhenti:</strong><br>Akhir November 2026.
         </p>
 
-        <h3>7. Persetujuan Digital</h3>
+        <h3><i class="fas fa-heart"></i> 6. Klausul Ihsan (Musibah)</h3>
         <p>
-            Dengan menekan tombol <strong>"Saya Setuju"</strong> atau mengisi formulir pendaftaran di aplikasi ini, peserta menyatakan secara sadar tanpa paksaan untuk terikat dengan seluruh poin perjanjian di atas.
+            Jika peserta meninggal dunia atau terkena musibah berat (sakit permanen/bencana), maka seluruh saldo dikembalikan <span class="highlight-green">100% UTUH TANPA POTONGAN</span> kepada ahli waris/keluarga.
         </p>
 
-        <br><br>
-        <div style="text-align: center; margin-bottom: 50px;">
+        <div class="signature-box">
             <p>Bandung, 1 April 2026</p>
-            <p><strong>Owner Paket Nizami</strong></p>
-            <br><br>
-            <p style="text-decoration: underline;">Evi Fitriawati</p>
+            <p style="font-size:0.9rem; color:var(--text-muted);">Owner Paket Nizami</p>
+            <div class="sign-name">Evi Fitriawati</div>
         </div>
 
     </div>
 
-    <a href="index.html" class="btn-back">
-        <i class="fas fa-arrow-left"></i> Kembali ke Menu
-    </a>
+    <div class="btn-back-container">
+        <a href="index.html" class="btn-back">
+            <i class="fas fa-check-circle"></i> Saya Mengerti
+        </a>
+    </div>
 
 </body>
 </html>
