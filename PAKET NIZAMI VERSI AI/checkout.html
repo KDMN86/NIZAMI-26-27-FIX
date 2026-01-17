@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Checkout / Berhenti - Nizami</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #FFD700; --bg: #050505; --surface: #151515; --text: #e0e0e0; --danger: #ff4d4d; --success: #4ade80; }
+        * { box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text); font-family: 'Poppins', sans-serif; margin: 0; padding: 20px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+        .hidden { display: none !important; }
+        .header { text-align: center; margin-bottom: 20px; width: 100%; max-width: 500px; }
+        .header h2 { color: var(--primary); margin: 0; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px; }
+        .header p { color: #888; font-size: 0.85rem; margin-top: 5px; }
+        #autoLoading { display: none; width: 100%; max-width: 500px; text-align: center; padding: 40px; color: #888; }
+        .spinner { font-size: 2rem; color: var(--primary); margin-bottom: 15px; animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .card { background: var(--surface); border: 1px solid #333; border-radius: 16px; padding: 20px; width: 100%; max-width: 500px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        #searchCard { display: block; } #resultSection { display: none; }
+        .input-group { position: relative; margin-bottom: 15px; }
+        .input-dark { width: 100%; padding: 12px 15px 12px 45px; background: #0a0a0a; border: 1px solid #444; color: #fff; border-radius: 10px; outline: none; font-size: 1rem; }
+        .input-dark:focus { border-color: var(--primary); }
+        .input-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #666; }
+        .btn-check { width: 100%; background: linear-gradient(90deg, #b8860b, #ffd700); color: #000; font-weight: bold; padding: 12px; border: none; border-radius: 10px; cursor: pointer; transition: 0.2s; font-size: 1rem; }
+        .user-info { text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px dashed #333; }
+        .u-name { font-size: 1.3rem; font-weight: bold; color: #fff; margin: 5px 0; }
+        .u-meta { font-size: 0.85rem; color: #aaa; background: #222; padding: 4px 12px; border-radius: 20px; display: inline-block; }
+        .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .opt-btn { background: #222; border: 2px solid #333; color: #888; padding: 15px; border-radius: 12px; cursor: pointer; text-align: center; transition: 0.2s; }
+        .opt-btn i { font-size: 1.5rem; margin-bottom: 5px; display: block; }
+        .opt-btn.active { border-color: var(--primary); background: rgba(255, 215, 0, 0.1); color: var(--primary); }
+        .opt-btn.disabled { opacity: 0.4; cursor: not-allowed; border-color: #333 !important; background: #111 !important; color: #555 !important; }
+        .summary-box { background: #0a0a0a; border-radius: 12px; padding: 15px; border: 1px solid #333; margin-bottom: 20px; }
+        .sum-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; color: #ccc; }
+        .sum-row.total { border-top: 1px solid #333; padding-top: 10px; margin-top: 10px; font-weight: bold; font-size: 1.1rem; color: var(--primary); }
+        .text-red { color: var(--danger); }
+        .detail-fee { font-size: 0.75rem; color: #888; display: block; text-align: right; font-style: italic; margin-top: 2px;}
+        .note-box { font-size: 0.75rem; color: #888; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; margin-bottom: 20px; line-height: 1.4; border-left: 3px solid #555; }
+        .btn-submit { width: 100%; background: var(--danger); color: #fff; font-weight: bold; padding: 14px; border: none; border-radius: 12px; cursor: pointer; font-size: 1rem; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .btn-back { margin-top: 15px; color: #666; text-decoration: none; font-size: 0.9rem; display: block; text-align: center; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Form Checkout</h2>
+        <p>Pengajuan Berhenti / Putus Kontrak</p>
+    </div>
+
+    <div id="autoLoading">
+        <i class="fas fa-circle-notch spinner"></i>
+        <p>Sedang mengambil data peserta...</p>
+    </div>
+
+    <div class="card" id="searchCard">
+        <div class="input-group">
+            <i class="fas fa-search input-icon"></i>
+            <input type="text" id="inputId" class="input-dark" placeholder="Masukkan ID Peserta (Contoh: AZAM-1234)">
+        </div>
+        <button onclick="startCheckoutProcess()" class="btn-check" id="btnCek">CEK DATA</button>
+    </div>
+
+    <div class="card" id="resultSection">
+        <div class="user-info">
+            <div class="u-meta" id="uId">ID: -</div>
+            <h3 class="u-name" id="uNama">-</h3>
+            <div style="color:var(--primary); font-size:0.9rem;" id="uPaket">-</div>
+        </div>
+
+        <label style="font-size:0.85rem; color:#aaa; margin-bottom:10px; display:block;">Pilih Metode Pengembalian:</label>
+        
+        <div class="option-grid">
+            <div class="opt-btn" id="optBarang" onclick="setCheckoutMode('barang')">
+                <i class="fas fa-box-open"></i>
+                <div>Ambil Barang</div>
+            </div>
+            <div class="opt-btn" id="optUang" onclick="setCheckoutMode('uang')">
+                <i class="fas fa-money-bill-wave"></i>
+                <div>Ambil Uang</div>
+            </div>
+        </div>
+
+        <div class="summary-box">
+            <div class="sum-row">
+                <span id="labelSaldo">Saldo Saat Ini</span>
+                <span id="txtSaldo">Rp 0</span>
+            </div>
+            <div class="sum-row" id="row-pinalti">
+                <span id="labelFee">Biaya Admin</span>
+                <div style="text-align:right;">
+                    <span class="text-red" id="chk-pinalti">Rp 0</span>
+                    <span class="detail-fee" id="chk-fee-detail"></span>
+                </div>
+            </div>
+            <div class="sum-row total">
+                <span>Total Diterima</span>
+                <span id="chk-total">Rp 0</span>
+            </div>
+        </div>
+
+        <div class="note-box" id="chk-note">
+            *Silakan pilih metode di atas untuk melihat rincian biaya.
+        </div>
+
+        <button onclick="sendCheckoutWA()" class="btn-submit">
+            <i class="fab fa-whatsapp"></i> KIRIM PENGAJUAN
+        </button>
+    </div>
+
+    <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali ke Menu Utama</a>
+
+    <script src="script.js"></script> 
+    
+    <script>
+        let checkoutUser = null;
+        let checkoutMode = ''; 
+
+        // === 1. LOGIKA STARTUP ===
+        document.addEventListener("DOMContentLoaded", () => {
+            const params = new URLSearchParams(window.location.search);
+            let urlID = params.get('id');
+            if(urlID && urlID !== 'undefined' && urlID !== 'null') {
+                urlID = urlID.trim().toUpperCase(); 
+                document.getElementById('inputId').value = urlID;
+                toggleView('loading');
+                startCheckoutProcess(true);
+            } else {
+                toggleView('search');
+            }
+        });
+
+        // === 2. PENGATUR TAMPILAN ===
+        function toggleView(viewName) {
+            const loading = document.getElementById('autoLoading');
+            const search = document.getElementById('searchCard');
+            const result = document.getElementById('resultSection');
+
+            loading.style.display = 'none';
+            search.style.display = 'none';
+            result.style.display = 'none';
+
+            if(viewName === 'loading') loading.style.display = 'block';
+            else if(viewName === 'search') search.style.display = 'block';
+            else if(viewName === 'result') {
+                result.style.display = 'block';
+                result.style.animation = 'slideUp 0.4s ease';
+            }
+        }
+
+        // === 3. PROSES AMBIL DATA ===
+        async function startCheckoutProcess(isAuto = false) {
+            const id = document.getElementById('inputId').value.trim().toUpperCase();
+            if(!id) {
+                if(!isAuto) alert("Masukkan ID Peserta!");
+                toggleView('search');
+                return;
+            }
+
+            const btn = document.getElementById('btnCek');
+            if(!isAuto) { btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...'; btn.disabled = true; }
+
+            try {
+                const data = await fetchData('cekStatusDetail', {id: id});
+                if(!isAuto) { btn.innerHTML = 'CEK DATA'; btn.disabled = false; }
+
+                if(!data || data.error) {
+                    if(isAuto) alert("Gagal memuat data ID: " + id);
+                    else alert("Data peserta tidak ditemukan!");
+                    toggleView('search'); 
+                    return;
+                }
+
+                // SIMPAN DATA
+                checkoutUser = {
+                    id: data.id,
+                    nama: data.nama,
+                    paket: data.paket || "",
+                    saldo: Number(data.saldo) || 0,
+                    count: Number(data.tercapai) || 0 // JUMLAH SETORAN DARI DATABASE (99x)
+                };
+                renderCheckoutUI();
+
+            } catch (e) {
+                console.error(e);
+                alert("Terjadi kesalahan koneksi.");
+                toggleView('search');
+            }
+        }
+
+        // === 4. RENDER HASIL & LOGIKA PENGUNCIAN ===
+        function renderCheckoutUI() {
+            toggleView('result'); 
+
+            document.getElementById('uNama').innerText = checkoutUser.nama;
+            document.getElementById('uId').innerText = "#" + checkoutUser.id;
+            document.getElementById('uPaket').innerText = checkoutUser.paket;
+            
+            resetCheckoutOptions();
+
+            const pkt = checkoutUser.paket.toLowerCase();
+            const btnBarang = document.getElementById('optBarang');
+            const btnUang = document.getElementById('optUang');
+
+            // SKENARIO 1: PAKET MINGGUAN (WAJIB BARANG)
+            if(pkt.includes('mingguan')) {
+                btnUang.classList.add('disabled');
+                btnUang.onclick = () => alert("Sesuai Akad: Paket Mingguan TIDAK BISA diuangkan.");
+                setCheckoutMode('barang'); 
+            } 
+            // SKENARIO 2: PAKET UANG (WAJIB UANG)
+            else if(pkt.includes('uang')) {
+                btnBarang.classList.add('disabled');
+                btnBarang.onclick = () => alert("Sesuai Akad: Paket Uang hanya bisa diambil Tunai.");
+                setCheckoutMode('uang');
+            } 
+            // SKENARIO 3: PAKET LAIN (BEBAS)
+            else {
+                setCheckoutMode('barang'); 
+            }
+        }
+
+        function resetCheckoutOptions() {
+            document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active', 'disabled'));
+            document.getElementById('optBarang').onclick = () => setCheckoutMode('barang');
+            document.getElementById('optUang').onclick = () => setCheckoutMode('uang'); 
+        }
+
+        function setCheckoutMode(mode) {
+            checkoutMode = mode;
+            document.querySelectorAll('.opt-btn').forEach(b => {
+                if(!b.classList.contains('disabled')) b.classList.remove('active');
+            });
+            if(mode === 'barang') document.getElementById('optBarang').classList.add('active');
+            if(mode === 'uang') document.getElementById('optUang').classList.add('active');
+
+            calculateCheckoutFee(mode);
+        }
+
+        // === 5. HITUNG BIAYA (LOGIKA DIPERBAIKI: PAKAI COUNT DATABASE) ===
+        function calculateCheckoutFee(type) {
+            const rowFee = document.getElementById('row-pinalti');
+            const elFeeVal = document.getElementById('chk-pinalti'); 
+            const elFeeDet = document.getElementById('chk-fee-detail'); 
+            const note = document.getElementById('chk-note');
+            const lblSaldo = document.getElementById('labelSaldo');
+            const lblFee = document.getElementById('labelFee');
+
+            let saldoNet = checkoutUser.saldo; // Saldo DB (Sudah Bersih)
+            const count = checkoutUser.count;  // Jumlah Hari dari DB (99x)
+            const pkt = checkoutUser.paket.toLowerCase();
+            
+            let biayaAdmin = 0;
+            let saldoGross = 0;
+            let pesanNota = "";
+            let detailText = "";
+            
+            // --- SKENARIO PAKET UANG ---
+            if(pkt.includes('uang')) {
+                lblSaldo.innerText = "Total Setoran (Kotor)";
+                lblFee.innerText = "Potongan Jasa Pengelolaan";
+                
+                // 1. Tentukan Nominal Paket & Fee Harian
+                let nominalPaket = 0;
+                let dailyFee = 0;
+
+                // Deteksi Nominal dari Nama Paket
+                if (pkt.includes('5.000') || pkt.includes('5000')) { nominalPaket = 5000; dailyFee = 300; }
+                else if (pkt.includes('10.000') || pkt.includes('10000')) { nominalPaket = 10000; dailyFee = 400; }
+                else if (pkt.includes('15.000') || pkt.includes('15000')) { nominalPaket = 15000; dailyFee = 500; }
+                else if (pkt.includes('20.000') || pkt.includes('20000')) { nominalPaket = 20000; dailyFee = 600; }
+                else if (pkt.includes('25.000') || pkt.includes('25000')) { nominalPaket = 25000; dailyFee = 700; } 
+                else if (pkt.includes('50.000') || pkt.includes('50000')) { nominalPaket = 50000; dailyFee = 1000; }
+                else { nominalPaket = 10000; dailyFee = 400; } // Default
+
+                // 2. PERBAIKAN: Gunakan data COUNT dari database langsung!
+                const totalDays = count; // Ini pasti 99 jika di DB 99
+
+                // 3. Hitung Display
+                saldoGross = totalDays * nominalPaket; // 99 x 10.000 = 990.000
+                biayaAdmin = totalDays * dailyFee;     // 99 x 400 = 39.600
+                
+                detailText = `(${totalDays} hari x Rp ${dailyFee})`;
+                pesanNota = `*Paket Uang dikenakan biaya jasa pengelolaan Rp ${dailyFee}/hari.`;
+            }
+            
+            // --- SKENARIO LAIN ---
+            else {
+                lblSaldo.innerText = "Saldo Saat Ini";
+                lblFee.innerText = "Biaya Admin";
+                saldoGross = saldoNet; 
+                
+                if(pkt.includes('mingguan')) {
+                    biayaAdmin = 0;
+                    pesanNota = "*Paket Mingguan dikembalikan dalam bentuk Sembako senilai saldo penuh.";
+                } else {
+                    if(saldoNet < 200000) {
+                        biayaAdmin = 20000;
+                        detailText = "(Biaya Tutup Flat)";
+                        pesanNota = "*Saldo < 200rb: Biaya tutup akun flat Rp 20.000.";
+                    } else {
+                        let hitungPersen = saldoNet * 0.10;
+                        biayaAdmin = (hitungPersen > 100000) ? 100000 : hitungPersen;
+                        detailText = "(10% dari Saldo)";
+                        pesanNota = "*Saldo ≥ 200rb: Biaya admin 10% (Max Rp 100rb).";
+                    }
+                }
+            }
+
+            // Hitung Total Terima
+            const totalTerima = Math.max(0, saldoGross - biayaAdmin);
+            
+            // Render Angka
+            document.getElementById('txtSaldo').innerText = formatMoney(saldoGross);
+            elFeeDet.innerText = detailText;
+            
+            if(biayaAdmin > 0) {
+                elFeeVal.innerText = '- ' + formatMoney(biayaAdmin);
+                elFeeVal.style.color = '#ff6b6b';
+                rowFee.style.display = 'flex';
+            } else {
+                elFeeVal.innerText = 'Rp 0';
+                elFeeVal.style.color = '#888';
+                elFeeDet.innerText = '';
+            }
+
+            document.getElementById('chk-total').innerText = formatMoney(totalTerima);
+            note.innerText = pesanNota;
+        }
+
+        // === 6. KIRIM WA ===
+        function sendCheckoutWA() {
+            if(!checkoutUser) return;
+            const metode = checkoutMode === 'barang' ? 'AMBIL BARANG' : 'REFUND UANG';
+            const saldoTxt = document.getElementById('txtSaldo').innerText;
+            const adminTxt = document.getElementById('chk-pinalti').innerText;
+            const detailTxt = document.getElementById('chk-fee-detail').innerText;
+            const totalTxt = document.getElementById('chk-total').innerText;
+
+            const msg = `Halo Admin, saya ingin mengajukan *BERHENTI / CHECKOUT*.\n\n` +
+                        `👤 Nama: ${checkoutUser.nama}\n` +
+                        `🆔 ID: ${checkoutUser.id}\n` +
+                        `📦 Paket: ${checkoutUser.paket}\n` +
+                        `--------------------------\n` +
+                        `💰 Saldo Kotor: ${saldoTxt}\n` +
+                        `🛑 Potongan: ${adminTxt} ${detailTxt}\n` +
+                        `💵 *Total Diterima: ${totalTxt}*\n` +
+                        `--------------------------\n` +
+                        `Metode: ${metode}\n\n` +
+                        `Mohon diproses sesuai Akad. Terima kasih.`;
+
+            window.open(`https://wa.me/628122261036?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function formatMoney(angka) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+        }
+    </script>
+</body>
+</html>
