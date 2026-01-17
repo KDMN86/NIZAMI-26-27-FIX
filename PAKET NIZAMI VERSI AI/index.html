@@ -456,6 +456,10 @@
             </div>
 
             <div class="profile-menu-list">
+                <div class="menu-row" onclick="keHalamanCheckout()">
+        <div class="menu-left"><i class="fas fa-hand-paper" style="color:#ff6b6b"></i> Pengajuan Berhenti</div>
+        <i class="fas fa-chevron-right" style="font-size:0.8rem;"></i>
+    </div>
                 <div class="menu-row" onclick="alert('Fitur Edit Profil akan segera hadir!')">
                     <div class="menu-left"><i class="fas fa-user-edit"></i> Edit Profil</div>
                     <i class="fas fa-chevron-right" style="font-size:0.8rem;"></i>
@@ -510,34 +514,7 @@
         </div>
     </div>
 
-    <div id="modalCheckout" class="modal-overlay">
-        <div class="modal-card">
-            <button class="close-x" onclick="closeModalCheckout()">&times;</button>
-            <h3 style="color:#ffd700; text-align:center; margin-bottom:20px;">Konfirmasi Berhenti</h3>
-            
-            <div class="checkout-option">
-                <div class="chk-btn active" id="btnOptBarang" onclick="setCheckoutOption('barang')">
-                    <i class="fas fa-box-open"></i><br>Ambil Barang
-                </div>
-                <div class="chk-btn" id="btnOptUang" onclick="setCheckoutOption('uang')">
-                    <i class="fas fa-money-bill-wave"></i><br>Ambil Uang
-                </div>
-            </div>
-
-            <div style="background:#222; padding:15px; border-radius:10px; margin-bottom:20px;">
-                <table class="calc-table">
-                    <tr><td>Saldo Saat Ini</td><td align="right" id="chk-saldo">Rp 0</td></tr>
-                    <tr id="row-pinalti" style="color:#ff6b6b;"><td>Potongan / Pinalti</td><td align="right" id="chk-pinalti">- Rp 0</td></tr>
-                    <tr style="border-top:1px solid #555; font-size:1rem;"><td><strong>Total Diterima</strong></td><td align="right" class="calc-total" id="chk-total">Rp 0</td></tr>
-                </table>
-                <div id="chk-note" style="font-size:0.75rem; color:#aaa; margin-top:10px; font-style:italic;">
-                    *Sesuai Akad: Saldo barang dikembalikan utuh tanpa potongan.
-                </div>
-            </div>
-
-            <button onclick="submitCheckoutWA()" class="btn-gold" style="background:#ff4d4d; color:#fff; border:none;">Ajukan Berhenti</button>
-        </div>
-    </div>
+    
 
     <div id="modalMitraReg" class="modal-overlay">
         <div class="modal-card">
@@ -1064,23 +1041,13 @@
 function renderPesertaCards(dataList, container) {
     let html = '';
     dataList.forEach(p => {
-        // --- PERBAIKAN: Validasi Angka agar tidak NaN/Error ---
-        let done = parseInt(p.setoranDilakukan);
-        let target = parseInt(p.totalSetoran);
+        // ... (Bagian perhitungan progress tetap sama) ...
+        let done = parseInt(p.setoranDilakukan) || 0;
+        let target = parseInt(p.totalSetoran) || 330;
         let sisa = parseInt(p.sisaSetoran);
-
-        // Jika data error/kosong, beri nilai default
-        if (isNaN(done)) done = 0;
-        if (isNaN(target) || target === 0) target = 330; // Default 330 agar tidak bagi nol
         if (isNaN(sisa)) sisa = target - done;
-
-        let percent = 0;
-        if (target > 0) {
-            percent = Math.min(100, (done / target) * 100).toFixed(0);
-        }
-
+        let percent = (target > 0) ? Math.min(100, (done / target) * 100).toFixed(0) : 0;
         const statusText = sisa <= 0 ? "LUNAS" : `${sisa}x lagi`;
-        // -------------------------------------------------------
 
         html += `
             <div class="dashboard-card">
@@ -1108,7 +1075,8 @@ function renderPesertaCards(dataList, container) {
                     <button class="btn-primary" onclick="bukaKalenderIndividu('${p.idPeserta}', '${encodeURIComponent(p.nama)}', '${encodeURIComponent(p.jenisPaket)}', ${done})">
                         <i class="far fa-calendar-alt"></i> Cek Kalender
                     </button>
-                    <button class="btn-danger" onclick="openCheckout('${p.idPeserta}', '${encodeURIComponent(p.nama)}', '${encodeURIComponent(p.jenisPaket)}', ${p.nilaiSetoran})">
+                    
+                    <button class="btn-danger" onclick="window.location.href='checkout.html?id=${p.idPeserta}'">
                         <i class="fas fa-sign-out-alt"></i> Berhenti / Checkout
                     </button>
                 </div>
@@ -1186,72 +1154,16 @@ function renderMitraCards(dataList, container) {
                     <button class="btn-primary" onclick="bukaKalenderIndividu('${p.idPeserta}', '${encodeURIComponent(p.nama)}', '${encodeURIComponent(p.jenisPaket)}', ${done})">
                         <i class="far fa-calendar-alt"></i> Cek Kalender
                     </button>
-                    <button class="btn-danger" onclick="openCheckout('${p.idPeserta}', '${encodeURIComponent(p.nama)}', '${encodeURIComponent(p.jenisPaket)}', ${p.nilaiSetoran})">
-                        <i class="fas fa-sign-out-alt"></i> Berhenti / Checkout
-                    </button>
+                    <button class="btn-danger" onclick="window.location.href='checkout.html?id=${p.idPeserta}'">
+    <i class="fas fa-sign-out-alt"></i> Berhenti / Checkout
+</button>
                 </div>
             </div>`;
     });
     container.innerHTML = html;
 }
 
-    // === CHECKOUT LOGIC ===
-    function openCheckout(id, nama, paket, saldo) {
-        checkoutData = { id: id, nama: decodeURIComponent(nama), paket: decodeURIComponent(paket), saldo: Number(saldo) };
-        document.getElementById('modalCheckout').classList.add('show');
-        setCheckoutOption('barang'); 
-    }
-    function closeModalCheckout() { document.getElementById('modalCheckout').classList.remove('show'); }
     
-    function setCheckoutOption(type) {
-        checkoutType = type;
-        const btnBarang = document.getElementById('btnOptBarang');
-        const btnUang = document.getElementById('btnOptUang');
-        const note = document.getElementById('chk-note');
-        const isMingguan = checkoutData.paket.toLowerCase().includes('mingguan');
-
-        btnBarang.classList.remove('active'); btnUang.classList.remove('active');
-        
-        if(isMingguan) {
-            btnUang.style.opacity = '0.3'; btnUang.onclick = () => alert('Paket Mingguan tidak bisa diuangkan kembali (Hanya Barang).');
-            type = 'barang'; 
-        }
-
-        if(type === 'barang') {
-            btnBarang.classList.add('active');
-            calculateCheckoutValues(0);
-            note.innerText = '*Sesuai Akad: Saldo barang dikembalikan utuh tanpa potongan.';
-        } else {
-            btnUang.classList.add('active');
-            let pinalti = 0;
-            const isUang = checkoutData.paket.toLowerCase().includes('uang');
-            if(!isUang) {
-                if(checkoutData.saldo < 200000) pinalti = 20000;
-                else pinalti = Math.min(checkoutData.saldo * 0.1, 100000);
-            }
-            calculateCheckoutValues(pinalti);
-            note.innerText = isUang ? '*Paket Uang bebas biaya pinalti.' : '*Paket Barang dikenakan biaya pinalti jika diambil tunai.';
-        }
-    }
-
-    function calculateCheckoutValues(pinalti) {
-        const saldo = checkoutData.saldo;
-        const total = saldo - pinalti;
-        document.getElementById('chk-saldo').innerText = 'Rp ' + saldo.toLocaleString();
-        document.getElementById('chk-pinalti').innerText = '- Rp ' + pinalti.toLocaleString();
-        document.getElementById('chk-total').innerText = 'Rp ' + total.toLocaleString();
-    }
-
-    function submitCheckoutWA() {
-        const d = checkoutData;
-        const pinalti = document.getElementById('chk-pinalti').innerText;
-        const total = document.getElementById('chk-total').innerText;
-        const metode = checkoutType === 'barang' ? 'AMBIL BARANG' : 'AMBIL UANG (REFUND)';
-        
-        const msg = `Halo Admin, saya ingin berhenti/checkout.\n\n👤 Nama: ${d.nama}\n🆔 ID: ${d.id}\n📦 Paket: ${d.paket}\n\n🛑 Metode: ${metode}\n💰 Saldo Awal: Rp ${d.saldo.toLocaleString()}\n✂️ Potongan: ${pinalti}\n💵 Total Diterima: ${total}`;
-        window.open(`https://wa.me/628122261036?text=${encodeURIComponent(msg)}`, '_blank');
-        closeModalCheckout();
-    }
     // === NAVIGASI TABS (TAMBAHKAN INI) ===
     function switchTab(tabId) {
         // 1. Sembunyikan semua konten tab
@@ -1353,7 +1265,16 @@ function renderMitraCards(dataList, container) {
             modal.classList.remove('show');
         }
     }
-
+function keHalamanCheckout() {
+        const userStr = localStorage.getItem('nizami_user');
+        if(userStr) {
+            const user = JSON.parse(userStr);
+            // Pindah ke checkout.html dengan membawa ID peserta yang sedang login
+            window.location.href = `checkout.html?id=${user.id}`;
+        } else {
+            alert("Silakan login terlebih dahulu.");
+        }
+    }
 </script>
 </body>
 </html>
