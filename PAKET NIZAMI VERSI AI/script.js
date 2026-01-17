@@ -3,7 +3,7 @@
 // ===========================================
 
 // ⚠️ GANTI INI DENGAN URL DEPLOYMENT GOOGLE SCRIPT ANDA ⚠️
-const API_URL = 'https://script.google.com/macros/s/AKfycbwpWWkavdgttf1DV2OkhQWxyGuPnQUDGyMC82PleJKvfpZ_NlZVs2D1QhLty4tvSH3yrA/exec'; 
+const API_URL = 'https://script.google.com/macros/s/AKfycbwMAcND_S-MHSxrszJ3podTNh_eFoETOL9vBzHrzF88rWejZjT-v520iiMD17Y-1slj/exec'; 
 
 // Format Rupiah
 const formatRupiah = (angka) => {
