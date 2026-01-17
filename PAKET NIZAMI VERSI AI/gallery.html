@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galeri NIZAMI 2026-2027</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playball&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     
     <style>
       /* === 1. BASIS TAMPILAN (DARK MODE) === */
-      * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+      * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
       
       body {
-        background-color: #0a0a0a;
+        background-color: #050505;
         background-image: radial-gradient(circle at top center, #1a1a1a 0%, transparent 60%),
                           radial-gradient(circle at bottom right, #0f2b18 0%, transparent 40%);
         color: #fff;
@@ -24,24 +25,33 @@
       /* === 2. HEADER === */
       header { text-align: center; margin-bottom: 25px; padding-top: 10px; z-index: 1; }
       h1 { font-family: 'Playball', cursive; font-size: 2.2rem; color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); margin-bottom: 5px; }
-      .subtitle { color: #aaa; font-size: 0.9rem; max-width: 80%; margin: 0 auto; }
+      .subtitle { color: #aaa; font-size: 0.9rem; max-width: 80%; margin: 0 auto; display:flex; align-items:center; justify-content:center; gap:8px;}
+      
+      /* Indikator Live */
+      .live-dot { width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; animation: blink 1.5s infinite; }
+      @keyframes blink { 0% {opacity:1} 50% {opacity:0.4} 100% {opacity:1} }
 
       /* === 3. GALLERY GRID === */
       .gallery-container { width: 100%; max-width: 1000px; padding-bottom: 80px; }
+      
+      /* PERBAIKAN: Tambahkan ID di sini nanti */
       .gallery-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-        gap: 10px;
+        gap: 5px; /* Jarak antar foto diperkecil agar rapi */
       }
 
       .gallery-item-wrapper {
         position: relative; aspect-ratio: 1 / 1; overflow: hidden;
-        border-radius: 8px; background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px; background: #111;
+        border: 1px solid #222;
         transition: transform 0.3s ease;
+        animation: fadeIn 0.5s ease forwards;
       }
+      @keyframes fadeIn { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
+
       .gallery-item-wrapper:hover {
-        transform: scale(1.03); z-index: 2; border-color: #28a745;
+        transform: scale(1.03); z-index: 2; border-color: #ffd700;
         box-shadow: 0 5px 15px rgba(0,0,0,0.5);
       }
 
@@ -68,7 +78,7 @@
         text-decoration: none; display: flex; align-items: center; gap: 8px;
         transition: 0.3s; z-index: 90;
       }
-      .fab-back:hover { background: #28a745; border-color: #28a745; transform: translateX(-50%) translateY(-3px); }
+      .fab-back:hover { background: #ffd700; color: #000; border-color: #ffd700; transform: translateX(-50%) translateY(-3px); }
 
       /* === 5. OVERLAY PREVIEW (LIGHTBOX) === */
       .preview-overlay {
@@ -80,15 +90,15 @@
       .preview-overlay.show { display: flex; opacity: 1; }
 
       #preview-img {
-        max-width: 100%; max-height: 80vh; border-radius: 4px;
+        max-width: 95%; max-height: 80vh; border-radius: 4px;
         box-shadow: 0 0 40px rgba(0,0,0,0.8); object-fit: contain;
         transform: scale(0.9); transition: transform 0.3s ease;
       }
       .preview-overlay.show #preview-img { transform: scale(1); }
 
       .close-btn {
-        position: absolute; top: 20px; right: 20px; font-size: 30px; color: #fff;
-        cursor: pointer; background: rgba(255,255,255,0.1); width: 50px; height: 50px;
+        position: absolute; top: 20px; right: 20px; font-size: 25px; color: #fff;
+        cursor: pointer; background: rgba(255,255,255,0.1); width: 45px; height: 45px;
         border-radius: 50%; display: flex; align-items: center; justify-content: center;
         transition: 0.2s; border: 1px solid rgba(255,255,255,0.2); z-index: 10000;
       }
@@ -100,24 +110,30 @@
       }
       .prev-btn, .next-btn {
         background: rgba(255, 255, 255, 0.15); color: white; font-size: 20px;
-        cursor: pointer; width: 60px; height: 60px; display: flex; align-items: center;
+        cursor: pointer; width: 50px; height: 50px; display: flex; align-items: center;
         justify-content: center; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1);
         transition: 0.2s; user-select: none;
       }
-      .prev-btn:hover, .next-btn:hover { background: #28a745; border-color: #28a745; transform: scale(1.1); }
+      .prev-btn:hover, .next-btn:hover { background: #ffd700; color: #000; border-color: #ffd700; transform: scale(1.1); }
 
       .footer-simple { margin-top: 20px; font-size: 0.8rem; color: #555; text-align: center; }
+      
+      #loading { text-align:center; color:#888; margin-bottom:10px; font-size:0.8rem; display:none; }
     </style>
-  </head>
-  <body>
+</head>
+<body>
 
     <header>
       <h1>Galeri Foto</h1>
-      <p class="subtitle">Dokumentasi kegiatan dan produk NIZAMI</p>
+      <div class="subtitle">
+         <div class="live-dot"></div> Update Otomatis
+      </div>
     </header>
 
      <div class="gallery-container">
-      <div class="gallery-grid">
+      <div id="loading"><i class="fas fa-spinner fa-spin"></i> Memuat foto baru...</div>
+      
+      <div class="gallery-grid" id="gridContainer">
         
         <div class="gallery-item-wrapper"><img src="image/gallery/g1.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
         <div class="gallery-item-wrapper"><img src="image/gallery/g2.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
@@ -125,30 +141,8 @@
         <div class="gallery-item-wrapper"><img src="image/gallery/g4.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
         <div class="gallery-item-wrapper"><img src="image/gallery/g5.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
         <div class="gallery-item-wrapper"><img src="image/gallery/g6.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g7.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g8.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g9.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g10.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g11.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g12.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g13.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g14.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g15.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g17.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g18.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g19.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g20.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g21.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g22.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g23.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g24.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g25.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g26.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g27.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g28.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-        <div class="gallery-item-wrapper"><img src="image/gallery/g29.jpg" class="gallery-img zoomable" loading="lazy" alt="Galeri"></div>
-
-      </div>
+        
+        </div>
 
       <div class="footer-simple">
         &copy; 2026-2027 Paket NIZAMI
@@ -167,47 +161,62 @@
       </div>
     </div>
 
-    <script src="script.js"></script>
     <script>
-      let currentImgIndex = 0;
-      let allImages = []; // Menyimpan semua elemen img (lama + baru)
+      // URL Script Google App Anda (WAJIB ADA)
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxI6kR7j_e5b7_y0zTz8aE8fX4lB9yC1aD2e3fG4hI5jK6lM7nO/exec';
 
-      // 1. LOAD DATA BARU & INISIALISASI
+      let currentImgIndex = 0;
+      let allImages = []; 
+
+      // FUNGSI UTAMA: Fetch Data
+      async function fetchData(action) {
+          try {
+              const response = await fetch(`${SCRIPT_URL}?action=${action}`);
+              return await response.json();
+          } catch (error) {
+              console.error("Gagal mengambil data:", error);
+              return [];
+          }
+      }
+
       window.onload = async () => {
-        // Ambil data dari Google Sheet via API
+        const loading = document.getElementById('loading');
+        loading.style.display = 'block';
+
+        // 1. Ambil data dari Google Sheet
         const data = await fetchData('getGallery');
         
+        loading.style.display = 'none';
+
         if(data && data.length > 0) {
           renderNewImages(data);
         }
         
-        // Setelah gambar baru masuk, baru aktifkan fitur zoom untuk SEMUA gambar
+        // 2. Aktifkan fitur zoom setelah semua gambar dimuat
         initLightbox();
       };
 
-      // 2. RENDER GAMBAR BARU KE GRID
       function renderNewImages(images) {
+        // PENTING: ID ini harus cocok dengan div di HTML
         const container = document.getElementById('gridContainer');
-        
+        if(!container) return console.error("Container Grid tidak ditemukan!");
+
+        // Loop data gambar (Kita balik agar yang terbaru muncul di paling atas/kiri)
         images.forEach(img => {
-          // Buat elemen HTML yang sama persis strukturnya dengan yang lama
           const div = document.createElement('div');
           div.className = 'gallery-item-wrapper';
-          div.innerHTML = `<img src="${img.url}" class="gallery-img zoomable" loading="lazy" alt="Galeri Baru">`;
           
-          container.appendChild(div); // Tambahkan ke paling belakang
+          // Gunakan prepend() agar masuk di urutan PERTAMA (sebelum foto statis)
+          div.innerHTML = `<img src="${img.url}" class="gallery-img zoomable" loading="lazy" alt="Galeri Baru">`;
+          container.prepend(div); 
         });
       }
 
-      // 3. LOGIKA LIGHTBOX (ZOOM)
+      // === LOGIKA LIGHTBOX (ZOOM) ===
       function initLightbox() {
-        // Ambil semua gambar yang punya class 'zoomable'
         allImages = document.querySelectorAll('.zoomable');
-        
         allImages.forEach((img, index) => {
-          img.onclick = () => {
-            openPreview(index);
-          };
+          img.onclick = () => { openPreview(index); };
         });
       }
 
@@ -226,13 +235,10 @@
 
       function changeImg(step) {
         currentImgIndex += step;
-        
-        // Loop carousel (jika habis kembali ke awal/akhir)
         if(currentImgIndex >= allImages.length) currentImgIndex = 0;
         if(currentImgIndex < 0) currentImgIndex = allImages.length - 1;
         
         const previewImg = document.getElementById('preview-img');
-        // Efek fade sederhana
         previewImg.style.opacity = 0;
         setTimeout(() => {
             previewImg.src = allImages[currentImgIndex].src;
@@ -241,5 +247,5 @@
       }
     </script>
 
-  </body>
+</body>
 </html>
