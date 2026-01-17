@@ -964,12 +964,39 @@
     function prosesLogin() {
         const id = document.getElementById('login-id').value.trim().toUpperCase();
         if(!id) return alert('Masukkan ID!');
-        const btn = document.querySelector('#login-form button'); btn.innerText = '...'; btn.disabled = true;
+        
+        const btn = document.querySelector('#login-form button'); 
+        btn.innerText = '...'; 
+        btn.disabled = true;
+
         fetchData('cekStatusDetail', {id: id}).then(data => {
-            btn.innerText = 'MASUK'; btn.disabled = false;
-            if(!data || data.error) alert('ID Tidak Ditemukan!'); else {
-                const userData = { id: id, type: data.type, nama: data.nama, paket: data.type === 'PESERTA' ? data.data[0].jenisPaket : 'MITRA' };
-                localStorage.setItem('nizami_user', JSON.stringify(userData)); alert('Login Berhasil!'); renderProfile(); switchTab('setoran');
+            btn.innerText = 'MASUK'; 
+            btn.disabled = false;
+
+            if(!data || data.error) {
+                alert('ID Tidak Ditemukan!'); 
+            } else {
+                // === LOGIKA NAMA DIPERBAIKI ===
+                // Prioritaskan nama dari root (data.nama). 
+                // Jika login sebagai Mitra, data.nama adalah nama Mitranya.
+                let fixNama = data.nama || 'Member'; 
+                
+                // Fallback hanya jika data.nama kosong (jarang terjadi dgn script baru)
+                if (!data.nama && data.data && data.data.length > 0) {
+                    fixNama = data.data[0].nama;
+                }
+
+                const userData = { 
+                    id: id, 
+                    type: data.type || (data.data ? 'MITRA' : 'PESERTA'), 
+                    nama: fixNama, 
+                    paket: data.type === 'PESERTA' ? data.paket : 'MITRA' 
+                };
+                
+                localStorage.setItem('nizami_user', JSON.stringify(userData)); 
+                alert('Login Berhasil! Selamat Datang ' + fixNama); 
+                renderProfile(); 
+                switchTab('setoran');
             }
         });
     }
@@ -987,69 +1014,108 @@
     async function loadPesertaDashboard(id) {
         const container = document.getElementById('peserta-container');
         
-        // 1. CEK CACHE DULU
-        // Jika data sudah ada di memori, pakai itu langsung (Tanpa Loading)
+        // 1. CEK CACHE
         if (cachedDashboardData) {
             renderPesertaCards(cachedDashboardData, container);
             return; 
         }
 
-        // 2. JIKA CACHE KOSONG, BARU FETCH
+        // 2. FETCH DATA
         container.innerHTML = '<div style="text-align:center; padding:20px; color:#888;">Sedang memuat data...</div>';
         const data = await fetchData('cekStatusDetail', {id: id});
         
-        if(data && data.data && data.data.length > 0) {
-            cachedDashboardData = data.data; // SIMPAN KE CACHE
-            renderPesertaCards(cachedDashboardData, container);
+        if(data && !data.error) {
+            let rawList = [];
+            
+            // Bungkus data jadi array kalau cuma 1
+            if (data.data && Array.isArray(data.data)) {
+                rawList = data.data; // Kasus Mitra
+            } else if (data.nama) {
+                rawList = [data]; // Kasus Peserta Biasa
+            }
+
+            if(rawList.length > 0) {
+                // === PERBAIKAN MAPPING DATA (PENTING!) ===
+                // Backend kirim: id, paket, saldo, tercapai, sisa_angsuran
+                // Frontend butuh: idPeserta, jenisPaket, nilaiSetoran, setoranDilakukan, sisaSetoran
+                
+                const mappedData = rawList.map(item => ({
+                    idPeserta: item.id,                 // Backend 'id' -> Frontend 'idPeserta'
+                    nama: item.nama,
+                    jenisPaket: item.paket,             // Backend 'paket' -> Frontend 'jenisPaket'
+                    nilaiSetoran: item.saldo,           // Backend 'saldo' -> Frontend 'nilaiSetoran'
+                    setoranDilakukan: item.tercapai,    // Backend 'tercapai' -> Frontend 'setoranDilakukan'
+                    totalSetoran: item.target,          // Backend 'target' -> Frontend 'totalSetoran'
+                    sisaSetoran: item.sisa_angsuran     // Backend 'sisa_angsuran' -> Frontend 'sisaSetoran'
+                }));
+
+                cachedDashboardData = mappedData; 
+                renderPesertaCards(mappedData, container);
+            } else {
+                container.innerHTML = '<p style="text-align:center; color:#ff6b6b;">Data kosong.</p>';
+            }
         } else { 
             container.innerHTML = '<p style="text-align:center; color:#ff6b6b;">Data tidak ditemukan.</p>'; 
         }
     }
 
     // Fungsi Render dipisah agar rapi (Peserta)
-    function renderPesertaCards(dataList, container) {
-        let html = '';
-        dataList.forEach(p => {
-            const done = p.setoranDilakukan || 0;
-            const target = p.totalSetoran || 330;
-            const sisa = p.sisaSetoran;
-            const percent = Math.min(100, (done/target)*100).toFixed(0);
-            const statusText = sisa <= 0 ? "LUNAS" : `${sisa}x lagi`;
+    // GANTI FUNGSI renderPesertaCards DENGAN INI:
+function renderPesertaCards(dataList, container) {
+    let html = '';
+    dataList.forEach(p => {
+        // --- PERBAIKAN: Validasi Angka agar tidak NaN/Error ---
+        let done = parseInt(p.setoranDilakukan);
+        let target = parseInt(p.totalSetoran);
+        let sisa = parseInt(p.sisaSetoran);
 
-            html += `
-                <div class="dashboard-card">
-                    <div class="dash-header">
-                        <h2 class="dash-name">${p.nama}</h2>
-                        <div class="dash-meta">
-                            <span class="dash-id">ID: ${p.idPeserta}</span>
-                            <span class="dash-badge">${p.jenisPaket}</span>
-                        </div>
+        // Jika data error/kosong, beri nilai default
+        if (isNaN(done)) done = 0;
+        if (isNaN(target) || target === 0) target = 330; // Default 330 agar tidak bagi nol
+        if (isNaN(sisa)) sisa = target - done;
+
+        let percent = 0;
+        if (target > 0) {
+            percent = Math.min(100, (done / target) * 100).toFixed(0);
+        }
+
+        const statusText = sisa <= 0 ? "LUNAS" : `${sisa}x lagi`;
+        // -------------------------------------------------------
+
+        html += `
+            <div class="dashboard-card">
+                <div class="dash-header">
+                    <h2 class="dash-name">${p.nama}</h2>
+                    <div class="dash-meta">
+                        <span class="dash-id">ID: ${p.idPeserta}</span>
+                        <span class="dash-badge">${p.jenisPaket}</span>
                     </div>
-                    <div class="prog-area">
-                        <div class="prog-info-top">
-                            <span>Progres</span>
-                            <span style="color:#ffd700; font-weight:bold;">${percent}%</span>
-                        </div>
-                        <div class="prog-track">
-                            <div class="prog-fill" style="width:${percent}%"></div>
-                        </div>
-                        <div class="prog-info-bottom">
-                            <span style="color:#4ade80;">✔ Terkumpul: ${done}x</span>
-                            <span style="color:#ff6b6b;">⏳ Kurang: ${statusText}</span>
-                        </div>
+                </div>
+                <div class="prog-area">
+                    <div class="prog-info-top">
+                        <span>Progres</span>
+                        <span style="color:#ffd700; font-weight:bold;">${percent}%</span>
                     </div>
-                    <div class="btn-action-group">
-                        <button class="btn-primary" onclick="bukaKalenderIndividu('${p.idPeserta}', '${encodeURIComponent(p.nama)}', '${encodeURIComponent(p.jenisPaket)}', ${done})">
-                            <i class="far fa-calendar-alt"></i> Cek Kalender
-                        </button>
-                        <button class="btn-danger" onclick="openCheckout('${p.idPeserta}', '${encodeURIComponent(p.nama)}', '${encodeURIComponent(p.jenisPaket)}', ${p.nilaiSetoran})">
-                            <i class="fas fa-sign-out-alt"></i> Berhenti / Checkout
-                        </button>
+                    <div class="prog-track">
+                        <div class="prog-fill" style="width:${percent}%"></div>
                     </div>
-                </div>`;
-        });
-        container.innerHTML = html;
-    }
+                    <div class="prog-info-bottom">
+                        <span style="color:#4ade80;">✔ Terkumpul: ${done}x</span>
+                        <span style="color:#ff6b6b;">⏳ Kurang: ${statusText}</span>
+                    </div>
+                </div>
+                <div class="btn-action-group">
+                    <button class="btn-primary" onclick="bukaKalenderIndividu('${p.idPeserta}', '${encodeURIComponent(p.nama)}', '${encodeURIComponent(p.jenisPaket)}', ${done})">
+                        <i class="far fa-calendar-alt"></i> Cek Kalender
+                    </button>
+                    <button class="btn-danger" onclick="openCheckout('${p.idPeserta}', '${encodeURIComponent(p.nama)}', '${encodeURIComponent(p.jenisPaket)}', ${p.nilaiSetoran})">
+                        <i class="fas fa-sign-out-alt"></i> Berhenti / Checkout
+                    </button>
+                </div>
+            </div>`;
+    });
+    container.innerHTML = html;
+}
 
    async function loadMitraDashboard(id) {
         const container = document.getElementById('mitra-container');
@@ -1073,49 +1139,61 @@
     }
 
     // Fungsi Render dipisah agar rapi (Mitra)
-    function renderMitraCards(dataList, container) {
-        let html = '';
-        dataList.forEach(p => {
-            const done = p.setoranDilakukan || 0;
-            const target = p.totalSetoran || 330;
-            const sisa = p.sisaSetoran;
-            const percent = Math.min(100, (done/target)*100).toFixed(0);
-            const statusText = sisa <= 0 ? "LUNAS" : `${sisa}x lagi`;
+    // GANTI FUNGSI renderMitraCards DENGAN INI:
+function renderMitraCards(dataList, container) {
+    let html = '';
+    dataList.forEach(p => {
+        // --- PERBAIKAN: Validasi Angka ---
+        let done = parseInt(p.setoranDilakukan);
+        let target = parseInt(p.totalSetoran);
+        let sisa = parseInt(p.sisaSetoran);
 
-            html += `
-                <div class="dashboard-card mitra-card">
-                    <div class="dash-header">
-                        <h2 class="dash-name">${p.nama}</h2>
-                        <div class="dash-meta">
-                            <span class="dash-id">ID: ${p.idPeserta}</span>
-                            <span class="dash-badge">${p.jenisPaket}</span>
-                        </div>
+        if (isNaN(done)) done = 0;
+        if (isNaN(target) || target === 0) target = 330;
+        if (isNaN(sisa)) sisa = target - done;
+
+        let percent = 0;
+        if (target > 0) {
+            percent = Math.min(100, (done / target) * 100).toFixed(0);
+        }
+        
+        const statusText = sisa <= 0 ? "LUNAS" : `${sisa}x lagi`;
+        // ---------------------------------
+
+        html += `
+            <div class="dashboard-card mitra-card">
+                <div class="dash-header">
+                    <h2 class="dash-name">${p.nama}</h2>
+                    <div class="dash-meta">
+                        <span class="dash-id">ID: ${p.idPeserta}</span>
+                        <span class="dash-badge">${p.jenisPaket}</span>
                     </div>
-                    <div class="prog-area">
-                        <div class="prog-info-top">
-                            <span>Progres</span>
-                            <span style="color:#ffd700; font-weight:bold;">${percent}%</span>
-                        </div>
-                        <div class="prog-track">
-                            <div class="prog-fill" style="width:${percent}%"></div>
-                        </div>
-                        <div class="prog-info-bottom">
-                            <span style="color:#4ade80;">✔ Terkumpul: ${done}x</span>
-                            <span style="color:#ff6b6b;">⏳ Kurang: ${statusText}</span>
-                        </div>
+                </div>
+                <div class="prog-area">
+                    <div class="prog-info-top">
+                        <span>Progres</span>
+                        <span style="color:#ffd700; font-weight:bold;">${percent}%</span>
                     </div>
-                    <div class="btn-action-group">
-                        <button class="btn-primary" onclick="bukaKalenderIndividu('${p.idPeserta}', '${encodeURIComponent(p.nama)}', '${encodeURIComponent(p.jenisPaket)}', ${done})">
-                            <i class="far fa-calendar-alt"></i> Cek Kalender
-                        </button>
-                        <button class="btn-danger" onclick="openCheckout('${p.idPeserta}', '${encodeURIComponent(p.nama)}', '${encodeURIComponent(p.jenisPaket)}', ${p.nilaiSetoran})">
-                            <i class="fas fa-sign-out-alt"></i> Berhenti / Checkout
-                        </button>
+                    <div class="prog-track">
+                        <div class="prog-fill" style="width:${percent}%"></div>
                     </div>
-                </div>`;
-        });
-        container.innerHTML = html;
-    }
+                    <div class="prog-info-bottom">
+                        <span style="color:#4ade80;">✔ Terkumpul: ${done}x</span>
+                        <span style="color:#ff6b6b;">⏳ Kurang: ${statusText}</span>
+                    </div>
+                </div>
+                <div class="btn-action-group">
+                    <button class="btn-primary" onclick="bukaKalenderIndividu('${p.idPeserta}', '${encodeURIComponent(p.nama)}', '${encodeURIComponent(p.jenisPaket)}', ${done})">
+                        <i class="far fa-calendar-alt"></i> Cek Kalender
+                    </button>
+                    <button class="btn-danger" onclick="openCheckout('${p.idPeserta}', '${encodeURIComponent(p.nama)}', '${encodeURIComponent(p.jenisPaket)}', ${p.nilaiSetoran})">
+                        <i class="fas fa-sign-out-alt"></i> Berhenti / Checkout
+                    </button>
+                </div>
+            </div>`;
+    });
+    container.innerHTML = html;
+}
 
     // === CHECKOUT LOGIC ===
     function openCheckout(id, nama, paket, saldo) {
