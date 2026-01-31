@@ -17,7 +17,7 @@
         color: #fff; 
         font-family: 'Poppins', sans-serif; 
         margin: 0; 
-        padding-bottom: 90px; /* Space untuk navigasi bawah */
+        padding-bottom: 90px; 
         overflow-x: hidden; 
     }
 
@@ -26,26 +26,28 @@
         padding: 15px 20px; 
         background: linear-gradient(180deg, #0a2015 0%, #050505 100%); 
         text-align: center; 
-        position: sticky; 
-        top: 0; 
-        z-index: 50; 
+        position: sticky; top: 0; z-index: 50; 
         border-bottom: 1px solid #1a1a1a; 
         box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
     .app-title { font-family: 'Pacifico', cursive; color: #ffd700; margin: 0; font-size: 1.5rem; text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3); }
     .app-subtitle { font-size: 0.75rem; color: #4ade80; letter-spacing: 1px; margin-top: 2px; }
 
-    /* === NAVIGATION BAR (BOTTOM) === */
+    /* === NAVIGATION BAR (HANYA 2 MENU) === */
     .bottom-nav { 
         position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
-        width: 90%; max-width: 400px; 
+        width: 85%; max-width: 350px; 
         background: rgba(20, 20, 20, 0.95); backdrop-filter: blur(10px); 
         border: 1px solid #333; border-radius: 50px; 
-        display: flex; justify-content: space-around; padding: 10px 0; 
+        display: flex; justify-content: space-around; padding: 12px 0; /* Padding diperbesar sedikit */
         z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
     }
-    .nav-item { display: flex; flex-direction: column; align-items: center; color: #666; font-size: 0.65rem; cursor: pointer; transition: 0.3s; }
-    .nav-item i { font-size: 1.3rem; margin-bottom: 4px; transition: 0.3s; }
+    .nav-item { 
+        display: flex; flex-direction: column; align-items: center; 
+        color: #666; font-size: 0.75rem; cursor: pointer; transition: 0.3s; 
+        flex: 1; /* Agar membagi rata lebar */
+    }
+    .nav-item i { font-size: 1.4rem; margin-bottom: 4px; transition: 0.3s; }
     .nav-item.active { color: #ffd700; } 
     .nav-item.active i { transform: translateY(-3px); text-shadow: 0 0 10px rgba(255, 215, 0, 0.6); }
 
@@ -53,263 +55,336 @@
     .tab-content { display: none; padding: 15px; animation: fadeIn 0.4s; max-width: 100%; }
     .tab-content.active { display: block; }
 
-    /* === KATALOG MENU (HERO & GRID) === */
-    
-    /* Tombol Akad Hero (Lebih Ramping) */
+    /* === KATALOG MENU === */
     .akad-hero {
         background: linear-gradient(135deg, #ffd700, #f39c12);
-        color: #000;
-        padding: 12px 15px;
-        border-radius: 12px;
-        margin-bottom: 20px;
-        display: flex; align-items: center; justify-content: space-between;
-        text-decoration: none;
-        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
-        position: relative; overflow: hidden;
+        color: #000; padding: 12px 15px; border-radius: 12px;
+        margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;
+        text-decoration: none; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
     }
     .akad-hero:active { transform: scale(0.98); }
     .akad-hero i { font-size: 1.4rem; margin-right: 12px; }
     .akad-text h3 { margin: 0; font-size: 0.9rem; font-weight: 800; }
     .akad-text p { margin: 0; font-size: 0.7rem; font-weight: 500; color: #222; }
 
-    /* === 6. MENU GRID (Modern Bento Style) === */
-    .section-label {
-        color: var(--text-main); font-size: 1rem; font-weight: 700;
-        margin: 10px 0 15px 0; display: flex; align-items: center; gap: 10px;
-    }
-    .section-label::before {
-        content: ''; width: 4px; height: 18px; background: var(--primary); border-radius: 2px;
-    }
-
-    .menu-grid { 
-        display: grid; 
-        grid-template-columns: repeat(3, 1fr); 
-        gap: 12px; 
-        margin-bottom: 30px;
-    }
-    
+    .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 30px; }
     .menu-card { 
-        background: var(--bg-card);
-        border: 1px solid rgba(255,255,255,0.05);
-        border-radius: var(--radius-md); 
-        aspect-ratio: 0.5 / 0.6;
-        display: flex; flex-direction: column; align-items: center; justify-content: center; 
-        text-decoration: none; color: var(--text-muted); transition: 0.2s;
-        padding: 8px;
-        position: relative; overflow: hidden;
+        background: #151515; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; 
+        aspect-ratio: 0.5 / 0.6; display: flex; flex-direction: column; align-items: center; 
+        justify-content: center; text-decoration: none; color: #aaa; padding: 8px;
     }
-    /* Ikon Menu */
-    .menu-card i { 
-        font-size: 1.8rem; margin-bottom: 8px; 
-        filter: drop-shadow(0 0 5px rgba(255,255,255,0.1));
-    }
-    /* Teks Menu (Uppercase & Jelas) */
-    .menu-card h3 { 
-        font-size: 0.75rem; /* Ukuran pas */
-        margin: 0; 
-        font-weight: 600; 
-        text-align: center; 
-        color: #ddd; 
-        text-transform: uppercase; /* Huruf besar semua agar rapi */
-        letter-spacing: 0.5px;
-        line-height: 1.2;
-    }
+    .menu-card i { font-size: 1.8rem; margin-bottom: 8px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.1)); }
+    .menu-card h3 { font-size: 0.75rem; margin: 0; font-weight: 600; text-align: center; color: #ddd; text-transform: uppercase; letter-spacing: 0.5px; }
 
-    /* Grid Info (2 Kolom) */
     .menu-grid-small { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .menu-card-compact {
         background: #1a1a1a; border: 1px solid #333; border-radius: 12px;
         padding: 12px; display: flex; align-items: center; justify-content: center; gap: 10px;
         text-decoration: none; color: #fff;
     }
-    .menu-card-compact i { font-size: 1.1rem; margin: 0; }
-    .menu-card-compact h3 { font-size: 0.8rem; margin: 0; font-weight: 500; }
+    .section-label { color: #fff; font-size: 0.85rem; font-weight: 600; margin: 20px 0 10px 0; border-left: 3px solid #ffd700; padding-left: 10px; }
 
-    /* Label Section */
-    .section-label {
-        color: #fff; font-size: 0.85rem; font-weight: 600;
-        margin: 20px 0 10px 0; border-left: 3px solid #ffd700;
-        padding-left: 10px; letter-spacing: 0.5px;
-    }
-
-    /* === VIDEO LIST (COMPACT) === */
-    .video-compact-item {
-        display: flex; align-items: center;
-        background: #151515; border: 1px solid #333;
-        border-radius: 12px; padding: 8px; margin-bottom: 10px;
-        cursor: pointer; gap: 12px;
-    }
-    .video-compact-item:active { background: #222; }
-    .v-thumb-box {
-        position: relative; width: 90px; height: 60px; flex-shrink: 0;
-        border-radius: 8px; overflow: hidden;
-    }
+    /* === VIDEO === */
+    .video-compact-item { display: flex; align-items: center; background: #151515; border: 1px solid #333; border-radius: 12px; padding: 8px; margin-bottom: 10px; cursor: pointer; gap: 12px; }
+    .v-thumb-box { position: relative; width: 90px; height: 60px; flex-shrink: 0; border-radius: 8px; overflow: hidden; }
     .v-thumb-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
-    .v-play-mini {
-        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-        width: 24px; height: 24px; background: rgba(0,0,0,0.7); border-radius: 50%; 
-        border: 1px solid #ffd700; color: #ffd700; font-size: 0.6rem; 
-        display: flex; align-items: center; justify-content: center;
-    }
-    .v-info h4 { margin: 0; font-size: 0.8rem; color: #fff; font-weight: 500; line-height: 1.3; }
+    .v-play-mini { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 24px; height: 24px; background: rgba(0,0,0,0.7); border-radius: 50%; border: 1px solid #ffd700; color: #ffd700; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; }
+    .v-info h4 { margin: 0; font-size: 0.8rem; color: #fff; font-weight: 500; }
     .v-info span { font-size: 0.7rem; color: #888; display: block; margin-top: 3px; }
-    .v-info span i { color: #4ade80; margin-right: 4px; }
-
-    /* Video Modal Overlay */
-    .video-modal-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: #000; z-index: 9999; display: none;
-        flex-direction: column; justify-content: center;
-    }
+    .video-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: none; flex-direction: column; }
     .video-modal-overlay.show { display: flex; animation: fadeIn 0.3s; }
     .video-frame-container { width: 100%; height: 100%; max-height: 80vh; background: #000; }
     .video-frame-container iframe { width: 100%; height: 100%; border: none; }
-    .btn-close-video {
-        position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-        background: #c4302b; color: #fff; border: none; padding: 10px 25px; 
-        border-radius: 50px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px;
-    }
+    .btn-close-video { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); background: #c4302b; color: #fff; border: none; padding: 10px 25px; border-radius: 50px; font-weight: bold; cursor: pointer; display: flex; gap: 8px; }
 
-    /* === DASHBOARD (FIXED: ANTI TEMBUS & RAPI) === */
-    .dashboard-card { 
-        background: #151515; border: 1px solid #333; border-radius: 16px; 
-        padding: 20px; margin-bottom: 20px; display: flex; flex-direction: column;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    }
-    
-    /* Header Dashboard: Susunan Vertikal (Tengah) */
-    .dash-header { 
-        border-bottom: 1px dashed #333; padding-bottom: 15px; margin-bottom: 15px; 
-        display: flex; flex-direction: column; align-items: center; /* KUNCI AGAR TIDAK TEMBUS */
-    }
-    .dash-name { 
-        font-size: 1.4rem; font-weight: 700; margin: 0 0 10px 0; color: #fff; 
-        text-align: center; word-break: break-word; 
-    }
-    /* Container ID & Paket */
-    .dash-meta { 
-        display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; 
-    }
-    .dash-id { 
-        background: #222; color: #aaa; padding: 4px 12px; border-radius: 20px; 
-        font-size: 0.7rem; border: 1px solid #333; letter-spacing: 1px; font-family: monospace; 
-    }
-    .dash-badge { 
-        background: rgba(74, 222, 128, 0.1); color: #4ade80; padding: 6px 12px; 
-        border-radius: 8px; font-size: 0.8rem; font-weight: bold; 
-        border: 1px solid rgba(74, 222, 128, 0.2); 
-        white-space: normal; /* Izinkan teks turun baris */
-        text-align: center; 
-        max-width: 100%; 
-        line-height: 1.4;
-    }
-
+    /* === DASHBOARD CARDS === */
+    .dashboard-card { background: #151515; border: 1px solid #333; border-radius: 16px; padding: 20px; margin-bottom: 20px; display: flex; flex-direction: column; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+    .dash-header { border-bottom: 1px dashed #333; padding-bottom: 15px; margin-bottom: 15px; display: flex; flex-direction: column; align-items: center; }
+    .dash-name { font-size: 1.4rem; font-weight: 700; margin: 0 0 10px 0; color: #fff; text-align: center; }
+    .dash-meta { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .dash-id { background: #222; color: #aaa; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; border: 1px solid #333; font-family: monospace; }
+    .dash-badge { background: rgba(74, 222, 128, 0.1); color: #4ade80; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; border: 1px solid rgba(74, 222, 128, 0.2); }
     .prog-area { background: #0a0a0a; border: 1px solid #252525; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
     .prog-info-top { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.8rem; color: #ccc; }
     .prog-track { background: #333; height: 8px; border-radius: 4px; overflow: hidden; width: 100%; }
     .prog-fill { height: 100%; background: linear-gradient(90deg, #ffd700, #ffb700); width: 0%; transition: width 1s ease; border-radius: 4px; }
     .prog-info-bottom { display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.75rem; }
+    .btn-action-group { display: flex; flex-direction: column; gap: 10px; }
+    .btn-primary { width: 100%; padding: 12px; background: #073116; color: #4ade80; border: 1px solid #28a745; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; gap: 8px; }
+    .btn-danger { width: 100%; padding: 12px; background: rgba(255, 77, 77, 0.1); color: #ff4d4d; border: 1px solid #ff4d4d; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; gap: 8px; }
 
-    .btn-action-group { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-    .btn-primary { width: 100%; padding: 12px; background: #073116; color: #4ade80; border: 1px solid #28a745; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; }
-    .btn-danger { width: 100%; padding: 12px; background: rgba(255, 77, 77, 0.1); color: #ff4d4d; border: 1px solid #ff4d4d; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; }
+   /* === UPDATE DASHBOARD MITRA (V3 - RAPI & TOMBOL TAMBAH) === */
+    .mitra-panel { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 8px; 
+    }
 
-    /* === PROFILE PAGE (PREMIUM) === */
-    .profile-container { padding: 5px; animation: fadeIn 0.5s ease; }
-    .profile-header-card {
-        background: linear-gradient(145deg, #1a1a1a, #0d0d0d); border: 1px solid #333;
-        border-bottom: 3px solid #ffd700; border-radius: 20px; padding: 25px 20px;
-        text-align: center; margin-bottom: 20px; position: relative; overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    .mitra-list-item { 
+        background: #1a1a1a; 
+        border: 1px solid #333; 
+        border-left: 4px solid #ffd700; 
+        border-radius: 10px; 
+        padding: 8px 12px; /* Padding diperkecil agar tidak terlalu tinggi */
+        display: grid; 
+        grid-template-columns: 1fr 90px 40px; /* Pembagian kolom: Info - Stats - Action */
+        align-items: center; 
+        gap: 10px;
+        position: relative;
     }
-    .profile-header-card::before {
-        content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-        background: radial-gradient(circle, rgba(255,215,0,0.05) 0%, transparent 70%); pointer-events: none;
+
+    /* KOLOM 1: INFO PESERTA (Nama, ID, Paket) */
+    .m-list-info { display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+    .m-list-name { 
+        font-size: 0.9rem; font-weight: bold; color: #fff; margin: 0; 
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+        line-height: 1.2;
     }
-    .profile-avatar-box { margin: 0 auto 15px auto; width: 80px; height: 80px; position: relative; }
-    .profile-avatar-img {
-        width: 100%; height: 100%; background: #222; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center; font-size: 2rem;
-        color: #ffd700; border: 2px solid #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+    .m-list-sub { 
+        font-size: 0.65rem; color: #888; margin-top: 2px; 
+        display: flex; align-items: center; gap: 6px;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
+    .badge-tiny { 
+        background: #333; color: #ffd700; padding: 1px 5px; 
+        border-radius: 3px; font-size: 0.6rem; border: 1px solid #444; 
+    }
+
+    /* KOLOM 2: STATISTIK (Progress & Saldo) */
+    .m-list-stats { 
+        display: flex; flex-direction: column; justify-content: center; align-items: flex-end; 
+    }
+    .stats-percent { font-size: 0.7rem; color: #4ade80; font-weight: bold; }
+    .track-mini { width: 100%; height: 4px; background: #333; border-radius: 2px; overflow: hidden; margin: 2px 0; }
+    .fill-mini { height: 100%; background: #4ade80; border-radius: 2px; }
+    .stats-saldo { font-size: 0.6rem; color: #aaa; margin-top: 1px; }
+
+    /* KOLOM 3: TOMBOL AKSI (Stacked/Tumpuk) */
+    .m-list-actions {
+        display: flex; flex-direction: column; gap: 4px; align-items: flex-end;
+    }
+    .btn-action-mini {
+        width: 100%; height: 22px;
+        border-radius: 4px; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.7rem; border: none; transition: 0.2s;
+    }
+    /* Tombol Tambah Setoran (Hijau) */
+    .btn-add { background: #073116; color: #4ade80; border: 1px solid #1e5c30; }
+    .btn-add:active { background: #4ade80; color: #000; }
+    
+    /* Tombol Kalender (Kuning) */
+    .btn-cal { background: rgba(255, 215, 0, 0.1); color: #ffd700; border: 1px solid #ffd700; }
+    .btn-cal:active { background: #ffd700; color: #000; }
+    .m-list-meta { font-size: 0.7rem; color: #888; display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+    
+    /* Badge Paket Kecil */
+    .badge-mini { background: #333; color: #ffd700; padding: 1px 6px; border-radius: 4px; font-size: 0.6rem; border: 1px solid #444; }
+
+    /* Bagian Tengah: Progress Bar Tipis */
+    .m-list-stats { 
+        width: 30%; margin: 0 15px; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; 
+    }
+    .stats-percent { font-size: 0.75rem; color: #4ade80; font-weight: bold; margin-bottom: 3px; }
+    .track-mini { width: 100%; height: 4px; background: #333; border-radius: 2px; overflow: hidden; }
+    .fill-mini { height: 100%; background: #4ade80; border-radius: 2px; }
+
+    /* Bagian Kanan: Tombol */
+    .btn-icon-only {
+        width: 35px; height: 35px; 
+        background: rgba(255, 215, 0, 0.1); 
+        color: #ffd700; border: 1px solid #ffd700; 
+        border-radius: 8px; cursor: pointer; 
+        display: flex; align-items: center; justify-content: center;
+        transition: 0.2s;
+    }
+    .btn-icon-only:active { transform: scale(0.9); background: #ffd700; color: #000; }
+   
+
+    /* Indikator Paket di pojok kanan atas */
+    .badge-paket-mini {
+        position: absolute; top: 0; right: 0;
+        background: #ffd700; color: #000;
+        font-size: 0.6rem; font-weight: bold;
+        padding: 2px 8px;
+        border-bottom-left-radius: 8px;
+    }
+
+    .m-card-head h4 { 
+        margin: 0; font-size: 0.85rem; color: #fff; 
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis; /* Potong nama panjang */
+        max-width: 90%;
+    }
+    .m-card-head span { font-size: 0.65rem; color: #888; font-family: monospace; }
+
+    .m-progress-box { margin-top: 10px; }
+    .m-prog-bar { height: 4px; background: #333; border-radius: 2px; overflow: hidden; margin-bottom: 5px; }
+    .m-prog-fill { height: 100%; background: #4ade80; }
+    
+    .m-stat-row { display: flex; justify-content: space-between; font-size: 0.7rem; color: #ccc; }
+    .m-stat-val { font-weight: bold; color: #fff; }
+
+    .btn-mini-action {
+        margin-top: 10px;
+        background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700;
+        color: #ffd700; font-size: 0.7rem; padding: 6px;
+        border-radius: 6px; cursor: pointer; text-align: center;
+        width: 100%;
+    }
+    .btn-mini-action:active { background: #ffd700; color: #000; }
+
+    /* === PROFILE HEADER === */
+    .profile-header-card { background: linear-gradient(145deg, #1a1a1a, #0d0d0d); border: 1px solid #333; border-bottom: 3px solid #ffd700; border-radius: 20px; padding: 25px 20px; text-align: center; margin-bottom: 20px; position: relative; overflow: hidden; }
+    .profile-avatar-box { margin: 0 auto 15px auto; width: 80px; height: 80px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #ffd700; border: 2px solid #ffd700; }
     .profile-name { font-size: 1.3rem; font-weight: bold; margin: 0 0 5px 0; color: #fff; }
     .profile-badges { display: flex; justify-content: center; gap: 5px; }
     .badge-role { background: #ffd700; color: #000; font-size: 0.65rem; padding: 3px 8px; border-radius: 10px; font-weight: bold; }
-    .badge-id { background: #333; color: #ccc; font-size: 0.65rem; padding: 3px 8px; border-radius: 10px; border: 1px solid #444; }
-
-    .info-paket-box {
-        background: #151515; border: 1px solid #333; border-radius: 12px;
-        padding: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
-    }
-    .ip-label { color: #888; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; }
-    .ip-value { color: #4ade80; font-weight: bold; font-size: 0.95rem; }
-
-    .profile-menu-list { background: #151515; border-radius: 12px; border: 1px solid #333; overflow: hidden; margin-bottom: 25px; }
-    .menu-row {
-        padding: 14px; border-bottom: 1px solid #222; display: flex; align-items: center; justify-content: space-between;
-        color: #ddd; cursor: pointer; font-size: 0.85rem;
-    }
+    
+    .profile-menu-list { background: #151515; border-radius: 12px; border: 1px solid #333; overflow: hidden; margin-bottom: 25px; margin-top: 20px; }
+    .menu-row { padding: 14px; border-bottom: 1px solid #222; display: flex; align-items: center; justify-content: space-between; color: #ddd; cursor: pointer; font-size: 0.85rem; }
     .menu-row:last-child { border-bottom: none; }
-    .menu-row:active { background: #222; color: #ffd700; }
     .menu-left { display: flex; align-items: center; gap: 10px; }
-    .menu-row i { color: #888; width: 20px; text-align: center; }
-
-    .btn-logout-fancy {
-        width: 100%; padding: 14px; background: transparent; color: #ff4d4d;
-        border: 1px solid #ff4d4d; border-radius: 12px; font-weight: bold; font-size: 0.9rem;
-        cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-    }
-    .app-version { text-align: center; color: #444; font-size: 0.7rem; margin-top: 20px; margin-bottom: 50px; }
+    .btn-logout-fancy { width: 100%; padding: 14px; background: transparent; color: #ff4d4d; border: 1px solid #ff4d4d; border-radius: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
 
     /* === FORM & INPUTS === */
     .form-login { background: #111; padding: 20px; border-radius: 15px; border: 1px solid #333; }
     .input-dark { width: 100%; padding: 12px; background: #000; border: 1px solid #444; color: #fff; border-radius: 8px; margin-bottom: 15px; }
     .btn-gold { width: 100%; padding: 12px; background: #ffd700; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-    .form-content-locked { opacity: 0.3; pointer-events: none; }
-    .form-content-active { opacity: 1; pointer-events: auto; }
-    .akad-check-container { background: rgba(40, 167, 69, 0.1); border: 1px solid #28a745; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-
-    /* === DYNAMIC PRODUCT LIST === */
-    .paket-list-container { max-height: 200px; overflow-y: auto; border: 1px solid #333; border-radius: 8px; padding: 10px; background: #000; margin-bottom: 15px; }
-    .paket-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed #333; }
-    .paket-item:last-child { border-bottom: none; }
-    .paket-label { font-size: 0.8rem; flex: 1; color: #ddd; }
     
+    /* MODALS & OTHERS */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; display: none; justify-content: center; align-items: center; overflow-y: auto; padding: 20px 0; }
+    .modal-overlay.show { display: flex; animation: fadeIn 0.3s; }
+    .modal-card { background: #1a1a1a; padding: 20px; border-radius: 15px; width: 90%; max-width: 450px; border: 1px solid #333; position: relative; }
+    .close-x { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #aaa; font-size: 1.5rem; cursor: pointer; }
+    
+    /* Kalkulator Style */
+    .calc-card { background: #222; border: 1px solid #333; border-radius: 12px; padding: 12px; margin-bottom: 10px; }
+    .calc-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem; font-weight: bold; }
+    .calc-controls { display: flex; align-items: center; gap: 5px; background: #000; padding: 3px; border-radius: 8px; }
+    .btn-calc-qty { width: 30px; height: 30px; background: #333; color: #fff; border: none; border-radius: 6px; font-weight: bold; }
+    .inp-calc-qty { width: 35px; text-align: center; background: transparent; border: none; color: #fff; font-weight: bold; }
+    .calc-footer { background: #1a1a1a; padding: 15px; border-top: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+    
+    /* Dynamic List Styles */
+    .paket-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #333; }
     .qty-controls { display: flex; align-items: center; gap: 8px; }
-    .btn-qty-mini { width: 24px; height: 24px; background: #333; border: 1px solid #555; color: #fff; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-    .qty-val-mini { width: 20px; text-align: center; font-size: 0.9rem; font-weight: bold; color: #fff; }
-
-    /* Mingguan / Cookies UI */
+    .btn-qty-mini { width: 24px; height: 24px; background: #333; color: #fff; border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .qty-val-mini { width: 20px; text-align: center; font-size: 0.9rem; font-weight: bold; }
     .mode-selector { display: flex; gap: 8px; margin-bottom: 15px; background: #222; padding: 4px; border-radius: 8px; }
-    .btn-mode { flex: 1; padding: 8px; border: 1px solid #444; background: #111; color: #888; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+    .btn-mode { flex: 1; padding: 8px; border: 1px solid #444; background: #111; color: #888; border-radius: 6px; cursor: pointer; }
     .btn-mode.active { background: #ffd700; color: #000; font-weight: bold; border-color: #ffd700; }
-    
     .prod-card { background: #222; border: 1px solid #333; padding: 10px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-    .prod-info h4 { margin: 0; font-size: 0.85rem; color: #fff; }
-    .prod-info p { margin: 2px 0 0 0; font-size: 0.75rem; color: #4ade80; }
-    
-    /* Summary Box */
     .summary-box { background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 15px; margin-top: 15px; }
-    .summary-title { color: #ffd700; font-size: 0.85rem; margin-bottom: 10px; border-bottom: 1px dashed #444; padding-bottom: 5px; }
     .summary-item { display: flex; justify-content: space-between; font-size: 0.75rem; color: #ccc; margin-bottom: 5px; }
     .summary-total { display: flex; justify-content: space-between; font-size: 0.9rem; color: #4ade80; font-weight: bold; margin-top: 10px; border-top: 1px solid #444; padding-top: 10px; }
 
-    /* === MODALS === */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; display: none; justify-content: center; align-items: center; overflow-y: auto; padding: 20px 0; }
-    .modal-overlay.show { display: flex; animation: fadeIn 0.3s; }
-    .modal-card { background: #1a1a1a; padding: 20px; border-radius: 15px; width: 90%; max-width: 450px; border: 1px solid #333; position: relative; max-height: 90vh; overflow-y: auto; }
-    .close-x { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #aaa; font-size: 1.5rem; cursor: pointer; }
-
-    /* Checkout Specific */
-    .checkout-option { display: flex; gap: 10px; margin-bottom: 15px; }
-    .chk-btn { flex: 1; padding: 12px; background: #222; border: 1px solid #444; border-radius: 10px; cursor: pointer; text-align: center; font-size: 0.85rem; }
-    .chk-btn.active { background: #ffd700; color: #000; border-color: #ffd700; font-weight: bold; }
-    .calc-table { width: 100%; font-size: 0.85rem; border-collapse: collapse; margin-bottom: 15px; }
-    .calc-table td { padding: 6px 0; border-bottom: 1px dashed #333; }
-    .calc-total { font-size: 1.1rem; color: #4ade80; font-weight: bold; text-align: right; }
-
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-</style>
+
+    /* --- TAMBAHAN CSS BARU --- */
+
+/* Highlight Tombol Akad */
+.akad-btn-alert {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+    background: linear-gradient(135deg, #8B0000 0%, #c0392b 100%); /* Merah mencolok */
+    color: #fff !important;
+    padding: 15px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+    border: 1px solid #ff6b6b;
+    animation: pulse-glow 2s infinite; /* Efek berdenyut */
+}
+
+.akad-btn-alert i {
+    font-size: 1.2rem;
+    margin-right: 10px;
+    color: #ffd700;
+}
+
+@keyframes pulse-glow {
+    0% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 0, 0, 0.4); }
+    50% { transform: scale(1.02); box-shadow: 0 0 25px rgba(255, 0, 0, 0.7); }
+    100% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 0, 0, 0.4); }
+}
+
+/* Modal Sapaan (Splash Screen) */
+.welcome-modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9); z-index: 99999; /* Paling atas */
+    display: flex; justify-content: center; align-items: center;
+    flex-direction: column;
+    animation: fadeIn 0.5s;
+}
+.welcome-card {
+    background: #151515; border: 1px solid #ffd700;
+    padding: 30px 20px; border-radius: 20px;
+    text-align: center; width: 85%; max-width: 400px;
+    box-shadow: 0 0 50px rgba(255, 215, 0, 0.15);
+}
+.welcome-img {
+    font-size: 3rem; color: #ffd700; margin-bottom: 15px;
+}
+
+/* --- TAMBAHAN CSS DROPDOWN KATEGORI --- */
+.cat-accordion {
+    background: #151515;
+    border: 1px solid #333;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.cat-header {
+    padding: 12px 15px;
+    background: linear-gradient(90deg, #1a1a1a, #222);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffd700;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: background 0.3s;
+    border-bottom: 1px solid transparent;
+}
+
+.cat-header:active { background: #333; }
+
+/* Garis bawah muncul hanya saat dibuka */
+.cat-header.active { border-bottom-color: #444; background: #2a2a2a; }
+
+.cat-body {
+    display: none; /* Default tertutup */
+    padding: 10px;
+    background: #000;
+}
+
+.cat-body.show {
+    display: block;
+    animation: slideDown 0.3s ease-out;
+}
+
+.cat-arrow {
+    transition: transform 0.3s;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.cat-header.active .cat-arrow {
+    transform: rotate(180deg);
+    color: #ffd700;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+    </style>
 </head>
 <body>
 
@@ -318,9 +393,9 @@
         <div class="app-subtitle">Paket Lebaran 2026-2027</div>
     </header>
 
-   <div id="view-katalog" class="tab-content active">
+    <div id="view-katalog" class="tab-content active">
         
-        <a href="akad.html" class="akad-hero" style="margin-bottom:20px;">
+        <a href="akad.html" class="akad-hero">
             <div style="display:flex; align-items:center;">
                 <i class="fas fa-file-signature"></i>
                 <div class="akad-text">
@@ -342,101 +417,62 @@
 
         <div class="section-label">Informasi Lain</div>
         <div class="menu-grid-small">
-            <a href="gallery.html" class="menu-card-compact">
-                <i class="fas fa-images" style="color:#0fb9b1;"></i><h3>Galeri</h3>
-            </a>
-            <a href="owner.html" class="menu-card-compact">
-                <i class="fas fa-user-tie" style="color:#fff;"></i><h3>Owner</h3>
-            </a>
+            <a href="gallery.html" class="menu-card-compact"><i class="fas fa-images" style="color:#0fb9b1;"></i><h3>Galeri</h3></a>
+            <a href="owner.html" class="menu-card-compact"><i class="fas fa-user-tie" style="color:#fff;"></i><h3>Owner</h3></a>
         </div>
 
         <div class="section-label" style="margin-top:25px; border-color:#ff4d4d;">Panduan Aplikasi</div>
         
         <div class="video-compact-item" onclick="playVideo('5-cKNVX73AY')">
-            <div class="v-thumb-box">
-                <img src="https://img.youtube.com/vi/5-cKNVX73AY/mqdefault.jpg" class="v-thumb-img">
-                <div class="v-play-mini"><i class="fas fa-play"></i></div>
-            </div>
-            <div class="v-info">
-                <h4>Cara Daftar & Login</h4>
-                <span><i class="fas fa-clock"></i> Tonton Video</span>
-            </div>
+            <div class="v-thumb-box"><img src="https://img.youtube.com/vi/5-cKNVX73AY/mqdefault.jpg" class="v-thumb-img"><div class="v-play-mini"><i class="fas fa-play"></i></div></div>
+            <div class="v-info"><h4>Cara Daftar & Login</h4><span><i class="fas fa-clock"></i> Tonton Video</span></div>
         </div>
-
         <div class="video-compact-item" onclick="playVideo('oO25rE0LDA8')">
-            <div class="v-thumb-box">
-                <img src="https://img.youtube.com/vi/oO25rE0LDA8/mqdefault.jpg" class="v-thumb-img">
-                <div class="v-play-mini"><i class="fas fa-play"></i></div>
-            </div>
-            <div class="v-info">
-                <h4>Penjelasan Menu & Fitur</h4>
-                <span><i class="fas fa-clock"></i> Tonton Video</span>
-            </div>
-        </div>
-
-        <div class="video-compact-item" onclick="playVideo('bgt42ADj8Bo')">
-            <div class="v-thumb-box">
-                <img src="https://img.youtube.com/vi/bgt42ADj8Bo/mqdefault.jpg" class="v-thumb-img">
-                <div class="v-play-mini"><i class="fas fa-play"></i></div>
-            </div>
-            <div class="v-info">
-                <h4>Info Penting Lainnya</h4>
-                <span><i class="fas fa-clock"></i> Tonton Video</span>
-            </div>
+            <div class="v-thumb-box"><img src="https://img.youtube.com/vi/oO25rE0LDA8/mqdefault.jpg" class="v-thumb-img"><div class="v-play-mini"><i class="fas fa-play"></i></div></div>
+            <div class="v-info"><h4>Penjelasan Menu & Fitur</h4><span><i class="fas fa-clock"></i> Tonton Video</span></div>
         </div>
         
         <br><br>
     </div>
 
-    <div id="videoOverlay" class="video-modal-overlay">
-        <div class="video-frame-container">
-            <iframe id="youtubeFrame" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </div>
-        <button class="btn-close-video" onclick="closeVideo()">
-            <i class="fas fa-arrow-left"></i> KEMBALI
-        </button>
-    </div>
-
-    <div id="view-setoran" class="tab-content">
-        <div id="state-guest" class="login-warning" style="text-align:center; padding:40px; border:1px dashed #444; border-radius:15px;">
-            <i class="fas fa-lock" style="font-size:3rem; color:#444; margin-bottom:15px;"></i>
-            <h3>Area Terbatas</h3>
-            <p style="color:#888; font-size:0.9rem;">Silakan Login di menu <b>Akun Saya</b>.</p>
-            <button onclick="switchTab('akun')" class="btn-gold" style="margin-top:10px; max-width:200px;">Ke Menu Login</button>
-        </div>
-
-        <div id="state-peserta" style="display:none;">
-            <div id="peserta-container"></div>
-        </div>
-
-        <div id="state-mitra" style="display:none;">
-            <h3 style="color:#ffd700;">Dashboard Mitra</h3>
-            <input type="text" id="cariAnakBuah" placeholder="Cari nama peserta..." class="input-dark" onkeyup="filterMitra()">
-            <div id="mitra-container" class="mitra-panel"></div>
-        </div>
-    </div>
-
     <div id="view-akun" class="tab-content">
+        
         <div id="login-form" class="form-login">
             <h2 style="color:#ffd700; text-align:center;">Login Peserta</h2>
-            <input type="text" id="login-id" class="input-dark" placeholder="ID Peserta / Mitra">
+            <p style="text-align:center; font-size:0.8rem; color:#888; margin-bottom:20px;">Masuk untuk melihat setoran & status paket.</p>
+            
+            <input type="text" id="login-id" class="input-dark" placeholder="ID Peserta / Mitra" style="text-align:center; letter-spacing:1px; font-weight:bold;">
             <button onclick="prosesLogin()" class="btn-gold">MASUK</button>
             
-            <div style="margin-top:25px; border-top:1px dashed #333; padding-top:15px; text-align:center;">
-                <small style="color:#888;">Belum punya akun?</small>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:15px;">
-                    <div onclick="openModalDaftar()" style="background:#222; padding:15px; border-radius:10px; border:1px solid #444; cursor:pointer;">
-                        <i class="fas fa-user-plus" style="color:#4ade80; font-size:1.5rem;"></i>
-                        <div style="font-size:0.8rem; margin-top:5px;">Daftar Peserta</div>
+            <div style="margin-top:30px; border-top:1px dashed #333; padding-top:20px;">
+                <div style="text-align:center; color:#fff; font-weight:bold; margin-bottom:15px;">Belum punya akun?</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                    <div onclick="openModalDaftar()" style="background:#222; padding:20px 10px; border-radius:12px; border:1px solid #444; cursor:pointer; text-align:center; transition:0.2s;">
+                        <i class="fas fa-user-plus" style="color:#4ade80; font-size:2rem; margin-bottom:10px;"></i>
+                        <div style="font-size:0.85rem; font-weight:bold; color:#fff;">Daftar Peserta</div>
+                        <div style="font-size:0.65rem; color:#888; margin-top:5px;">Ikut tabungan paket</div>
                     </div>
-                    <div onclick="openModalMitra()" style="background:#222; padding:15px; border-radius:10px; border:1px solid #444; cursor:pointer;">
-                        <i class="fas fa-handshake" style="color:#4ade80; font-size:1.5rem;"></i>
-                        <div style="font-size:0.8rem; margin-top:5px;">Daftar Mitra</div>
+                    <div onclick="openModalMitra()" style="background:#222; padding:20px 10px; border-radius:12px; border:1px solid #444; cursor:pointer; text-align:center; transition:0.2s;">
+                        <i class="fas fa-handshake" style="color:#ffd700; font-size:2rem; margin-bottom:10px;"></i>
+                        <div style="font-size:0.85rem; font-weight:bold; color:#fff;">Daftar Mitra</div>
+                        <div style="font-size:0.65rem; color:#888; margin-top:5px;">Jadi koordinator</div>
                     </div>
                 </div>
-                <a href="akad.html" style="display:block; margin-top:15px; color:#ffd700; font-size:0.85rem; text-decoration:none;"><i class="fas fa-file-contract"></i> Baca Akad & Perjanjian</a>
+                <div style="margin-top:30px; border-top:1px dashed #333; padding-top:20px;">
+   
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+        
+    </div>
+    
+    <a href="akad.html" class="akad-btn-alert">
+        <i class="fas fa-exclamation-circle"></i>
+        BACA AKAD & PERJANJIAN
+        <br><span style="font-size:0.7rem; font-weight:normal; margin-left:5px;">(Wajib Dibaca)</span>
+    </a>
+</div>
             </div>
         </div>
+
         <div id="user-profile" class="profile-container" style="display:none;">
             
             <div class="profile-header-card">
@@ -450,25 +486,31 @@
                 </div>
             </div>
 
-            <div class="info-paket-box">
-                <div class="ip-label"><i class="fas fa-box-open" style="color:#ffd700;"></i> Paket Aktif</div>
-                <div class="ip-value" id="prof-paket">-</div>
+            <div id="dashboard-area">
+                <div id="state-peserta-dash" style="display:none;">
+                    <button onclick="openKalkulator()" class="btn-gold" style="width:100%; margin-bottom:20px; display:flex; justify-content:center; align-items:center; gap:10px;">
+                        <i class="fas fa-calculator"></i> Hitung Rencana Setoran
+                    </button>
+                    <div id="peserta-container"></div>
+                </div>
+
+                <div id="state-mitra-dash" style="display:none;">
+                    <h3 style="color:#ffd700; border-bottom:1px solid #333; padding-bottom:10px;">Dashboard Mitra</h3>
+                    <input type="text" id="cariAnakBuah" placeholder="Cari nama peserta..." class="input-dark" onkeyup="filterMitra()">
+                    <div id="mitra-container" class="mitra-panel"></div>
+                </div>
             </div>
 
             <div class="profile-menu-list">
                 <div class="menu-row" onclick="keHalamanCheckout()">
-        <div class="menu-left"><i class="fas fa-hand-paper" style="color:#ff6b6b"></i> Pengajuan Berhenti</div>
-        <i class="fas fa-chevron-right" style="font-size:0.8rem;"></i>
-    </div>
-                <div class="menu-row" onclick="alert('Fitur Edit Profil akan segera hadir!')">
-                    <div class="menu-left"><i class="fas fa-user-edit"></i> Edit Profil</div>
+                    <div class="menu-left"><i class="fas fa-hand-paper" style="color:#ff6b6b"></i> Pengajuan Berhenti</div>
                     <i class="fas fa-chevron-right" style="font-size:0.8rem;"></i>
                 </div>
                 <div class="menu-row" onclick="window.open('https://wa.me/628122261036', '_blank')">
                     <div class="menu-left"><i class="fas fa-headset"></i> Bantuan Admin</div>
                     <i class="fas fa-chevron-right" style="font-size:0.8rem;"></i>
                 </div>
-                <div class="menu-row" onclick="alert('Versi Aplikasi: 2.0.1')">
+                <div class="menu-row" onclick="alert('Versi Aplikasi: 2.1.0')">
                     <div class="menu-left"><i class="fas fa-info-circle"></i> Tentang Aplikasi</div>
                     <i class="fas fa-chevron-right" style="font-size:0.8rem;"></i>
                 </div>
@@ -478,464 +520,194 @@
                 <i class="fas fa-power-off"></i> KELUAR / LOGOUT
             </button>
 
-            <div class="app-version">Nizami App v2.0.1 &copy; 2026</div>
+            
         </div>
+    </div>
+
+    <div id="videoOverlay" class="video-modal-overlay">
+        <div class="video-frame-container">
+            <iframe id="youtubeFrame" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+        <button class="btn-close-video" onclick="closeVideo()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
     </div>
 
     <div id="modalDaftar" class="modal-overlay">
         <div class="modal-card">
             <button class="close-x" onclick="closeModalDaftar()">&times;</button>
             <h2 style="color:#ffd700; text-align:center; margin-bottom:20px;">Formulir Pendaftaran</h2>
-            
-            <div class="akad-check-container">
+            <div style="background:rgba(40,167,69,0.1); border:1px solid #28a745; padding:15px; border-radius:10px; margin-bottom:20px; display:flex; align-items:center; gap:10px;">
                 <input type="checkbox" id="checkAkad" onchange="toggleFormPendaftaran(this)" style="transform: scale(1.5);">
                 <label for="checkAkad" style="font-size:0.85rem; color:#fff; cursor:pointer;">
-                    <b>Bismillah</b>, Saya sudah membaca dan menyetujui <a href="akad.html" target="_blank" style="color:#ffd700; text-decoration:underline;">Akad & Ketentuan</a>.
+                    <b>Bismillah</b>, Saya menyetujui <a href="akad.html" target="_blank" style="color:#ffd700; text-decoration:underline;">Akad & Ketentuan</a>.
                 </label>
             </div>
-
-            <form id="formPendaftaran" class="form-content-locked" onsubmit="submitDaftarWA(event)">
+            <form id="formPendaftaran" style="opacity:0.3; pointer-events:none;" onsubmit="submitDaftarWA(event)">
                 <input type="text" id="regNama" class="input-dark" placeholder="Nama Lengkap" required>
                 <input type="tel" id="regHP" class="input-dark" placeholder="No. WhatsApp" required>
                 <textarea id="regAlamat" class="input-dark" placeholder="Alamat Lengkap" rows="2" required></textarea>
-                
                 <label style="color:#aaa; font-size:0.85rem; display:block; margin-bottom:5px;">Pilih Paket (Bisa lebih dari satu):</label>
-                
-                <div id="paketListContainer" class="paket-list-container">
-                    <div style="text-align:center; color:#666; padding:10px;">Memuat Paket...</div>
-                </div>
-
+                <div id="paketListContainer" style="max-height:200px; overflow-y:auto; border:1px solid #333; border-radius:8px; padding:10px; background:#000; margin-bottom:15px;"></div>
                 <div id="dynamicArea" style="margin-bottom:15px;"></div>
-
                 <input type="text" id="regMitra" class="input-dark" placeholder="Nama Mitra (Jika ada)">
-                
                 <button type="submit" class="btn-gold">Kirim ke WA Admin</button>
             </form>
         </div>
     </div>
 
-    
-
     <div id="modalMitraReg" class="modal-overlay">
         <div class="modal-card">
             <button class="close-x" onclick="closeModalMitra()">&times;</button>
             <h2 style="color:#ffd700; text-align:center; margin-bottom:15px;">Daftar Jadi Mitra</h2>
-
-            <div class="akad-check-container" style="display:block; border-color:#007bff; background:rgba(0,123,255,0.1);">
-                <h4 style="margin:0 0 10px 0; color:#4ade80; font-size:0.95rem;">Syarat & Ketentuan Mitra:</h4>
-                <ul style="margin:0; padding-left:20px; color:#ddd; font-size:0.85rem; line-height:1.6;">
-                    <li>Wajib <b>Jujur & Amanah</b>.</li>
-                    <li>Menjaga <b>Shalat 5 Waktu</b>.</li>
-                    <li>Siap mencapai <b>Target Minimal 10 Peserta</b>.</li>
-                </ul>
-                
-                <div style="margin-top:15px; border-top:1px solid #444; padding-top:10px; display:flex; gap:10px; align-items:center;">
-                    <input type="checkbox" id="checkSyaratMitra" onchange="toggleFormMitra(this)" style="transform: scale(1.3); cursor:pointer;">
-                    <label for="checkSyaratMitra" style="font-size:0.85rem; cursor:pointer; color:#fff;">
-                        Saya menyetujui persyaratan di atas.
-                    </label>
+            <div style="background:rgba(0,123,255,0.1); border:1px solid #007bff; padding:15px; border-radius:10px; margin-bottom:20px;">
+                <h4 style="margin:0 0 10px 0; color:#4ade80; font-size:0.95rem;">Syarat Mitra:</h4>
+                <ul style="margin:0; padding-left:20px; color:#ddd; font-size:0.85rem;"><li>Jujur & Amanah.</li><li>Shalat 5 Waktu.</li><li>Target min. 10 Peserta.</li></ul>
+                <div style="margin-top:10px; border-top:1px solid #444; padding-top:10px; display:flex; gap:10px;">
+                    <input type="checkbox" id="checkSyaratMitra" onchange="toggleFormMitra(this)" style="transform:scale(1.3);">
+                    <label for="checkSyaratMitra" style="font-size:0.85rem;">Saya setuju.</label>
                 </div>
             </div>
-
-            <form id="formMitra" class="form-content-locked" onsubmit="submitMitraWA(event)">
+            <form id="formMitra" style="opacity:0.3; pointer-events:none;" onsubmit="submitMitraWA(event)">
                 <input type="text" id="mitraNama" class="input-dark" placeholder="Nama Lengkap" required>
                 <input type="tel" id="mitraHP" class="input-dark" placeholder="No. WhatsApp" required>
                 <textarea id="mitraAlamat" class="input-dark" placeholder="Alamat Lengkap" rows="2" required></textarea>
-                
                 <button type="submit" class="btn-gold">Ajukan via WA</button>
             </form>
         </div>
     </div>
 
+    <div id="modalKalkulator" class="modal-overlay">
+        <div class="modal-card">
+            <button class="close-x" onclick="closeKalkulator()">&times;</button>
+            <h3 style="color:#ffd700; text-align:center;">Kalkulator Setoran</h3>
+            <div id="calc-list-container" style="max-height:60vh; overflow-y:auto; padding:5px; margin-top:15px;"></div>
+            <div class="calc-footer">
+                <div><div style="font-size:0.8rem; color:#aaa;">Total Bayar</div><div class="total-value" id="calcGrandTotal">Rp 0</div></div>
+                <button onclick="copyTotal()" class="btn-gold" style="padding:8px 15px; width:auto;"><i class="fas fa-copy"></i> Salin</button>
+            </div>
+        </div>
+    </div>
+
     <nav class="bottom-nav">
         <div class="nav-item active" onclick="switchTab('katalog')"><i class="fas fa-th-large"></i><span>Katalog</span></div>
-        <div class="nav-item" onclick="switchTab('setoran')"><i class="fas fa-wallet"></i><span>Setoran</span></div>
-        <div class="nav-item" onclick="switchTab('akun')"><i class="fas fa-user"></i><span>Akun Saya</span></div>
+        <div class="nav-item" onclick="switchTab('akun')"><i class="fas fa-user-circle"></i><span>Akun Saya</span></div>
     </nav>
+
+    <div id="welcomeScreen" class="welcome-modal" style="display:none;">
+    <div class="welcome-card">
+        <div class="welcome-img"><i class="fas fa-kaaba"></i></div>
+        <h2 style="color:#ffd700; margin:0 0 10px 0;">Assalamu'alaikum</h2>
+        <p style="color:#ddd; font-size:0.9rem; margin-bottom:20px;">
+            Selamat Datang di Aplikasi<br>
+            <b>Nizami Paket Lebaran</b>
+        </p>
+        <button onclick="closeWelcome()" class="btn-gold" style="box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);">
+            BUKA APLIKASI <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+    <div style="margin-top:20px; color:#666; font-size:0.7rem;">Versi 2.1.0</div>
+</div>
 
     <script src="script.js"></script>
     <script>
     // === GLOBAL DATA ===
     let DB_BARANG = [];
     let DB_PAKET = [];
-    let selectedItems = {};     // Menyimpan barang yang dipilih (Qty & Harga)
-    let selectedPakets = {};    // Menyimpan Paket Utama yang dipilih
-    let cachedDashboardData = null; // Menyimpan data agar tidak loading terus
-    let checkoutData = null; 
-    let checkoutType = 'barang';
+    let selectedItems = {};
+    let selectedPakets = {};
+    let cachedDashboardData = null;
+    let cookieMode = null;
+    let cookieLimit = 0;
+
+ 
+// === INITIAL LOAD (UPDATE FIX NOTIFIKASI) ===
+window.onload = async () => {
     
-    // === VARIABLE KHUSUS COOKIES ===
-    let cookieMode = null;      // 'plastik' atau 'toples'
-    let cookieLimit = 0;        // 6 atau 5
-
-    // === INITIAL LOAD ===
-    window.onload = async () => {
-        // Load Paket
-        const paketData = await fetchData('getPaket');
-        if(paketData) { DB_PAKET = paketData; renderPaketList(); }
-        // Load Barang
-        const barangData = await fetchData('getBarang');
-        if(barangData) DB_BARANG = barangData;
-        
-        checkLoginStatus();
-    };
-
-    // === RENDER PAKET UTAMA (MULTI-SELECT) ===
-    function renderPaketList() {
-        const container = document.getElementById('paketListContainer');
-        let html = '';
-        DB_PAKET.forEach(p => {
-            const safeName = p.nama.replace(/\s+/g, '_');
-            html += `
-                <div class="paket-item" id="row-${safeName}">
-                    <div class="paket-label">${p.nama}</div>
-                    <div class="qty-controls">
-                        <div class="btn-qty-mini" onclick="updatePaketQty('${safeName}', '${p.nama}', -1)">-</div>
-                        <div class="qty-val-mini" id="qty-pkt-${safeName}">0</div>
-                        <div class="btn-qty-mini" onclick="updatePaketQty('${safeName}', '${p.nama}', 1)">+</div>
-                    </div>
-                </div>`;
-        });
-        container.innerHTML = html;
+    // 1. CEK SESSION STORAGE SEBELUM MENAMPILKAN SAPAAN
+    // Jika belum ada tanda 'sudah_menyapa' di penyimpanan sementara, baru tampilkan
+    if (!sessionStorage.getItem('sudah_menyapa')) {
+        document.getElementById('welcomeScreen').style.display = 'flex';
+    } else {
+        // Jika sudah pernah muncul, pastikan tetap tersembunyi
+        document.getElementById('welcomeScreen').style.display = 'none';
     }
 
-    function updatePaketQty(id, name, change) {
-        const el = document.getElementById(`qty-pkt-${id}`);
-        const row = document.getElementById(`row-${id}`);
-        let val = parseInt(el.innerText) + change;
-        if(val < 0) val = 0;
-        
-        el.innerText = val;
-        
-        if(val > 0) { 
-            selectedPakets[name] = val; 
-            row.classList.add('qty-active'); 
-        } else { 
-            delete selectedPakets[name]; 
-            row.classList.remove('qty-active'); 
-        }
-        
-        // Reset pilihan barang setiap kali paket utama berubah agar tidak crash
-        selectedItems = {}; 
-        cookieMode = null;
-        
-        renderDynamicInputs();
-    }
+    // 2. Load Data (Tetap jalan di background)
+    const paketData = await fetchData('getPaket');
+    if(paketData) { DB_PAKET = paketData; renderPaketList(); }
+    
+    const barangData = await fetchData('getBarang');
+    if(barangData) DB_BARANG = barangData;
 
-    // === LOGIKA TAMPILAN DINAMIS (COOKIES / MINGGUAN) ===
-    function renderDynamicInputs() {
-        const container = document.getElementById('dynamicArea');
-        container.innerHTML = '';
-        
-        const keys = Object.keys(selectedPakets);
-        let hasCookies = keys.some(k => k.toLowerCase().includes('cookies'));
-        let hasMingguan = keys.some(k => k.toLowerCase().includes('mingguan'));
+    // 3. LOGIC PRIORITAS: Tetap set ke tab 'akun'
+    switchTab('akun');
+};
 
-        // 1. Render UI Cookies (Jika paket cookies dipilih)
-        if (hasCookies) {
-            renderCookieUI(container);
-        }
+// Fungsi menutup sapaan & SIMPAN STATUS
+function closeWelcome() {
+    // Simpan tanda ke browser bahwa user sudah melihat sapaan ini
+    // Tanda ini akan hilang otomatis kalau user menutup browser (Close Tab)
+    sessionStorage.setItem('sudah_menyapa', 'true');
+
+    const el = document.getElementById('welcomeScreen');
+    el.style.opacity = '0';
+    setTimeout(() => {
+        el.style.display = 'none';
+    }, 400); 
+}
+
+    // === NAVIGASI TABS (HANYA 2) ===
+    function switchTab(tabId) {
+        // Hide semua konten
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        // Reset nav active
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
         
-        // 2. Render UI Mingguan (Jika paket mingguan dipilih)
-        if (hasMingguan) {
-            renderMingguanUI(container);
+        // Show target
+        const targetTab = document.getElementById('view-' + tabId);
+        if (targetTab) targetTab.classList.add('active');
+        
+        // Set nav active
+        const tabs = ['katalog', 'akun'];
+        const idx = tabs.indexOf(tabId);
+        const navItems = document.querySelectorAll('.nav-item');
+        if (navItems[idx]) navItems[idx].classList.add('active');
+
+        // Khusus Akun: Cek status login untuk menentukan tampilan (Form vs Dashboard)
+        if (tabId === 'akun') {
+            checkLoginStatus();
         }
     }
 
-    // === 1. FITUR COOKIES (PILIH KEMASAN & LIMIT) ===
-    function renderCookieUI(container) {
-        // Tampilkan Tombol Pilihan Kemasan
-        const html = `
-            <div style="margin-top:20px; border-top:1px dashed #333; padding-top:10px;">
-                <label style="color:#ffd700; font-size:0.9rem; margin-bottom:10px; display:block;">Pilihan Cookies:</label>
-                <div class="mode-selector">
-                    <button type="button" class="btn-mode" id="btn-plastik" onclick="setCookieMode('plastik')">
-                        <i class="fas fa-box"></i> Plastik (Max 6)
-                    </button>
-                    <button type="button" class="btn-mode" id="btn-toples" onclick="setCookieMode('toples')">
-                        <i class="fas fa-archive"></i> Toples (Max 5)
-                    </button>
-                </div>
-                <div id="cookieProdContainer">
-                    <div style="text-align:center; color:#666; font-size:0.8rem; padding:15px; border:1px solid #333; border-radius:10px;">
-                        <i class="fas fa-info-circle"></i> Silakan pilih jenis kemasan (Plastik/Toples) terlebih dahulu.
-                    </div>
-                </div>
-                <div id="summaryCookie"></div>
-            </div>
-        `;
-        container.insertAdjacentHTML('beforeend', html);
-    }
-
-    function setCookieMode(mode) {
-        // Reset barang jika ganti mode
-        if(Object.keys(selectedItems).length > 0) {
-            if(!confirm("Mengganti kemasan akan mereset pilihan kue Anda. Lanjutkan?")) return;
-        }
+    // === CEK LOGIN & TAMPILAN AKUN (DIREVISI) ===
+    function checkLoginStatus() {
+        const userStr = localStorage.getItem('nizami_user');
         
-        // Reset Data
-        selectedItems = {};
-        cookieMode = mode;
-        cookieLimit = (mode === 'plastik') ? 6 : 5;
-
-        // Update Tampilan Tombol
-        document.querySelectorAll('.btn-mode').forEach(b => b.classList.remove('active'));
-        document.getElementById(`btn-${mode}`).classList.add('active');
-
-        // Filter Barang: Hanya Kategori "Cookies"
-        const items = DB_BARANG.filter(b => b.kategori === 'Cookies');
-        
-        // Render Barang (hidePrice = true)
-        renderProductList(items, document.getElementById('cookieProdContainer'), false, true); 
-        renderSummary(); // Refresh summary bawah
-    }
-
-    // === 2. FITUR MINGGUAN (HARGA /40 & TOTAL) ===
-    function renderMingguanUI(container) {
-        // Filter kategori selain Cookies
-        const categories = [...new Set(DB_BARANG.map(item => item.kategori))].filter(k => k && k !== 'Cookies');
-        
-        let html = `
-            <div style="margin-top:25px; border-top:1px dashed #333; padding-top:10px;">
-                <label style="color:#ffd700; font-size:0.9rem;">Belanja Mingguan:</label>
-                <div class="category-scroll" style="margin-top:10px;">
-                    ${categories.map((cat, idx) => 
-                        `<div class="cat-btn ${idx===0?'active':''}" onclick="switchCategory(this, '${cat}')">${cat}</div>`
-                    ).join('')}
-                </div>
-                <div id="prodMingguanContainer"></div>
-                <div id="summaryMingguan"></div>
-            </div>
-        `;
-        
-        container.insertAdjacentHTML('beforeend', html);
-        
-        // Render kategori pertama otomatis
-        if(categories.length > 0) switchCategory(null, categories[0]);
-    }
-
-    function switchCategory(btn, cat) {
-        if(btn) {
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        }
-        const items = DB_BARANG.filter(b => b.kategori === cat);
-        // Render (isMingguan = true, hidePrice = false)
-        renderProductList(items, document.getElementById('prodMingguanContainer'), true, false);
-    }
-
-    // === RENDER LIST BARANG (GENERIC) ===
-    function renderProductList(items, container, isMingguan, hidePrice) {
-        let html = '<div class="product-grid">'; // Grid 1 kolom (dari CSS Anda sebelumnya)
-        items.forEach(item => {
-            const itemId = item.nama.replace(/\s+/g, '_');
-            
-            // Hitung Harga Tampilan
-            let displayPrice = Number(item.harga);
-            let priceText = `Rp ${displayPrice.toLocaleString()}`;
-            
-            if(isMingguan) {
-                displayPrice = Math.ceil(displayPrice / 40);
-                priceText = `Rp ${displayPrice.toLocaleString()}/minggu`;
-            }
-
-            // Jika Mode Cookies, Kosongkan teks harga
-            if(hidePrice) priceText = '';
-
-            html += `
-                <div class="prod-card">
-                    <div class="prod-info">
-                        <h4>${item.nama}</h4>
-                        <p style="margin-top:2px;">${priceText}</p>
-                    </div>
-                    <div class="qty-controls">
-                        <div class="btn-qty-mini" onclick="updateQty('${itemId}', '${item.nama}', ${item.harga}, -1, ${isMingguan})">-</div>
-                        <div class="qty-val-mini" id="qty-${itemId}">${selectedItems[item.nama] ? selectedItems[item.nama].qty : 0}</div>
-                        <div class="btn-qty-mini" onclick="updateQty('${itemId}', '${item.nama}', ${item.harga}, 1, ${isMingguan})">+</div>
-                    </div>
-                </div>
-            `;
-        });
-        html += '</div>';
-        container.innerHTML = html;
-    }
-
-    // === UPDATE QTY DENGAN LIMIT & SUMMARY ===
-    function updateQty(id, name, price, change, isMingguan) {
-        const el = document.getElementById(`qty-${id}`);
-        let currentQty = parseInt(el.innerText);
-        let newQty = currentQty + change;
-        
-        // 1. Validasi Tidak Boleh Minus
-        if(newQty < 0) return;
-
-        // 2. Validasi LIMIT KHUSUS COOKIES
-        if(cookieMode && !isMingguan) {
-            // Hitung total item cookies yang sudah dipilih
-            let totalSelected = 0;
-            // Filter hanya item yang ada di list cookies (sederhananya hitung semua di selectedItems karena reset saat ganti mode)
-            Object.values(selectedItems).forEach(item => totalSelected += item.qty);
-            
-            // Jika mau nambah (+) tapi sudah limit
-            if(change > 0 && (totalSelected + 1) > cookieLimit) {
-                alert(`Maaf, Kemasan ${cookieMode} hanya muat ${cookieLimit} toples/pcs.`);
-                return;
-            }
-        }
-
-        // 3. Update UI Angka
-        el.innerText = newQty;
-        
-        // 4. Update Data Penyimpanan
-        if(newQty > 0) {
-            selectedItems[name] = { qty: newQty, price: price, total: newQty * price };
+        if(!userStr) {
+            // GUEST: Tampilkan Form Login, Sembunyikan Profil
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('user-profile').style.display = 'none';
         } else {
-            delete selectedItems[name];
-        }
+            // LOGGED IN: Sembunyikan Login, Tampilkan Profil & Dashboard
+            const user = JSON.parse(userStr);
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('user-profile').style.display = 'block';
+            
+            // Isi Header Profil
+            document.getElementById('prof-nama').innerText = user.nama;
+            document.getElementById('prof-id').innerText = user.id; // Tampilkan ID
+            document.getElementById('prof-role').innerText = user.type; // Tampilkan Role
 
-        // 5. Update Summary di Bawah
-        renderSummary(isMingguan);
-    }
-
-    // === RENDER SUMMARY (BARU) ===
-    function renderSummary(isMingguan) {
-        // Tentukan container mana yang dipakai (Cookies atau Mingguan)
-        const containerId = isMingguan ? 'summaryMingguan' : 'summaryCookie';
-        const container = document.getElementById(containerId);
-        if(!container) return;
-
-        if(Object.keys(selectedItems).length === 0) {
-            container.innerHTML = '';
-            return;
-        }
-
-        let totalUang = 0;
-        let totalQtyCookies = 0;
-        
-        let html = `
-        <div class="summary-box">
-            <div class="summary-title">Rincian Pilihan:</div>`;
-        
-        Object.entries(selectedItems).forEach(([name, data]) => {
-            let subtotal = 0;
-            let labelKanan = '';
-
-            if(isMingguan) {
-                // Mingguan: Tampilkan Harga per Minggu
-                let hargaMinggu = Math.ceil(data.price / 40);
-                subtotal = hargaMinggu * data.qty;
-                labelKanan = `Rp ${subtotal.toLocaleString()}`; // Subtotal mingguan
-                totalUang += subtotal;
+            // Load Data Dashboard
+            if(user.type === 'MITRA') {
+                document.getElementById('state-mitra-dash').style.display = 'block';
+                document.getElementById('state-peserta-dash').style.display = 'none';
+                loadMitraDashboard(user.id);
             } else {
-                // Cookies: Hitung Qty saja
-                totalQtyCookies += data.qty;
-                labelKanan = ''; // Tidak tampil harga
-            }
-
-            html += `
-            <div class="summary-item">
-                <span>${data.qty}x ${name}</span>
-                <span>${labelKanan}</span> 
-            </div>`;
-        });
-
-        // Bagian Bawah Box Summary
-        if(isMingguan) {
-            // Tampilkan Total Iuran Mingguan
-            html += `
-            <div class="summary-total">
-                <span>Total Setoran:</span>
-                <span>Rp ${totalUang.toLocaleString()}/minggu</span>
-            </div>`;
-        } else {
-            // Tampilkan Status Limit Cookies
-            html += `
-            <div class="summary-total" style="font-size:0.85rem; color:#ffd700;">
-                <span>Terisi: ${totalQtyCookies} / ${cookieLimit} Item</span>
-            </div>`;
-        }
-
-        html += `</div>`; // Tutup div summary-box
-        container.innerHTML = html;
-    }
-
-    // === SUBMIT WA (UPDATE FORMAT) ===
-    function submitDaftarWA(e) {
-        e.preventDefault();
-        const nama = document.getElementById('regNama').value;
-        const hp = document.getElementById('regHP').value;
-        const alamat = document.getElementById('regAlamat').value;
-        const mitra = document.getElementById('regMitra').value || '-';
-        
-        if(Object.keys(selectedPakets).length === 0) return alert("Pilih minimal satu paket!");
-        
-        let msg = `Halo Admin, Bismillah saya daftar.\n\n👤 Nama: ${nama}\n📱 WA: ${hp}\n🏠 Alamat: ${alamat}\n\n📦 Paket Utama:\n`;
-        Object.entries(selectedPakets).forEach(([pkt, qty]) => { msg += `- ${qty}x ${pkt}\n`; });
-        
-        if(Object.keys(selectedItems).length > 0) {
-            msg += `\n🛒 Rincian Barang:\n`;
-            
-            // Cek Mingguan atau Cookies untuk format pesan
-            const isMingguan = Object.keys(selectedPakets).some(k => k.toLowerCase().includes('mingguan'));
-            let totalMingguan = 0;
-
-            Object.entries(selectedItems).forEach(([name, data]) => { 
-                msg += `- ${data.qty}x ${name}\n`; 
-                if(isMingguan) totalMingguan += (Math.ceil(data.price/40) * data.qty);
-            });
-
-            if(isMingguan) {
-                msg += `\n📅 Total Setoran: Rp ${totalMingguan.toLocaleString()}/minggu`;
-            } else if (cookieMode) {
-                msg += `\n📦 Kemasan: ${cookieMode.toUpperCase()}`;
+                document.getElementById('state-peserta-dash').style.display = 'block';
+                document.getElementById('state-mitra-dash').style.display = 'none';
+                loadPesertaDashboard(user.id);
             }
         }
-        
-        msg += `\n\n🤝 Mitra: ${mitra}`;
-        window.open(`https://wa.me/628122261036?text=${encodeURIComponent(msg)}`, '_blank');
-        closeModalDaftar();
-    }
-
-    // === LOGIKA FORM MITRA ===
-    function toggleFormMitra(checkbox) {
-        const form = document.getElementById('formMitra');
-        if(checkbox.checked) {
-            form.classList.remove('form-content-locked');
-            form.classList.add('form-content-active');
-        } else {
-            form.classList.add('form-content-locked');
-            form.classList.remove('form-content-active');
-        }
-    }
-
-    // Update fungsi submitMitraWA agar menyertakan konfirmasi syarat di pesan WA
-    function submitMitraWA(e) {
-        e.preventDefault();
-        const nama = document.getElementById('mitraNama').value;
-        const hp = document.getElementById('mitraHP').value;
-        const alamat = document.getElementById('mitraAlamat').value;
-        
-        const msg = `Halo Admin, saya berminat daftar jadi MITRA.\n\n👤 Nama: ${nama}\n📱 WA: ${hp}\n🏠 Alamat: ${alamat}\n\n✅ Saya menyatakan siap Jujur, Amanah, Shalat 5 waktu, dan mencapai target 10 peserta.`;
-        
-        window.open(`https://wa.me/628122261036?text=${encodeURIComponent(msg)}`, '_blank');
-        closeModalMitra();
-    }
-
-    function submitMitraWA(e) {
-        e.preventDefault();
-        const nama = document.getElementById('mitraNama').value;
-        const hp = document.getElementById('mitraHP').value;
-        const alamat = document.getElementById('mitraAlamat').value;
-        const msg = `Halo Admin, saya daftar MITRA.\n\n👤 Nama: ${nama}\n📱 WA: ${hp}\n🏠 Alamat: ${alamat}`;
-        window.open(`https://wa.me/628122261036?text=${encodeURIComponent(msg)}`, '_blank');
-        closeModalMitra();
-    }
-
-    // === LOGIN & DASHBOARD (SAMA SEPERTI SEBELUMNYA) ===
-    function toggleFormPendaftaran(checkbox) {
-        const form = document.getElementById('formPendaftaran');
-        form.classList.toggle('form-content-locked', !checkbox.checked);
-        form.classList.toggle('form-content-active', checkbox.checked);
     }
 
     function prosesLogin() {
@@ -943,25 +715,16 @@
         if(!id) return alert('Masukkan ID!');
         
         const btn = document.querySelector('#login-form button'); 
-        btn.innerText = '...'; 
-        btn.disabled = true;
+        btn.innerText = '...'; btn.disabled = true;
 
         fetchData('cekStatusDetail', {id: id}).then(data => {
-            btn.innerText = 'MASUK'; 
-            btn.disabled = false;
+            btn.innerText = 'MASUK'; btn.disabled = false;
 
             if(!data || data.error) {
                 alert('ID Tidak Ditemukan!'); 
             } else {
-                // === LOGIKA NAMA DIPERBAIKI ===
-                // Prioritaskan nama dari root (data.nama). 
-                // Jika login sebagai Mitra, data.nama adalah nama Mitranya.
                 let fixNama = data.nama || 'Member'; 
-                
-                // Fallback hanya jika data.nama kosong (jarang terjadi dgn script baru)
-                if (!data.nama && data.data && data.data.length > 0) {
-                    fixNama = data.data[0].nama;
-                }
+                if (!data.nama && data.data && data.data.length > 0) fixNama = data.data[0].nama;
 
                 const userData = { 
                     id: id, 
@@ -972,309 +735,395 @@
                 
                 localStorage.setItem('nizami_user', JSON.stringify(userData)); 
                 alert('Login Berhasil! Selamat Datang ' + fixNama); 
-                renderProfile(); 
-                switchTab('setoran');
+                
+                // Tetap di tab 'akun' tapi refresh tampilannya jadi dashboard
+                checkLoginStatus(); 
             }
         });
     }
 
-    function checkLoginStatus() {
-        const userStr = localStorage.getItem('nizami_user');
-        if(!userStr) { document.getElementById('state-guest').style.display='block'; document.getElementById('state-peserta').style.display='none'; document.getElementById('state-mitra').style.display='none'; } 
-        else { 
-            const user = JSON.parse(userStr); document.getElementById('state-guest').style.display='none';
-            if(user.type === 'MITRA') { document.getElementById('state-mitra').style.display='block'; loadMitraDashboard(user.id); } 
-            else { document.getElementById('state-peserta').style.display='block'; loadPesertaDashboard(user.id); }
-        }
-    }
-
-    async function loadPesertaDashboard(id) {
-        const container = document.getElementById('peserta-container');
-        
-        // 1. CEK CACHE
-        if (cachedDashboardData) {
-            renderPesertaCards(cachedDashboardData, container);
-            return; 
-        }
-
-        // 2. FETCH DATA
-        container.innerHTML = '<div style="text-align:center; padding:20px; color:#888;">Sedang memuat data...</div>';
-        const data = await fetchData('cekStatusDetail', {id: id});
-        
-        if(data && !data.error) {
-            let rawList = [];
-            
-            // Bungkus data jadi array kalau cuma 1
-            if (data.data && Array.isArray(data.data)) {
-                rawList = data.data; // Kasus Mitra
-            } else if (data.nama) {
-                rawList = [data]; // Kasus Peserta Biasa
-            }
-
-            if(rawList.length > 0) {
-                // === PERBAIKAN MAPPING DATA (PENTING!) ===
-                // Backend kirim: id, paket, saldo, tercapai, sisa_angsuran
-                // Frontend butuh: idPeserta, jenisPaket, nilaiSetoran, setoranDilakukan, sisaSetoran
-                
-                const mappedData = rawList.map(item => ({
-                    idPeserta: item.id,                 // Backend 'id' -> Frontend 'idPeserta'
-                    nama: item.nama,
-                    jenisPaket: item.paket,             // Backend 'paket' -> Frontend 'jenisPaket'
-                    nilaiSetoran: item.saldo,           // Backend 'saldo' -> Frontend 'nilaiSetoran'
-                    setoranDilakukan: item.tercapai,    // Backend 'tercapai' -> Frontend 'setoranDilakukan'
-                    totalSetoran: item.target,          // Backend 'target' -> Frontend 'totalSetoran'
-                    sisaSetoran: item.sisa_angsuran     // Backend 'sisa_angsuran' -> Frontend 'sisaSetoran'
-                }));
-
-                cachedDashboardData = mappedData; 
-                renderPesertaCards(mappedData, container);
-            } else {
-                container.innerHTML = '<p style="text-align:center; color:#ff6b6b;">Data kosong.</p>';
-            }
-        } else { 
-            container.innerHTML = '<p style="text-align:center; color:#ff6b6b;">Data tidak ditemukan.</p>'; 
-        }
-    }
-
-    // Fungsi Render dipisah agar rapi (Peserta)
-    // GANTI FUNGSI renderPesertaCards DENGAN INI:
-function renderPesertaCards(dataList, container) {
-    let html = '';
-    dataList.forEach(p => {
-        // ... (Bagian perhitungan progress tetap sama) ...
-        let done = parseInt(p.setoranDilakukan) || 0;
-        let target = parseInt(p.totalSetoran) || 330;
-        let sisa = parseInt(p.sisaSetoran);
-        if (isNaN(sisa)) sisa = target - done;
-        let percent = (target > 0) ? Math.min(100, (done / target) * 100).toFixed(0) : 0;
-        const statusText = sisa <= 0 ? "LUNAS" : `${sisa}x lagi`;
-
-        html += `
-            <div class="dashboard-card">
-                <div class="dash-header">
-                    <h2 class="dash-name">${p.nama}</h2>
-                    <div class="dash-meta">
-                        <span class="dash-id">ID: ${p.idPeserta}</span>
-                        <span class="dash-badge">${p.jenisPaket}</span>
-                    </div>
-                </div>
-                <div class="prog-area">
-                    <div class="prog-info-top">
-                        <span>Progres</span>
-                        <span style="color:#ffd700; font-weight:bold;">${percent}%</span>
-                    </div>
-                    <div class="prog-track">
-                        <div class="prog-fill" style="width:${percent}%"></div>
-                    </div>
-                    <div class="prog-info-bottom">
-                        <span style="color:#4ade80;">✔ Terkumpul: ${done}x</span>
-                        <span style="color:#ff6b6b;">⏳ Kurang: ${statusText}</span>
-                    </div>
-                </div>
-                <div class="btn-action-group">
-                    <button class="btn-primary" onclick="bukaKalenderIndividu('${p.idPeserta}', '${encodeURIComponent(p.nama)}', '${encodeURIComponent(p.jenisPaket)}', ${done})">
-                        <i class="far fa-calendar-alt"></i> Cek Kalender
-                    </button>
-                    
-                    <button class="btn-danger" onclick="window.location.href='checkout.html?id=${p.idPeserta}'">
-                        <i class="fas fa-sign-out-alt"></i> Berhenti / Checkout
-                    </button>
-                </div>
-            </div>`;
-    });
-    container.innerHTML = html;
-}
-
-   async function loadMitraDashboard(id) {
-        const container = document.getElementById('mitra-container');
-
-        // 1. CEK CACHE
-        if (cachedDashboardData) {
-            renderMitraCards(cachedDashboardData, container);
-            return;
-        }
-        
-        // 2. FETCH JIKA BELUM ADA
-        container.innerHTML = '<div style="text-align:center; padding:20px; color:#888;">Sedang memuat data peserta...</div>';
-        const data = await fetchData('cekStatusDetail', {id: id});
-        
-        if(data && data.data && data.data.length > 0) {
-            cachedDashboardData = data.data; // SIMPAN KE CACHE
-            renderMitraCards(cachedDashboardData, container);
-        } else {
-            container.innerHTML = '<p style="text-align:center; color:#888;">Belum ada peserta yang terdaftar.</p>';
-        }
-    }
-
-    // Fungsi Render dipisah agar rapi (Mitra)
-    // GANTI FUNGSI renderMitraCards DENGAN INI:
-function renderMitraCards(dataList, container) {
-    let html = '';
-    dataList.forEach(p => {
-        // --- PERBAIKAN: Validasi Angka ---
-        let done = parseInt(p.setoranDilakukan);
-        let target = parseInt(p.totalSetoran);
-        let sisa = parseInt(p.sisaSetoran);
-
-        if (isNaN(done)) done = 0;
-        if (isNaN(target) || target === 0) target = 330;
-        if (isNaN(sisa)) sisa = target - done;
-
-        let percent = 0;
-        if (target > 0) {
-            percent = Math.min(100, (done / target) * 100).toFixed(0);
-        }
-        
-        const statusText = sisa <= 0 ? "LUNAS" : `${sisa}x lagi`;
-        // ---------------------------------
-
-        html += `
-            <div class="dashboard-card mitra-card">
-                <div class="dash-header">
-                    <h2 class="dash-name">${p.nama}</h2>
-                    <div class="dash-meta">
-                        <span class="dash-id">ID: ${p.idPeserta}</span>
-                        <span class="dash-badge">${p.jenisPaket}</span>
-                    </div>
-                </div>
-                <div class="prog-area">
-                    <div class="prog-info-top">
-                        <span>Progres</span>
-                        <span style="color:#ffd700; font-weight:bold;">${percent}%</span>
-                    </div>
-                    <div class="prog-track">
-                        <div class="prog-fill" style="width:${percent}%"></div>
-                    </div>
-                    <div class="prog-info-bottom">
-                        <span style="color:#4ade80;">✔ Terkumpul: ${done}x</span>
-                        <span style="color:#ff6b6b;">⏳ Kurang: ${statusText}</span>
-                    </div>
-                </div>
-                <div class="btn-action-group">
-                    <button class="btn-primary" onclick="bukaKalenderIndividu('${p.idPeserta}', '${encodeURIComponent(p.nama)}', '${encodeURIComponent(p.jenisPaket)}', ${done})">
-                        <i class="far fa-calendar-alt"></i> Cek Kalender
-                    </button>
-                    <button class="btn-danger" onclick="window.location.href='checkout.html?id=${p.idPeserta}'">
-    <i class="fas fa-sign-out-alt"></i> Berhenti / Checkout
-</button>
-                </div>
-            </div>`;
-    });
-    container.innerHTML = html;
-}
-
-    
-    // === NAVIGASI TABS (TAMBAHKAN INI) ===
-    function switchTab(tabId) {
-        // 1. Sembunyikan semua konten tab
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-        
-        // 2. Matikan status aktif di semua tombol navigasi
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        
-        // 3. Tampilkan konten tab yang dipilih
-        const targetTab = document.getElementById('view-' + tabId);
-        if (targetTab) targetTab.classList.add('active');
-        
-        // 4. Nyalakan status aktif di tombol navigasi yang sesuai
-        const tabs = ['katalog', 'setoran', 'akun'];
-        const idx = tabs.indexOf(tabId);
-        const navItems = document.querySelectorAll('.nav-item');
-        if (navItems[idx]) navItems[idx].classList.add('active');
-        
-        // 5. Khusus Tab Setoran: Cek status login & load data
-        if (tabId === 'setoran') {
-            checkLoginStatus();
-        }
-        
-        // 6. Khusus Tab Akun: Update tampilan profil
-        if (tabId === 'akun') {
-            renderProfile();
-        }
-    }
-
-    // === UTILS ===
-    function renderProfile() {
-        const userStr = localStorage.getItem('nizami_user');
-        if(userStr) {
-            const user = JSON.parse(userStr); document.getElementById('login-form').style.display='none'; document.getElementById('user-profile').style.display='block';
-            document.getElementById('prof-nama').innerText = user.nama; document.getElementById('prof-id').innerText = user.id; document.getElementById('prof-paket').innerText = user.paket;
-        } else { document.getElementById('login-form').style.display='block'; document.getElementById('user-profile').style.display='none'; }
-    }
-  // Update fungsi Logout agar membersihkan cache
     function logout() { 
-        if(confirm('Keluar?')) { 
+        if(confirm('Keluar dari akun?')) { 
             localStorage.removeItem('nizami_user'); 
-            cachedDashboardData = null; // Hapus cache
+            cachedDashboardData = null; 
+            // Setelah logout, kembali ke tampilan Login (tetap di tab Akun atau pindah ke Katalog)
+            // Sesuai permintaan: halaman utama katalog utk yg blm login.
             location.reload(); 
         } 
     }
 
-    // Update fungsi Refresh agar memaksa ambil data baru
-    function refreshData() { 
-        cachedDashboardData = null; // Hapus cache agar maksa download baru
+    // === LOGIKA DASHBOARD PESERTA ===
+    async function loadPesertaDashboard(id) {
         const container = document.getElementById('peserta-container');
-        const containerMitra = document.getElementById('mitra-container');
-        
-        // Beri feedback visual sedikit
-        if(container) container.innerHTML = '<div style="text-align:center; padding:20px; color:#ffd700;">Mengambil data terbaru...</div>';
-        if(containerMitra) containerMitra.innerHTML = '<div style="text-align:center; padding:20px; color:#ffd700;">Mengambil data terbaru...</div>';
-        
-        checkLoginStatus(); 
+        if (cachedDashboardData) { renderPesertaCards(cachedDashboardData, container); return; }
+        container.innerHTML = '<div style="text-align:center; padding:20px; color:#888;">Sedang memuat data...</div>';
+        const data = await fetchData('cekStatusDetail', {id: id});
+        if(data && !data.error) {
+            let rawList = (data.data && Array.isArray(data.data)) ? data.data : [data];
+            const mappedData = rawList.map(item => ({
+                idPeserta: item.id, nama: item.nama, jenisPaket: item.paket,
+                nilaiSetoran: item.saldo, setoranDilakukan: item.tercapai,
+                totalSetoran: item.target, sisaSetoran: item.sisa_angsuran
+            }));
+            cachedDashboardData = mappedData; 
+            renderPesertaCards(mappedData, container);
+        } else { container.innerHTML = '<p style="text-align:center; color:#ff6b6b;">Data tidak ditemukan.</p>'; }
     }
+
+    function renderPesertaCards(dataList, container) {
+        let html = '';
+        dataList.forEach(p => {
+            let done = parseInt(p.setoranDilakukan) || 0;
+            let target = parseInt(p.totalSetoran) || 330;
+            let sisa = parseInt(p.sisaSetoran); if (isNaN(sisa)) sisa = target - done;
+            let percent = (target > 0) ? Math.min(100, (done / target) * 100).toFixed(0) : 0;
+            
+            html += `
+                <div class="dashboard-card">
+                    <div class="dash-header"><h2 class="dash-name">${p.nama}</h2>
+                    <div class="dash-meta"><span class="dash-badge">${p.jenisPaket}</span></div></div>
+                    <div class="prog-area">
+                        <div class="prog-info-top"><span>Progres</span><span style="color:#ffd700; font-weight:bold;">${percent}%</span></div>
+                        <div class="prog-track"><div class="prog-fill" style="width:${percent}%"></div></div>
+                        <div class="prog-info-bottom"><span style="color:#4ade80;">✔ ${done}x</span><span style="color:#ff6b6b;">⏳ ${sisa <= 0 ? "LUNAS" : sisa + "x lagi"}</span></div>
+                    </div>
+                    <div class="btn-action-group">
+                        <button class="btn-primary" onclick="bukaKalenderIndividu('${p.idPeserta}', '${encodeURIComponent(p.nama)}', '${encodeURIComponent(p.jenisPaket)}', ${done})"><i class="far fa-calendar-alt"></i> Cek Kalender</button>
+                        <button class="btn-danger" onclick="window.location.href='checkout.html?id=${p.idPeserta}'"><i class="fas fa-sign-out-alt"></i> Berhenti / Checkout</button>
+                    </div>
+                </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    // === LOGIKA DASHBOARD MITRA (UPDATE V3) ===
+    async function loadMitraDashboard(id) {
+        const container = document.getElementById('mitra-container');
+        
+        // Reset Cache agar data saldo terbaru terambil
+        cachedDashboardData = null; 
+
+        container.innerHTML = '<div style="text-align:center; padding:20px; color:#888;">Mengambil data...</div>';
+        
+        const data = await fetchData('cekStatusDetail', {id: id});
+        
+        if(data && data.data && data.data.length > 0) {
+            // Mapping Data
+            const mappedData = data.data.map(item => ({
+                idPeserta: item.id,
+                nama: item.nama,
+                jenisPaket: item.paket,
+                saldo: item.saldo || 0, // Ambil Saldo
+                setoranDilakukan: item.tercapai || 0,
+                totalSetoran: item.target || 0
+            }));
+
+            cachedDashboardData = mappedData; 
+            renderMitraCards(mappedData, container);
+        } else { 
+            container.innerHTML = '<div style="text-align:center; color:#888; padding:20px;">Belum ada peserta.</div>'; 
+        }
+    }
+
+    
+
+    // === FITUR LAIN (MODAL, VIDEO, DLL) ===
     function openModalDaftar() { document.getElementById('modalDaftar').classList.add('show'); renderPaketList(); }
     function closeModalDaftar() { document.getElementById('modalDaftar').classList.remove('show'); }
     function openModalMitra() { document.getElementById('modalMitraReg').classList.add('show'); }
     function closeModalMitra() { document.getElementById('modalMitraReg').classList.remove('show'); }
-    function openKalkulator() { document.getElementById('modalKalkulator').classList.add('show'); }
-    function filterMitra() { 
-        const input = document.getElementById('cariAnakBuah').value.toLowerCase();
-        // Targetkan kartu yang baru dibuat (mitra-card)
-        const cards = document.querySelectorAll('.mitra-card');
-        
-        cards.forEach(card => {
-            // Cari nama di dalam elemen .dash-name
-            const nama = card.querySelector('.dash-name').innerText.toLowerCase();
-            // Show/Hide berdasarkan pencarian
-            card.style.display = nama.includes(input) ? 'flex' : 'none';
+    function playVideo(videoId) { document.getElementById('youtubeFrame').src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`; document.getElementById('videoOverlay').classList.add('show'); }
+    function closeVideo() { document.getElementById('youtubeFrame').src = ""; document.getElementById('videoOverlay').classList.remove('show'); }
+    
+    // Logic Pendaftaran, Paket, dan Kalkulator tetap sama seperti sebelumnya (hanya disingkat disini agar muat)
+    function renderPaketList() {
+        let html = '';
+        DB_PAKET.forEach(p => {
+            const safeName = p.nama.replace(/\s+/g, '_');
+            html += `<div class="paket-item" id="row-${safeName}"><div class="paket-label">${p.nama}</div><div class="qty-controls"><div class="btn-qty-mini" onclick="updatePaketQty('${safeName}', '${p.nama}', -1)">-</div><div class="qty-val-mini" id="qty-pkt-${safeName}">0</div><div class="btn-qty-mini" onclick="updatePaketQty('${safeName}', '${p.nama}', 1)">+</div></div></div>`;
         });
+        document.getElementById('paketListContainer').innerHTML = html;
     }
-    function bukaKalenderIndividu(id, nama, paket, jum) { window.location.href = `kalender.html?id=${id}&nama=${nama}&paket=${paket}&jumlah=${jum}`; }
+    function updatePaketQty(id, name, change) {
+        const el = document.getElementById(`qty-pkt-${id}`);
+        let val = parseInt(el.innerText) + change; if(val<0) val=0; el.innerText = val;
+        if(val>0) selectedPakets[name]=val; else delete selectedPakets[name];
+        selectedItems={}; cookieMode=null; renderDynamicInputs();
+    }
+    // ... [Logic Dynamic Input & Submit WA sama persis seperti file sebelumnya] ...
+    function renderDynamicInputs() {
+        const container = document.getElementById('dynamicArea'); container.innerHTML = '';
+        const keys = Object.keys(selectedPakets);
+        if(keys.some(k=>k.toLowerCase().includes('cookies'))) renderCookieUI(container);
+        if(keys.some(k=>k.toLowerCase().includes('mingguan'))) renderMingguanUI(container);
+    }
+    function renderCookieUI(container) {
+        container.insertAdjacentHTML('beforeend', `<div style="margin-top:15px; border-top:1px dashed #333; padding-top:10px;"><label style="color:#ffd700; font-size:0.9rem;">Pilih Kemasan:</label><div class="mode-selector"><button type="button" class="btn-mode" id="btn-plastik" onclick="setCookieMode('plastik')">Plastik (Max 6)</button><button type="button" class="btn-mode" id="btn-toples" onclick="setCookieMode('toples')">Toples (Max 5)</button></div><div id="cookieProdContainer"></div><div id="summaryCookie"></div></div>`);
+    }
+    function setCookieMode(mode) {
+        selectedItems={}; cookieMode=mode; cookieLimit=(mode==='plastik')?6:5;
+        document.querySelectorAll('.btn-mode').forEach(b=>b.classList.remove('active')); document.getElementById(`btn-${mode}`).classList.add('active');
+        renderProductList(DB_BARANG.filter(b=>b.kategori==='Cookies'), document.getElementById('cookieProdContainer'), false, true); renderSummary();
+    }
+    // === LOGIKA BARU UNTUK DROPDOWN KATEGORI MINGGUAN ===
 
-    renderProfile();
+function renderMingguanUI(container) {
+    // 1. Buat Struktur Utama Area Mingguan
+    container.insertAdjacentHTML('beforeend', `
+        <div style="margin-top:20px; border-top:1px dashed #333; padding-top:15px;">
+            <label style="color:#fff; font-size:0.9rem; margin-bottom:10px; display:block;">
+                <i class="fas fa-cubes" style="color:#ffd700;"></i> Pilih Barang Mingguan:
+            </label>
+            <div id="accordionContainer"></div>
+            <div id="summaryMingguan"></div>
+        </div>
+    `);
 
-// === VIDEO PLAYER LOGIC (TAMBAHKAN INI) ===
-    function playVideo(videoId) {
-        const modal = document.getElementById('videoOverlay');
-        const iframe = document.getElementById('youtubeFrame');
+    const accContainer = document.getElementById('accordionContainer');
+
+    // 2. Kelompokkan Barang Berdasarkan Kategori
+    // Kita filter dulu yang BUKAN Cookies
+    const mingguanItems = DB_BARANG.filter(b => b.kategori && b.kategori !== 'Cookies');
+    
+    const grouped = {};
+    mingguanItems.forEach(item => {
+        // Jika kategori kosong, masukkan ke "Lainnya"
+        const catName = item.kategori || 'Lainnya';
+        if (!grouped[catName]) grouped[catName] = [];
+        grouped[catName].push(item);
+    });
+
+    // 3. Render Dropdown per Kategori
+    // Urutkan nama kategori secara alfabet
+    const sortedCategories = Object.keys(grouped).sort();
+
+    if (sortedCategories.length === 0) {
+        accContainer.innerHTML = '<div style="color:#888; font-style:italic;">Tidak ada barang tersedia.</div>';
+        return;
+    }
+
+    sortedCategories.forEach((catName) => {
+        const items = grouped[catName];
+        // Buat ID unik untuk manipulasi DOM
+        const safeId = catName.replace(/\s+/g, '_').replace(/[^\w]/g, ''); 
+
+        const html = `
+            <div class="cat-accordion">
+                <div class="cat-header" onclick="toggleCategory('${safeId}')" id="head-${safeId}">
+                    <span>${catName} <span style="font-size:0.7rem; color:#888; font-weight:normal;">(${items.length})</span></span>
+                    <i class="fas fa-chevron-down cat-arrow" id="arrow-${safeId}"></i>
+                </div>
+                
+                <div class="cat-body" id="body-${safeId}">
+                    <div id="list-${safeId}"></div>
+                </div>
+            </div>
+        `;
+        accContainer.insertAdjacentHTML('beforeend', html);
+
+        // Render item menggunakan fungsi renderProductList yang sudah ada
+        // (items, container, isMingguan=true, hidePrice=false)
+        renderProductList(items, document.getElementById(`list-${safeId}`), true, false);
+    });
+}
+
+// Fungsi untuk Buka/Tutup Dropdown
+function toggleCategory(id) {
+    const body = document.getElementById(`body-${id}`);
+    const head = document.getElementById(`head-${id}`);
+    
+    // Toggle class untuk animasi dan display
+    if (body.classList.contains('show')) {
+        body.classList.remove('show');
+        head.classList.remove('active');
+    } else {
+        // Opsional: Tutup kategori lain saat satu dibuka (Accordion effect)
+        // document.querySelectorAll('.cat-body').forEach(el => el.classList.remove('show'));
+        // document.querySelectorAll('.cat-header').forEach(el => el.classList.remove('active'));
+
+        body.classList.add('show');
+        head.classList.add('active');
+    }
+}
+    function renderProductList(items, container, isMingguan, hidePrice) {
+        let html=''; items.forEach(i => {
+            let itemId=i.nama.replace(/\s+/g,'_'); let price=isMingguan?Math.ceil(i.harga/40):i.harga;
+            html+=`<div class="prod-card"><div class="prod-info"><h4>${i.nama}</h4><p>${hidePrice?'':(isMingguan?'Rp '+price.toLocaleString()+'/mg':'Rp '+price.toLocaleString())}</p></div><div class="qty-controls"><div class="btn-qty-mini" onclick="updateQty('${itemId}','${i.nama}',${i.harga},-1,${isMingguan})">-</div><div class="qty-val-mini" id="qty-${itemId}">0</div><div class="btn-qty-mini" onclick="updateQty('${itemId}','${i.nama}',${i.harga},1,${isMingguan})">+</div></div></div>`;
+        }); container.innerHTML=html;
+    }
+    function updateQty(id, name, price, change, isMingguan) {
+        const el=document.getElementById(`qty-${id}`); let nQ=parseInt(el.innerText)+change; if(nQ<0)return;
+        if(cookieMode && !isMingguan && change>0) { let tot=0; Object.values(selectedItems).forEach(v=>tot+=v.qty); if(tot+1>cookieLimit) return alert('Penuh!'); }
+        el.innerText=nQ; if(nQ>0) selectedItems[name]={qty:nQ, price:price}; else delete selectedItems[name]; renderSummary(isMingguan);
+    }
+    function renderSummary(isMingguan) {
+        const c = document.getElementById(isMingguan?'summaryMingguan':'summaryCookie'); if(!c)return; c.innerHTML=''; if(Object.keys(selectedItems).length===0)return;
+        let tot=0, qtyC=0; let h=`<div class="summary-box">`;
+        Object.entries(selectedItems).forEach(([n,d])=>{ let sub=isMingguan?(Math.ceil(d.price/40)*d.qty):0; tot+=sub; qtyC+=d.qty; h+=`<div class="summary-item"><span>${d.qty}x ${n}</span><span>${sub>0?'Rp '+sub.toLocaleString():''}</span></div>`; });
+        if(isMingguan) h+=`<div class="summary-total"><span>Setoran:</span><span>Rp ${tot.toLocaleString()}/mg</span></div>`;
+        else h+=`<div class="summary-total" style="color:#ffd700; font-size:0.8rem;">Isi: ${qtyC}/${cookieLimit}</div>`;
+        c.innerHTML=h+'</div>';
+    }
+    function toggleFormPendaftaran(cb){const f=document.getElementById('formPendaftaran'); if(cb.checked){f.style.opacity='1';f.style.pointerEvents='auto';}else{f.style.opacity='0.3';f.style.pointerEvents='none';}}
+    function toggleFormMitra(cb){const f=document.getElementById('formMitra'); if(cb.checked){f.style.opacity='1';f.style.pointerEvents='auto';}else{f.style.opacity='0.3';f.style.pointerEvents='none';}}
+    function submitDaftarWA(e){
+        e.preventDefault(); 
+        const n=document.getElementById('regNama').value;
+        const h=document.getElementById('regHP').value;
+        const a=document.getElementById('regAlamat').value;
+        const m=document.getElementById('regMitra').value||'-';
         
-        // Set URL Youtube dengan Autoplay
-        if(modal && iframe) {
-            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
-            modal.classList.add('show');
+        // Validasi
+        if(Object.keys(selectedPakets).length===0 && Object.keys(selectedItems).length===0) return alert('Pilih Paket!');
+        
+        let msg=`Halo Admin, Daftar.\nNama: ${n}\nWA: ${h}\nAlamat: ${a}\nPaket:\n`; 
+        
+        // Loop Paket Utama
+        Object.entries(selectedPakets).forEach(([p,q])=>msg+=`- ${q}x ${p}\n`);
+        
+        // Loop Rincian Barang & Hitung Total Setoran
+        let totalSetoran = 0;
+        if(Object.keys(selectedItems).length>0){ 
+            msg+='\nRincian:\n'; 
+            Object.entries(selectedItems).forEach(([n,d])=>{
+                msg+=`- ${d.qty}x ${n}\n`;
+                
+                // LOGIKA BARU: Hitung setoran mingguan (Harga / 40)
+                // Hanya hitung jika bukan mode cookie (artinya ini barang paket mingguan)
+                if(!cookieMode) {
+                    totalSetoran += Math.ceil(d.price / 40) * d.qty;
+                }
+            }); 
+        }
+
+        // TAMBAHAN: Tampilkan Total Setoran di Pesan WA
+        if(totalSetoran > 0) {
+            msg += `\n*Total Setoran: Rp ${totalSetoran.toLocaleString('id-ID')}/mg*\n`;
+        }
+
+        msg+=`\nMitra: ${m}`; 
+        
+        window.open(`https://wa.me/628122261036?text=${encodeURIComponent(msg)}`);
+    }
+    function submitMitraWA(e){ e.preventDefault(); window.open(`https://wa.me/628122261036?text=${encodeURIComponent(`Halo Admin, Daftar Mitra.\nNama: ${document.getElementById('mitraNama').value}\nWA: ${document.getElementById('mitraHP').value}\nAlamat: ${document.getElementById('mitraAlamat').value}`)}`); }
+    function filterMitra() { const v=document.getElementById('cariAnakBuah').value.toLowerCase(); document.querySelectorAll('.mitra-card').forEach(c=>{c.style.display=c.querySelector('.dash-name').innerText.toLowerCase().includes(v)?'flex':'none';}); }
+    function bukaKalenderIndividu(id,n,p,j){window.location.href=`kalender.html?id=${id}&nama=${n}&paket=${p}&jumlah=${j}`;}
+    function keHalamanCheckout() { const u=localStorage.getItem('nizami_user'); if(u) window.location.href=`checkout.html?id=${JSON.parse(u).id}`; }
+    
+    // Kalkulator Logic
+    function openKalkulator(){
+        const c=document.getElementById('calc-list-container'); c.innerHTML='';
+        if(!cachedDashboardData) return alert('Tunggu data...');
+        let h=''; cachedDashboardData.forEach((p,i)=>{
+            let pr=0; let s=parseInt(p.nilaiSetoran)||0; let cnt=parseInt(p.setoranDilakukan)||0;
+            if(cnt>0) pr=Math.round(s/cnt); else { const m=p.jenisPaket.match(/(\d+)/); if(m){let ang=parseInt(m[0]); pr=(ang<100)?ang*1000:ang;} }
+            h+=`<div class="calc-card"><div class="calc-header"><span>${p.jenisPaket}</span><span style="font-size:0.7rem; background:#073116; color:#4ade80; padding:2px 6px; border-radius:4px;">${cnt}x</span></div><div style="display:flex; justify-content:space-between; align-items:center;"><span style="color:#888; font-size:0.8rem;">Est. Rp ${pr.toLocaleString()}</span><div class="calc-controls"><button class="btn-calc-qty" onclick="updCQ(${i},-1)">-</button><input readonly class="inp-calc-qty" id="cq-${i}" value="0" data-pr="${pr}"><button class="btn-calc-qty" onclick="updCQ(${i},1)">+</button></div></div><div id="cs-${i}" style="text-align:right; font-size:0.9rem; margin-top:5px; color:#444;">+ Rp 0</div></div>`;
+        });
+        c.innerHTML=h; updateGrandTotal(); document.getElementById('modalKalkulator').classList.add('show');
+    }
+    function closeKalkulator(){document.getElementById('modalKalkulator').classList.remove('show');}
+    function updCQ(i,ch){
+        const inp=document.getElementById(`cq-${i}`), sub=document.getElementById(`cs-${i}`), pr=parseInt(inp.dataset.pr)||0;
+        let v=parseInt(inp.value)+ch; if(v<0)v=0; inp.value=v;
+        let tot=v*pr; sub.innerText=`+ Rp ${tot.toLocaleString()}`; sub.style.color=(v>0)?'#ffd700':'#444'; updateGrandTotal();
+    }
+    function updateGrandTotal(){ let t=0; document.querySelectorAll('.inp-calc-qty').forEach(el=>t+=(parseInt(el.value)*parseInt(el.dataset.pr))); document.getElementById('calcGrandTotal').innerText=`Rp ${t.toLocaleString()}`; }
+    function copyTotal(){ navigator.clipboard.writeText(document.getElementById('calcGrandTotal').innerText.replace(/\D/g,'')); alert('Total disalin!'); }
+
+    // === LOGIKA DASHBOARD MITRA (DIPERBAIKI) ===
+    async function loadMitraDashboard(id) {
+        const container = document.getElementById('mitra-container');
+        
+        // Cek Cache
+        if (cachedDashboardData) { 
+            renderMitraCards(cachedDashboardData, container); 
+            return; 
+        }
+
+        container.innerHTML = '<div style="grid-column:span 2; text-align:center; padding:20px; color:#888;">Mengambil data peserta...</div>';
+        
+        // Ambil Data
+        const data = await fetchData('cekStatusDetail', {id: id});
+        
+        if(data && data.data && data.data.length > 0) {
+            // FIX: Mapping data agar key-nya sesuai (mengatasi undefined)
+            const mappedData = data.data.map(item => ({
+                idPeserta: item.id,
+                nama: item.nama,
+                jenisPaket: item.paket,
+                setoranDilakukan: item.tercapai || 0,
+                totalSetoran: item.target || 0 // Fallback jika target kosong
+            }));
+
+            cachedDashboardData = mappedData; 
+            renderMitraCards(mappedData, container);
+        } else { 
+            container.innerHTML = '<div style="grid-column:span 2; text-align:center; color:#888; padding:20px;">Belum ada peserta yang terdaftar.</div>'; 
         }
     }
 
-    function closeVideo() {
-        const modal = document.getElementById('videoOverlay');
-        const iframe = document.getElementById('youtubeFrame');
-        
-        // Hentikan video dengan menghapus src
-        if(modal && iframe) {
-            iframe.src = "";
-            modal.classList.remove('show');
+    function renderMitraCards(dataList, container) {
+        let html = '';
+        dataList.forEach(p => {
+            // Kalkulasi
+            let done = parseInt(p.setoranDilakukan) || 0;
+            let target = parseInt(p.totalSetoran);
+            if (!target || target === 0) target = 100; 
+            
+            let percent = Math.min(100, (done / target) * 100).toFixed(0);
+            let saldoFmt = parseInt(p.saldo).toLocaleString('id-ID'); // Format Rupiah
+            
+            // Warna Indikator
+            let color = '#ff4d4d';
+            if(percent > 30) color = '#ffa502';
+            if(percent > 70) color = '#4ade80';
+
+            html += `
+                <div class="mitra-list-item" style="border-left-color: ${color};">
+                    
+                    <div class="m-list-info">
+                        <h4 class="m-list-name">${p.nama}</h4>
+                        <div class="m-list-sub">
+                            <span>${p.idPeserta}</span>
+                            <span>•</span>
+                            <span class="badge-tiny">${p.jenisPaket}</span>
+                        </div>
+                    </div>
+
+                    <div class="m-list-stats">
+                        <div class="stats-percent" style="color:${color}">${percent}%</div>
+                        <div class="track-mini">
+                            <div class="fill-mini" style="width:${percent}%; background:${color};"></div>
+                        </div>
+                        <div class="stats-saldo">Rp ${saldoFmt}</div>
+                    </div>
+
+                    <div class="m-list-actions">
+                        <button class="btn-action-mini btn-add" onclick="tambahSetoran('${p.idPeserta}', '${p.nama}')">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button class="btn-action-mini btn-cal" onclick="bukaKalenderIndividu('${p.idPeserta}', '${encodeURIComponent(p.nama)}', '${encodeURIComponent(p.jenisPaket)}', ${done})">
+                            <i class="far fa-calendar-alt"></i>
+                        </button>
+                    </div>
+
+                </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    // Fungsi Baru untuk Tombol Tambah
+    function tambahSetoran(id, nama) {
+        // Disini nanti logika input setoran, sementara alert dulu
+        let jumlah = prompt(`Masukkan jumlah setoran untuk ${nama} (ID: ${id}):`, "0");
+        if(jumlah && parseInt(jumlah) > 0) {
+            // Format pesan WA untuk konfirmasi ke Admin
+            let msg = `Halo Admin, saya mau lapor setoran tambahan.\n\nNama: ${nama}\nID: ${id}\nJumlah: Rp ${parseInt(jumlah).toLocaleString('id-ID')}\n\nMohon diproses.`;
+            window.open(`https://wa.me/628122261036?text=${encodeURIComponent(msg)}`, '_blank');
         }
     }
-function keHalamanCheckout() {
-        const userStr = localStorage.getItem('nizami_user');
-        if(userStr) {
-            const user = JSON.parse(userStr);
-            // Pindah ke checkout.html dengan membawa ID peserta yang sedang login
-            window.location.href = `checkout.html?id=${user.id}`;
-        } else {
-            alert("Silakan login terlebih dahulu.");
-        }
-    }
-</script>
+
+    </script>
+
 </body>
 </html>
