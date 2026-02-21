@@ -432,8 +432,25 @@
       </div>
     </div>
 
-    <script src="script.js"></script>
     <script>
+      const scriptURL =
+        "https://script.google.com/macros/s/AKfycbxvy3DyvgYWyw6gKGhJ2K_Ai6fG9fixb4BdpqxH5dBt9XBQ3Fxcda9v-QZZTV09DXJKPw/exec";
+
+      // 2. FUNGSI PENGHUBUNG KE SERVER
+      async function fetchData(action, data = {}) {
+        try {
+          const url = new URL(scriptURL);
+          url.searchParams.append("action", action);
+          for (let key in data) url.searchParams.append(key, data[key]);
+
+          const response = await fetch(url);
+          return await response.json();
+        } catch (error) {
+          console.error("Fetch Error:", error);
+          return null;
+        }
+      }
+
       const urlParams = new URLSearchParams(window.location.search);
       const paramId = urlParams.get("id");
 
