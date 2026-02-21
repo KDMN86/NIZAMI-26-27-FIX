@@ -588,7 +588,7 @@
     <script>
       // KONEKSI SERVER ADMIN
       const scriptURL =
-        "https://script.google.com/macros/s/AKfycby0JjnOFjmI9oOmNQ3skhbPpxmHI_avxCAL_777ZD1zaWa1xlbqBAxdmYnIe83xm4s-sQ/exec";
+        "https://script.google.com/macros/s/AKfycbxvy3DyvgYWyw6gKGhJ2K_Ai6fG9fixb4BdpqxH5dBt9XBQ3Fxcda9v-QZZTV09DXJKPw/exec";
 
       async function fetchData(action, data = {}) {
         try {
@@ -696,31 +696,66 @@
       }
 
       function renderCard(paketInfo) {
-        const isMingguan = String(paketInfo.paket)
-          .toLowerCase()
-          .includes("mingguan");
-        const isUangOnly =
-          String(paketInfo.paket).toLowerCase().includes("uang") ||
-          parseInt(paketInfo.targetBarang) === 0;
+        // Logika Pintar Klasifikasi Paket
+        const paketNameLower = String(paketInfo.paket).toLowerCase();
+        const isMingguan = paketNameLower.includes("mingguan");
 
         let tTotal = parseInt(paketInfo.targetTotal) || (isMingguan ? 40 : 330);
-        const tBarang =
-          parseInt(paketInfo.targetBarang) ||
-          (isMingguan ? 40 : isUangOnly ? 0 : 130);
+        let tBarang = parseInt(paketInfo.targetBarang);
+
+        // Fallback jika tBarang = 0 atau kosong dari Database
+        if (isNaN(tBarang) || tBarang === 0) {
+          if (paketNameLower.includes("uang")) {
+            tBarang = 0;
+          } else if (isMingguan || paketNameLower.includes("cookies")) {
+            tBarang = tTotal; // Anggap 100% barang
+          } else {
+            tBarang = 130; // Fallback paket standard (MOM dll)
+          }
+        }
+
+        // Pastikan barang tidak melampaui total
+        if (tBarang > tTotal) tBarang = tTotal;
         const tUang = tTotal - tBarang;
+
+        const isUangOnly = tBarang === 0;
         const setoranMasuk = parseInt(paketInfo.tercapai) || 0;
         const saldoInfo = parseInt(paketInfo.saldo) || 0;
 
-        // Logika Pintar untuk Info Dalam Kartu
+        // Susun Informasi Khusus dalam Kartu Emas
         let extraInfoHtml = "";
 
         if (isUangOnly) {
+          // MODE 1: MURNI UANG
           extraInfoHtml = `
             <div class="info-saldo-only">
                 <div class="iso-label">Saldo Tabungan Aktif</div>
                 <div class="iso-val">${formatRupiah(saldoInfo)}</div>
             </div>`;
+        } else if (tUang <= 0) {
+          // MODE 2: MURNI BARANG (Tidak Ada Saldo Sama Sekali)
+          let statusHtml = "";
+          if (setoranMasuk >= tBarang) {
+            statusHtml = `
+                <div class="ih-status-done" style="margin-bottom:0;">
+                    <i class="fas fa-check-circle" style="color:#27ae60;"></i> Paket Barang Terpenuhi!
+                </div>`;
+          } else {
+            statusHtml = `
+                <div class="ih-status-pend">
+                    <i class="fas fa-box-open"></i> Sedang melunasi setoran barang (${tBarang - setoranMasuk}x lagi)
+                </div>`;
+          }
+
+          extraInfoHtml = `
+            <div class="info-hybrid">
+                <div class="ih-targets" style="justify-content:center; border-bottom:none; margin-bottom:5px; padding-bottom:0;">
+                    <span>📦 Target Barang: ${tBarang}x</span>
+                </div>
+                <div style="text-align:center;">${statusHtml}</div>
+            </div>`;
         } else {
+          // MODE 3: CAMPURAN (Ada Barang, Ada Tabungan)
           let statusHtml = "";
           if (setoranMasuk >= tBarang) {
             statusHtml = `
@@ -741,7 +776,7 @@
             <div class="info-hybrid">
                 <div class="ih-targets">
                     <span>📦 Brg: ${tBarang}x</span>
-                    <span>💰 Uang: ${tUang > 0 ? tUang + "x" : "-"}</span>
+                    <span>💰 Uang: ${tUang}x</span>
                 </div>
                 ${statusHtml}
             </div>`;
