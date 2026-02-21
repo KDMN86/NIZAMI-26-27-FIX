@@ -106,7 +106,7 @@
         outline: none;
       }
 
-      /* KARTU EMAS NIZAMI (Dinamis) */
+      /* KARTU EMAS NIZAMI */
       .card-container {
         margin-bottom: 20px;
         perspective: 1000px;
@@ -265,7 +265,7 @@
         letter-spacing: -1px;
       }
 
-      /* TOMBOL RINCIAN BARANG DI BAWAH KARTU */
+      /* TOMBOL RINCIAN BARANG */
       .btn-rincian {
         width: 100%;
         background: #1a1a1a;
@@ -279,7 +279,7 @@
         justify-content: center;
         align-items: center;
         gap: 8px;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
         transition: 0.2s;
       }
       .btn-rincian:active {
@@ -294,7 +294,7 @@
         padding: 15px;
         display: flex;
         justify-content: space-around;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
         text-align: center;
       }
       .sb-item {
@@ -311,6 +311,67 @@
         color: #888;
         text-transform: uppercase;
         margin-top: 4px;
+      }
+
+      /* KOTAK INFO PEMBAYARAN TRANSFER */
+      .payment-box {
+        background: #111;
+        border: 1px dashed #4ade80;
+        border-radius: 15px;
+        padding: 15px;
+        margin-bottom: 25px;
+        position: relative;
+      }
+      .pb-title {
+        font-size: 0.85rem;
+        color: #4ade80;
+        font-weight: bold;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .pb-bank {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #fff;
+        margin: 0;
+      }
+      .pb-rek {
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: #ffd700;
+        letter-spacing: 2px;
+        margin: 5px 0;
+        font-family: monospace;
+      }
+      .pb-name {
+        font-size: 0.85rem;
+        color: #aaa;
+      }
+      .btn-copy-rek {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #222;
+        color: #fff;
+        border: 1px solid #444;
+        padding: 8px 15px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+      }
+      .btn-copy-rek:active {
+        background: #4ade80;
+        color: #000;
+        border-color: #4ade80;
       }
 
       /* KALENDER */
@@ -611,6 +672,20 @@
         }).format(value);
       }
 
+      function copyRekening() {
+        navigator.clipboard.writeText("1310011534676").then(() => {
+          const btn = document.getElementById("btnCopyRek");
+          btn.innerHTML = `<i class="fas fa-check"></i><br>Tersalin`;
+          btn.style.background = "#4ade80";
+          btn.style.color = "#000";
+          setTimeout(() => {
+            btn.innerHTML = `<i class="far fa-copy"></i><br>Salin`;
+            btn.style.background = "#222";
+            btn.style.color = "#fff";
+          }, 2000);
+        });
+      }
+
       const urlParams = new URLSearchParams(window.location.search);
       const paramId = urlParams.get("id");
       let allUserPackages = [];
@@ -703,18 +778,17 @@
         let tTotal = parseInt(paketInfo.targetTotal) || (isMingguan ? 40 : 330);
         let tBarang = parseInt(paketInfo.targetBarang);
 
-        // Fallback jika tBarang = 0 atau kosong dari Database
+        // Fallback jika tBarang = 0 atau kosong
         if (isNaN(tBarang) || tBarang === 0) {
           if (paketNameLower.includes("uang")) {
             tBarang = 0;
           } else if (isMingguan || paketNameLower.includes("cookies")) {
-            tBarang = tTotal; // Anggap 100% barang
+            tBarang = tTotal;
           } else {
-            tBarang = 130; // Fallback paket standard (MOM dll)
+            tBarang = 130;
           }
         }
 
-        // Pastikan barang tidak melampaui total
         if (tBarang > tTotal) tBarang = tTotal;
         const tUang = tTotal - tBarang;
 
@@ -726,14 +800,12 @@
         let extraInfoHtml = "";
 
         if (isUangOnly) {
-          // MODE 1: MURNI UANG
           extraInfoHtml = `
             <div class="info-saldo-only">
                 <div class="iso-label">Saldo Tabungan Aktif</div>
                 <div class="iso-val">${formatRupiah(saldoInfo)}</div>
             </div>`;
         } else if (tUang <= 0) {
-          // MODE 2: MURNI BARANG (Tidak Ada Saldo Sama Sekali)
           let statusHtml = "";
           if (setoranMasuk >= tBarang) {
             statusHtml = `
@@ -755,7 +827,6 @@
                 <div style="text-align:center;">${statusHtml}</div>
             </div>`;
         } else {
-          // MODE 3: CAMPURAN (Ada Barang, Ada Tabungan)
           let statusHtml = "";
           if (setoranMasuk >= tBarang) {
             statusHtml = `
@@ -829,6 +900,16 @@
                     <span class="sb-val" style="color:#ff6b6b;">${tTotal - setoranMasuk}</span>
                     <span class="sb-label">Sisa Kali</span>
                 </div>
+            </div>
+
+            <div class="payment-box">
+                <div class="pb-title"><i class="fas fa-money-bill-wave"></i> Bayar via Transfer</div>
+                <p class="pb-bank">MANDIRI</p>
+                <p class="pb-rek">1310011534676</p>
+                <span class="pb-name">a.n EVI FITRIAWATI</span>
+                <button class="btn-copy-rek" id="btnCopyRek" onclick="copyRekening()">
+                    <i class="far fa-copy"></i><br>Salin
+                </button>
             </div>
         `;
 
