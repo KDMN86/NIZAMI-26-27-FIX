@@ -106,7 +106,7 @@
         outline: none;
       }
 
-      /* KARTU EMAS NIZAMI (Tanpa Saldo) */
+      /* KARTU EMAS NIZAMI (Dinamis) */
       .card-container {
         margin-bottom: 20px;
         perspective: 1000px;
@@ -146,7 +146,7 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
       }
       .chip-sim {
         width: 45px;
@@ -191,14 +191,13 @@
         font-weight: 800;
         display: inline-block;
         border: 1px solid rgba(0, 0, 0, 0.2);
-        margin-top: 5px;
       }
 
       .mc-footer {
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
-        margin-top: 30px;
+        margin-top: 25px;
       }
       .mc-name {
         font-weight: 800;
@@ -214,6 +213,56 @@
         background: rgba(255, 255, 255, 0.3);
         padding: 3px 8px;
         border-radius: 6px;
+      }
+
+      /* INFO KHUSUS DALAM KARTU (Target & Saldo) */
+      .info-hybrid {
+        margin-top: 15px;
+        background: rgba(0, 0, 0, 0.1);
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+      .ih-targets {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: #222;
+        margin-bottom: 8px;
+        border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
+        padding-bottom: 5px;
+      }
+      .ih-status-pend {
+        color: #b82a2a;
+        font-weight: 800;
+        font-size: 0.8rem;
+      }
+      .ih-status-done {
+        color: #000;
+        font-weight: 800;
+        font-size: 0.85rem;
+        margin-bottom: 5px;
+      }
+
+      .info-saldo-only {
+        margin-top: 15px;
+        background: rgba(0, 0, 0, 0.15);
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+      .iso-label {
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: #333;
+      }
+      .iso-val {
+        font-size: 1.6rem;
+        font-weight: 900;
+        color: #000;
+        letter-spacing: -1px;
       }
 
       /* TOMBOL RINCIAN BARANG DI BAWAH KARTU */
@@ -521,7 +570,7 @@
       <div class="modal-card">
         <div class="modal-header">
           <h3 style="margin: 0; color: #ffd700; font-size: 1.1rem">
-            <i class="fas fa-box-open"></i> Isi Paket
+            <i class="fas fa-box-open"></i> Isi Paket Saya
           </h3>
           <button
             class="btn-close"
@@ -532,14 +581,14 @@
             &times;
           </button>
         </div>
-        <div class="modal-body" id="listBarangArea">Memuat barang...</div>
+        <div class="modal-body" id="listBarangArea"></div>
       </div>
     </div>
 
     <script>
-      // MASUKKAN URL GOOGLE SCRIPT ADMIN DI SINI
+      // KONEKSI SERVER ADMIN
       const scriptURL =
-        "https://script.google.com/macros/s/AKfycbwZtX_DYOuaweFSZVo8d--h64RKrrDM-nFqnWVzOc0_aMnpfKRF9h9ocvsMpGfT5Qmt5Q/exec";
+        "https://script.google.com/macros/s/AKfycby0JjnOFjmI9oOmNQ3skhbPpxmHI_avxCAL_777ZD1zaWa1xlbqBAxdmYnIe83xm4s-sQ/exec";
 
       async function fetchData(action, data = {}) {
         try {
@@ -553,9 +602,18 @@
         }
       }
 
+      function formatRupiah(angka) {
+        let value = parseInt(angka) || 0;
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+        }).format(value);
+      }
+
       const urlParams = new URLSearchParams(window.location.search);
       const paramId = urlParams.get("id");
-      let allUserPackages = []; // Menyimpan semua paket milik user
+      let allUserPackages = [];
 
       async function initPage() {
         if (!paramId) {
@@ -570,13 +628,10 @@
         }
 
         try {
-          // GUNAKAN API BARU: getInfoKartu
           const dataUser = await fetchData("getInfoKartu", { id: paramId });
 
           if (dataUser && !dataUser.error && dataUser.list_paket.length > 0) {
             allUserPackages = dataUser.list_paket;
-
-            // Cari paket yang ID-nya persis sesuai URL, jika tidak ada pakai paket pertama
             let activePaket =
               allUserPackages.find((p) => p.id === paramId) ||
               allUserPackages[0];
@@ -591,7 +646,7 @@
             <div style="text-align:center; padding:40px 20px;">
                 <i class="fas fa-times-circle" style="font-size:3rem; color:#ff6b6b; margin-bottom:15px;"></i>
                 <h3>Data Tidak Ditemukan</h3>
-                <p style="color:#aaa; font-size:0.85rem;">Pastikan link dari WA sudah benar.</p>
+                <p style="color:#aaa; font-size:0.85rem;">Pastikan link dari WA sudah benar, atau ID salah.</p>
                 <button onclick="window.location.href='kartu-digital.html'" style="background:#333; color:#fff; padding:10px 20px; border:none; border-radius:8px; margin-top:15px;">Coba Lagi</button>
             </div>`;
         }
@@ -607,7 +662,6 @@
 
       function renderBaseUI(namaPemilik) {
         let html = ``;
-        // Tampilkan Dropdown Pilihan jika paket > 1
         if (allUserPackages.length > 1) {
           let options = "";
           allUserPackages.forEach((p) => {
@@ -645,12 +699,55 @@
         const isMingguan = String(paketInfo.paket)
           .toLowerCase()
           .includes("mingguan");
+        const isUangOnly =
+          String(paketInfo.paket).toLowerCase().includes("uang") ||
+          parseInt(paketInfo.targetBarang) === 0;
+
         let tTotal = parseInt(paketInfo.targetTotal) || (isMingguan ? 40 : 330);
         const tBarang =
-          parseInt(paketInfo.targetBarang) || (isMingguan ? 40 : 130);
+          parseInt(paketInfo.targetBarang) ||
+          (isMingguan ? 40 : isUangOnly ? 0 : 130);
+        const tUang = tTotal - tBarang;
         const setoranMasuk = parseInt(paketInfo.tercapai) || 0;
+        const saldoInfo = parseInt(paketInfo.saldo) || 0;
 
-        // Render Kartu (Tanpa Saldo)
+        // Logika Pintar untuk Info Dalam Kartu
+        let extraInfoHtml = "";
+
+        if (isUangOnly) {
+          extraInfoHtml = `
+            <div class="info-saldo-only">
+                <div class="iso-label">Saldo Tabungan Aktif</div>
+                <div class="iso-val">${formatRupiah(saldoInfo)}</div>
+            </div>`;
+        } else {
+          let statusHtml = "";
+          if (setoranMasuk >= tBarang) {
+            statusHtml = `
+                <div class="ih-status-done">
+                    <i class="fas fa-check-circle" style="color:#27ae60;"></i> Paket Barang Terpenuhi!
+                </div>
+                <div class="iso-label" style="color:#444;">Nilai Tabungan Saat Ini</div>
+                <div class="iso-val" style="font-size:1.5rem;">${formatRupiah(saldoInfo)}</div>
+                `;
+          } else {
+            statusHtml = `
+                <div class="ih-status-pend">
+                    <i class="fas fa-box-open"></i> Sedang melunasi setoran barang (${tBarang - setoranMasuk}x lagi)
+                </div>`;
+          }
+
+          extraInfoHtml = `
+            <div class="info-hybrid">
+                <div class="ih-targets">
+                    <span>📦 Brg: ${tBarang}x</span>
+                    <span>💰 Uang: ${tUang > 0 ? tUang + "x" : "-"}</span>
+                </div>
+                ${statusHtml}
+            </div>`;
+        }
+
+        // Render Kartu Full
         let htmlCard = `
             <div class="card-container">
                 <div class="member-card-box">
@@ -660,6 +757,8 @@
                     </div>
                     
                     <div class="mc-paket">${paketInfo.paket}</div>
+                    
+                    ${extraInfoHtml}
                     
                     <div class="mc-footer">
                         <div>
@@ -671,9 +770,14 @@
                 </div>
             </div>
 
+            ${
+              !isUangOnly
+                ? `
             <button class="btn-rincian" onclick="lihatRincian('${paketInfo.id}')">
                 <i class="fas fa-box-open"></i> Lihat Rincian Isi Paket
-            </button>
+            </button>`
+                : ""
+            }
 
             <div class="stats-box">
                 <div class="sb-item">
@@ -692,9 +796,9 @@
                 </div>
             </div>
         `;
+
         document.getElementById("dynamicCardArea").innerHTML = htmlCard;
 
-        // Render Kalender
         if (isMingguan) generateWeeklyCalendar(setoranMasuk, tBarang, tTotal);
         else generateDailyCalendar(setoranMasuk, tBarang, tTotal);
       }
