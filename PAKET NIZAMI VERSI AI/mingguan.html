@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Belanja Paket Mingguan - Nizami</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -14,6 +14,10 @@
     />
     <style>
       /* 1. SETUP DASAR */
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
       body {
         background: #050505;
         color: #fff;
@@ -22,7 +26,7 @@
         margin: 0;
       }
 
-      /* 2. HEADER */
+      /* 2. HEADER UTAMA (STICKY) */
       header {
         background: rgba(10, 30, 15, 0.95);
         padding: 15px 20px;
@@ -34,6 +38,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        height: 60px;
       }
       header h1 {
         margin: 0;
@@ -48,70 +53,138 @@
         font-size: 1.2rem;
         cursor: pointer;
       }
+      .header-badge {
+        font-size: 0.7rem;
+        color: #000;
+        background: #ffd700;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-weight: bold;
+      }
 
-      /* 3. ACCORDION KATEGORI */
       .product-list {
         max-width: 600px;
         margin: 0 auto;
         padding: 15px;
       }
-      .category-section {
-        background: #111;
-        border: 1px solid #222;
-        border-radius: 12px;
-        margin-bottom: 12px;
-        overflow: hidden;
+
+      /* BANNER SAMBUTAN */
+      .page-banner {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 215, 0, 0.1) 0%,
+          rgba(10, 30, 15, 0.5) 100%
+        );
+        border: 1px solid rgba(255, 215, 0, 0.2);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
       }
+      .banner-icon {
+        font-size: 2.5rem;
+        color: #ffd700;
+        opacity: 0.9;
+      }
+      .banner-text h2 {
+        margin: 0 0 5px 0;
+        font-size: 1.05rem;
+        color: #fff;
+      }
+      .banner-text p {
+        margin: 0;
+        font-size: 0.75rem;
+        color: #aaa;
+        line-height: 1.4;
+      }
+
+      /* 3. WRAPPER & ACCORDION (KATEGORI) */
+      .category-section {
+        margin-bottom: 15px;
+      }
+
+      /* HEADER KATEGORI MENGAMBANG (STICKY) */
       .category-header {
-        padding: 15px;
+        padding: 16px 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: #1a1a1a;
+        background: linear-gradient(145deg, #151515, #0d0d0d);
+        border: 1px solid #222;
+        border-left: 4px solid #ffd700;
         cursor: pointer;
-        font-weight: 600;
-        color: #ffd700;
-        transition: 0.3s;
+        transition: 0.3s ease;
+        border-radius: 14px;
+        position: sticky;
+        top: 60px;
+        z-index: 90;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
       }
       .category-header:active {
-        background: #222;
+        transform: scale(0.98);
       }
-      .cat-title {
+      .category-header.active {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        background: #1a1a1a;
+        border-bottom: 1px solid #333;
+      }
+
+      .cat-title-wrapper {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 12px;
+      }
+      .cat-main-icon {
+        font-size: 1.2rem;
+        color: #ffd700;
+        width: 25px;
+        text-align: center;
+      }
+      .cat-title {
         font-size: 0.95rem;
+        font-weight: 600;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
       }
       .cat-count {
-        background: #333;
-        color: #aaa;
-        font-size: 0.7rem;
-        padding: 2px 8px;
-        border-radius: 20px;
+        color: #888;
+        font-size: 0.65rem;
         font-weight: normal;
+        margin-top: 2px;
       }
       .cat-icon {
         transition: transform 0.3s ease;
-        color: #888;
+        color: #666;
+        font-size: 1rem;
       }
-      .cat-icon.rotate {
+      .category-header.active .cat-icon {
         transform: rotate(180deg);
         color: #ffd700;
       }
+
       .category-body {
         display: none;
-        padding: 10px;
+        padding: 12px;
         background: #0a0a0a;
-        border-top: 1px solid #222;
+        border: 1px solid #222;
+        border-top: none;
+        border-bottom-left-radius: 14px;
+        border-bottom-right-radius: 14px;
       }
       .category-body.show {
         display: block;
-        animation: fadeIn 0.3s ease;
+        animation: slideDown 0.3s ease;
       }
-      @keyframes fadeIn {
+
+      @keyframes slideDown {
         from {
           opacity: 0;
-          transform: translateY(-5px);
+          transform: translateY(-10px);
         }
         to {
           opacity: 1;
@@ -119,15 +192,15 @@
         }
       }
 
-      /* 4. LIST ITEM */
+      /* 4. LIST ITEM DENGAN GAMBAR */
       .list-item {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        background: #151515;
-        padding: 10px 12px;
-        margin-bottom: 8px;
-        border-radius: 8px;
+        gap: 12px;
+        background: #111;
+        padding: 12px;
+        margin-bottom: 10px;
+        border-radius: 12px;
         border: 1px solid #2a2a2a;
         transition: 0.2s;
       }
@@ -136,26 +209,46 @@
       }
       .list-item.in-cart {
         border-color: #ffd700;
-        background: #1d1a0b;
+        background: rgba(255, 215, 0, 0.05);
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
       }
+
+      .item-img {
+        width: 65px;
+        height: 65px;
+        border-radius: 10px;
+        object-fit: cover;
+        background: #222;
+        border: 1px solid #333;
+        flex-shrink: 0;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .item-img:active {
+        transform: scale(0.9);
+      }
+
       .item-info {
         flex: 1;
-        padding-right: 10px;
       }
       .item-name {
         font-size: 0.85rem;
-        font-weight: 500;
+        font-weight: 600;
         color: #eee;
         margin-bottom: 4px;
         line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
       .item-price {
         color: #4ade80;
-        font-size: 0.85rem;
-        font-weight: 600;
+        font-size: 0.9rem;
+        font-weight: bold;
       }
       .item-unit {
-        font-size: 0.7rem;
+        font-size: 0.65rem;
         color: #888;
         font-weight: normal;
       }
@@ -165,15 +258,16 @@
         display: flex;
         align-items: center;
         gap: 5px;
-        background: #222;
-        padding: 3px;
+        background: #000;
+        padding: 4px;
         border-radius: 50px;
         border: 1px solid #333;
+        flex-shrink: 0;
       }
       .qty-btn {
-        width: 26px;
-        height: 26px;
-        background: #333;
+        width: 28px;
+        height: 28px;
+        background: #222;
         border: none;
         color: #fff;
         border-radius: 50%;
@@ -183,19 +277,22 @@
         justify-content: center;
         font-weight: bold;
         font-size: 1rem;
+        transition: 0.1s;
       }
       .qty-btn:active {
         background: #ffd700;
         color: #000;
+        transform: scale(0.9);
       }
       .qty-val {
         font-weight: 600;
-        width: 20px;
+        width: 24px;
         text-align: center;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
+        color: #fff;
       }
 
-      /* 5. FOOTER KERANJANG */
+      /* 5. FOOTER KERANJANG (DI ATAS LIGHTBOX) */
       .cart-bar {
         position: fixed;
         bottom: 0;
@@ -203,8 +300,8 @@
         width: 100%;
         background: rgba(15, 15, 15, 0.98);
         border-top: 1px solid #333;
-        z-index: 100;
-        box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5);
+        z-index: 3000; /* PENTING: Harus lebih besar dari lightbox (2000) */
+        box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.9);
         transform: translateY(100%);
         transition: transform 0.3s ease-out;
         display: flex;
@@ -214,6 +311,7 @@
       .cart-bar.show {
         transform: translateY(0);
       }
+
       .cart-preview {
         max-height: 150px;
         overflow-y: auto;
@@ -233,6 +331,7 @@
         color: #ffd700;
         font-weight: 600;
       }
+
       .cart-actions {
         padding: 15px 20px;
         display: flex;
@@ -250,23 +349,140 @@
         font-weight: bold;
         color: #4ade80;
       }
+
       .btn-checkout {
-        background: linear-gradient(90deg, #ffd700, #ffaa00);
+        background: linear-gradient(135deg, #ffd700, #f39c12);
         color: #000;
         border: none;
-        padding: 10px 20px;
+        padding: 12px 25px;
         border-radius: 50px;
         font-weight: 700;
         cursor: pointer;
         display: flex;
         gap: 8px;
         align-items: center;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
       }
+
       .loader {
         text-align: center;
         padding: 50px;
         color: #666;
         font-size: 0.9rem;
+      }
+
+      /* === 6. LIGHTBOX CANGGIH (ZOOM & SLIDER) === */
+      #lightbox {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.98);
+        z-index: 2000; /* Di bawah cart-bar (3000) */
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        opacity: 0;
+        transition: opacity 0.3s;
+        padding-bottom: 70px; /* Jarak agar tidak ketutupan keranjang */
+      }
+      #lightbox.show {
+        opacity: 1;
+      }
+
+      .lb-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 50%;
+        z-index: 2010;
+      }
+
+      /* Tombol Navigasi Kiri-Kanan */
+      .lb-nav {
+        position: absolute;
+        top: 40%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.2rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        z-index: 2010;
+        transition: 0.2s;
+      }
+      .lb-nav:active {
+        background: #ffd700;
+        color: #000;
+        transform: translateY(-50%) scale(0.9);
+      }
+      .lb-prev {
+        left: 10px;
+      }
+      .lb-next {
+        right: 10px;
+      }
+
+      /* Konten dalam Lightbox */
+      .lb-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 400px;
+        padding: 0 20px;
+      }
+      #lbImg {
+        max-width: 100%;
+        max-height: 50vh;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        object-fit: contain;
+        transform: scale(0.95);
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      #lightbox.show #lbImg {
+        transform: scale(1);
+      }
+
+      /* Kotak Info di bawah gambar */
+      .lb-info-box {
+        background: #111;
+        border: 1px solid #333;
+        border-radius: 16px;
+        padding: 15px 20px;
+        width: 100%;
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      .lb-title {
+        color: #fff;
+        font-size: 1rem;
+        font-weight: bold;
+        text-align: center;
+        line-height: 1.2;
+      }
+      .lb-price {
+        color: #4ade80;
+        font-size: 1.1rem;
+        font-weight: bold;
       }
     </style>
   </head>
@@ -279,27 +495,28 @@
         ></i>
         Paket Mingguan
       </h1>
-      <div
-        style="
-          font-size: 0.75rem;
-          color: #888;
-          background: #222;
-          padding: 4px 10px;
-          border-radius: 20px;
-        "
-      >
-        Cicilan 40x
-      </div>
+      <div class="header-badge">Cicilan 40x</div>
     </header>
 
     <div id="productContainer" class="product-list">
+      <div class="page-banner">
+        <i class="fas fa-shopping-basket banner-icon"></i>
+        <div class="banner-text">
+          <h2>Pilih Kebutuhan Anda</h2>
+          <p>
+            Sentuh kategori di bawah untuk melihat katalog. Geser (swipe) foto
+            untuk melihat lainnya.
+          </p>
+        </div>
+      </div>
+
       <div class="loader">
         <i
           class="fas fa-spinner fa-spin"
           style="font-size: 2rem; margin-bottom: 10px; color: #ffd700"
         ></i
         ><br />
-        Mengambil data katalog...
+        Mengambil katalog barang...
       </div>
     </div>
 
@@ -311,15 +528,59 @@
           <span class="cart-total-value" id="totalPrice">Rp 0</span>
         </div>
         <button class="btn-checkout" onclick="checkoutWA()">
-          Pesan <i class="fab fa-whatsapp" style="font-size: 1.2rem"></i>
+          Pesan <i class="fab fa-whatsapp" style="font-size: 1.3rem"></i>
         </button>
       </div>
     </div>
 
+    <div id="lightbox">
+      <div
+        id="swipeArea"
+        style="position: absolute; inset: 0; z-index: 1000"
+        onclick="closeLightbox()"
+      ></div>
+
+      <div class="lb-close" onclick="closeLightbox()">&times;</div>
+      <div class="lb-nav lb-prev" onclick="changeLightboxItem(-1)">
+        <i class="fas fa-chevron-left"></i>
+      </div>
+      <div class="lb-nav lb-next" onclick="changeLightboxItem(1)">
+        <i class="fas fa-chevron-right"></i>
+      </div>
+
+      <div class="lb-content" style="z-index: 2000; pointer-events: none">
+        <img id="lbImg" src="" />
+        <div class="lb-info-box" style="pointer-events: auto">
+          <div class="lb-title" id="lbTitle">Nama Barang</div>
+          <div class="lb-price" id="lbPrice">Rp 0 /mgg</div>
+
+          <div
+            class="qty-control"
+            style="transform: scale(1.1); margin-top: 5px"
+          >
+            <button class="qty-btn" onclick="updateCartFromLightbox(-1)">
+              -
+            </button>
+            <div class="qty-val" id="lbQty">0</div>
+            <button
+              class="qty-btn"
+              onclick="updateCartFromLightbox(1)"
+              style="background: #ffd700; color: #000"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script>
+      // ==========================================
+      // 1. FUNGSI API & UTILITY
+      // ==========================================
       async function fetchData(action, params = {}) {
         const url =
-          "https://script.google.com/macros/s/AKfycbzDvfm6gWbv4cOf2yIs5qCWuxusxMbGqepR7BtenGywceGO-7SXo8ympSy_iMnjSvJF6w/exec";
+          "https://script.google.com/macros/s/AKfycby0Y_PGrKsuLW9rThT0dBibLpk5eKLgoyV43a0nA6xYe52fXW0zpnY6WPtpp0jiQUW_jA/exec";
         const queryString = new URLSearchParams({
           action,
           ...params,
@@ -328,7 +589,6 @@
           const response = await fetch(`${url}?${queryString}`);
           return await response.json();
         } catch (error) {
-          console.error("Error:", error);
           return null;
         }
       }
@@ -341,7 +601,26 @@
         window.open(`https://wa.me/${nomor}?text=${pesan}`, "_blank");
       }
 
+      function getCategoryIcon(catName) {
+        const name = catName.toLowerCase();
+        if (name.includes("sembako")) return "fas fa-box-open";
+        if (name.includes("bumbu")) return "fas fa-pepper-hot";
+        if (name.includes("kerupuk")) return "fas fa-cookie";
+        if (name.includes("daging")) return "fas fa-drumstick-bite";
+        if (name.includes("mie")) return "fas fa-bowl-food";
+        if (name.includes("kue")) return "fas fa-cookie-bite";
+        if (name.includes("minuman")) return "fas fa-glass-water";
+        if (name.includes("cokelat") || name.includes("coklat"))
+          return "fas fa-candy-cane";
+        return "fas fa-tags";
+      }
+
+      // ==========================================
+      // 2. STATE DATA
+      // ==========================================
       let allProducts = [];
+      let lightboxProducts = []; // Menyimpan urutan barang untuk navigasi Lightbox
+      let currentLightboxIndex = 0;
       let cart = {};
       const TENOR_MINGGUAN = 40;
 
@@ -352,41 +631,46 @@
           renderAccordionProducts(allProducts);
         } else {
           document.getElementById("productContainer").innerHTML =
-            '<div style="text-align:center; padding:50px; color:#ff6b6b;">Data kosong atau gagal memuat.<br>Cek Database.</div>';
+            '<div style="text-align:center; padding:50px; color:#ff6b6b;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><br>Koneksi gagal. Coba muat ulang halaman.</div>';
         }
       };
 
+      // ==========================================
+      // 3. RENDER KATEGORI & PRODUK
+      // ==========================================
       function renderAccordionProducts(products) {
         const container = document.getElementById("productContainer");
-        container.innerHTML = "";
+        const bannerHTML = container.innerHTML.split('<div class="loader">')[0];
+        container.innerHTML = bannerHTML;
 
-        // ==========================================
-        // FILTER KATEGORI YANG INGIN DIHILANGKAN
-        // ==========================================
         const kategoriYangDihapus = ["Snack Kids", "Wadah", "Cookies"];
-
         const groupedProducts = {};
+
         products.forEach((item) => {
           if (!item.nama) return;
-
           const kat = item.kategori ? item.kategori : "Lainnya";
-
-          if (kategoriYangDihapus.includes(kat)) {
-            return;
-          }
-
+          if (kategoriYangDihapus.includes(kat)) return;
           if (!groupedProducts[kat]) {
             groupedProducts[kat] = [];
           }
           groupedProducts[kat].push(item);
         });
 
+        lightboxProducts = []; // Reset ulang array untuk lightbox
+        let globalIndex = 0; // Index berurutan untuk semua produk yang dirender
+
         for (const kategori in groupedProducts) {
           const kategoriId = kategori.replace(/\s+/g, "-").toLowerCase();
           const itemsInKategori = groupedProducts[kategori];
+          const catIcon = getCategoryIcon(kategori);
 
           let itemsHTML = "";
           itemsInKategori.forEach((item) => {
+            // Tambahkan ke array Lightbox
+            lightboxProducts.push(item);
+            const currentIndex = globalIndex;
+            globalIndex++;
+
             const id = item.nama.replace(/\s+/g, "-").toLowerCase();
             const currentQty = cart[item.nama] ? cart[item.nama].qty : 0;
             const activeClass = currentQty > 0 ? "in-cart" : "";
@@ -394,14 +678,27 @@
             const hargaTotal = item.harga;
             const hargaPerMinggu = Math.ceil(hargaTotal / TENOR_MINGGUAN);
 
+            const fallbackImg =
+              "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23222'/%3E%3Ctext x='50' y='50' dominant-baseline='middle' text-anchor='middle' fill='%23555' font-family='sans-serif' font-size='12'%3ENo Img%3C/text%3E%3C/svg%3E";
+            const imgPath =
+              item.foto && item.foto.length > 10 ? item.foto : fallbackImg;
+
+            // Simpan imgPath final ke object agar lightbox tidak perlu ngecek lagi
+            lightboxProducts[currentIndex].finalImg = imgPath;
+
             itemsHTML += `
                 <div class="list-item ${activeClass}" id="card-${id}">
+                  <img src="${imgPath}" class="item-img" loading="lazy" referrerpolicy="no-referrer" 
+                       onerror="this.onerror=null; this.src='${fallbackImg}';" 
+                       onclick="openLightbox(${currentIndex})">
+                  
                   <div class="item-info">
                     <div class="item-name">${item.nama}</div>
                     <div class="item-price">
                       ${formatRupiah(hargaPerMinggu)} <span class="item-unit">/mgg</span>
                     </div>
                   </div>
+                  
                   <div class="qty-control">
                     <button class="qty-btn" onclick="updateCart('${item.nama}', ${hargaTotal}, '${item.satuan}', -1)">-</button>
                     <div class="qty-val" id="qty-${id}">${currentQty}</div>
@@ -413,11 +710,15 @@
 
           const htmlAccordion = `
             <div class="category-section">
-                <div class="category-header" onclick="toggleCategory('${kategoriId}')">
-                    <div class="cat-title">
-                        ${kategori} <span class="cat-count">${itemsInKategori.length} item</span>
+                <div class="category-header" id="head-${kategoriId}" onclick="toggleCategory('${kategoriId}')">
+                    <div class="cat-title-wrapper">
+                        <i class="${catIcon} cat-main-icon"></i>
+                        <div class="cat-title">
+                            ${kategori}
+                            <span class="cat-count">${itemsInKategori.length} varian tersedia</span>
+                        </div>
                     </div>
-                    <i class="fas fa-chevron-down cat-icon" id="icon-${kategoriId}"></i>
+                    <i class="fas fa-chevron-down cat-icon"></i>
                 </div>
                 <div class="category-body" id="body-${kategoriId}">
                     ${itemsHTML}
@@ -431,19 +732,23 @@
 
       function toggleCategory(id) {
         const body = document.getElementById(`body-${id}`);
-        const icon = document.getElementById(`icon-${id}`);
+        const header = document.getElementById(`head-${id}`);
 
         if (body.classList.contains("show")) {
           body.classList.remove("show");
-          icon.classList.remove("rotate");
+          header.classList.remove("active");
         } else {
           body.classList.add("show");
-          icon.classList.add("rotate");
+          header.classList.add("active");
         }
       }
 
+      // ==========================================
+      // 4. KERANJANG & CHECKOUT
+      // ==========================================
       function updateCart(name, priceTotal, unit, change) {
         if (!cart[name]) cart[name] = { qty: 0, price: priceTotal, unit: unit };
+
         cart[name].qty += change;
         if (cart[name].qty < 0) cart[name].qty = 0;
 
@@ -459,6 +764,7 @@
           delete cart[name];
           if (cardEl) cardEl.classList.remove("in-cart");
         }
+
         hitungTotal();
       }
 
@@ -470,6 +776,7 @@
         for (let key in cart) {
           let qty = cart[key].qty;
           let price = cart[key].price;
+
           totalSemuaBarang += qty * price;
           count += qty;
 
@@ -488,17 +795,13 @@
         document.getElementById("cartPreview").innerHTML = previewHTML;
 
         const cartBar = document.getElementById("cartBar");
-        if (count > 0) {
-          cartBar.classList.add("show");
-        } else {
-          cartBar.classList.remove("show");
-        }
+        if (count > 0) cartBar.classList.add("show");
+        else cartBar.classList.remove("show");
       }
 
       function checkoutWA() {
         if (Object.keys(cart).length === 0) return;
 
-        // PERUBAHAN: Menggunakan \n untuk baris baru
         let pesan =
           "Halo Admin, saya mau daftar *PAKET MINGGUAN (40 Minggu)*:\n\n";
         let totalHargaCash = 0;
@@ -508,17 +811,113 @@
           let hargaMingguanItem = Math.ceil(cart[key].price / TENOR_MINGGUAN);
           totalHargaCash += subtotal;
 
-          // PERUBAHAN: Mengganti simbol aneh dengan strip biasa
           pesan += `- ${key} (${cart[key].qty} ${cart[key].unit}) : ${formatRupiah(hargaMingguanItem * cart[key].qty)}\n`;
         }
 
         const totalSetoran = Math.ceil(totalHargaCash / TENOR_MINGGUAN);
 
         pesan += `\n💰 *TOTAL SETORAN: ${formatRupiah(totalSetoran)} / minggu*\n`;
-        pesan += `(Selama 40x)\n\nMohon dibantu pendaftarannya.`;
+        pesan += `(Selama 40x Kocokan)\n\nMohon dibantu pendaftarannya.`;
 
-        // PERUBAHAN: Menggunakan encodeURIComponent agar rapi di WA
         kirimWA("628122261036", encodeURIComponent(pesan));
+      }
+
+      // ==========================================
+      // 5. FITUR LIGHTBOX CANGGIH (ZOOM + SWIPE)
+      // ==========================================
+
+      // Buka Lightbox berdasarkan Index
+      function openLightbox(index) {
+        currentLightboxIndex = index;
+        updateLightboxUI();
+
+        const lb = document.getElementById("lightbox");
+        lb.style.display = "flex";
+        setTimeout(() => lb.classList.add("show"), 10);
+      }
+
+      // Tutup Lightbox
+      function closeLightbox() {
+        const lb = document.getElementById("lightbox");
+        lb.classList.remove("show");
+        setTimeout(() => (lb.style.display = "none"), 300);
+      }
+
+      // Ganti Gambar Kiri / Kanan
+      function changeLightboxItem(step) {
+        currentLightboxIndex += step;
+
+        // Loop balik jika sudah di ujung
+        if (currentLightboxIndex < 0)
+          currentLightboxIndex = lightboxProducts.length - 1;
+        if (currentLightboxIndex >= lightboxProducts.length)
+          currentLightboxIndex = 0;
+
+        updateLightboxUI();
+      }
+
+      // Update Data Tampilan di dalam Lightbox
+      function updateLightboxUI() {
+        const item = lightboxProducts[currentLightboxIndex];
+
+        document.getElementById("lbImg").src = item.finalImg;
+        document.getElementById("lbTitle").innerText = item.nama;
+
+        const hargaMgg = Math.ceil(item.harga / TENOR_MINGGUAN);
+        document.getElementById("lbPrice").innerText =
+          formatRupiah(hargaMgg) + " /mgg";
+
+        // Sinkronisasi jumlah di keranjang
+        const currentQty = cart[item.nama] ? cart[item.nama].qty : 0;
+        document.getElementById("lbQty").innerText = currentQty;
+      }
+
+      // Fungsi Tambah/Kurang Barang dari dalam Lightbox
+      function updateCartFromLightbox(change) {
+        const item = lightboxProducts[currentLightboxIndex];
+
+        // Panggil fungsi utama untuk mengupdate keranjang global & list di belakang layar
+        updateCart(item.nama, item.harga, item.satuan, change);
+
+        // Update angka di layar Lightbox secara langsung
+        const currentQty = cart[item.nama] ? cart[item.nama].qty : 0;
+        document.getElementById("lbQty").innerText = currentQty;
+      }
+
+      // --- LOGIKA SWIPE / GESER LAYAR HP ---
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      const swipeArea = document.getElementById("swipeArea");
+
+      swipeArea.addEventListener(
+        "touchstart",
+        (e) => {
+          touchStartX = e.changedTouches[0].screenX;
+        },
+        { passive: true },
+      );
+
+      swipeArea.addEventListener(
+        "touchend",
+        (e) => {
+          touchEndX = e.changedTouches[0].screenX;
+          handleSwipe();
+        },
+        { passive: true },
+      );
+
+      function handleSwipe() {
+        const swipeThreshold = 50; // Jarak minimal geser agar dianggap swipe
+
+        if (touchEndX < touchStartX - swipeThreshold) {
+          // Geser ke kiri (Next)
+          changeLightboxItem(1);
+        }
+        if (touchEndX > touchStartX + swipeThreshold) {
+          // Geser ke kanan (Prev)
+          changeLightboxItem(-1);
+        }
       }
     </script>
   </body>
