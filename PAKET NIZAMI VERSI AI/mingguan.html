@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Belanja Paket Mingguan - Nizami</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
@@ -40,13 +41,15 @@
         justify-content: space-between;
         height: 60px;
       }
+      .head-title-box {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
       header h1 {
         margin: 0;
         font-size: 1.1rem;
         color: #ffd700;
-        display: flex;
-        align-items: center;
-        gap: 15px;
       }
       .back-btn {
         color: #fff;
@@ -54,12 +57,59 @@
         cursor: pointer;
       }
       .header-badge {
-        font-size: 0.7rem;
+        font-size: 0.65rem;
         color: #000;
         background: #ffd700;
         padding: 4px 10px;
         border-radius: 20px;
         font-weight: bold;
+      }
+
+      .cart-icon-btn {
+        position: relative;
+        background: rgba(255, 215, 0, 0.1);
+        border: 1px solid rgba(255, 215, 0, 0.3);
+        color: #ffd700;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: 0.2s;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      }
+      .cart-icon-btn:active {
+        transform: scale(0.9);
+      }
+      .cart-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #ff4d4d;
+        color: #fff;
+        font-size: 0.65rem;
+        font-weight: bold;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      }
+      @keyframes bounceIn {
+        0% {
+          transform: scale(0);
+        }
+        50% {
+          transform: scale(1.3);
+        }
+        100% {
+          transform: scale(1);
+        }
       }
 
       .product-list {
@@ -101,12 +151,10 @@
         line-height: 1.4;
       }
 
-      /* 3. WRAPPER & ACCORDION (KATEGORI) */
+      /* 3. ACCORDION KATEGORI */
       .category-section {
         margin-bottom: 15px;
       }
-
-      /* HEADER KATEGORI MENGAMBANG (STICKY) */
       .category-header {
         padding: 16px 20px;
         display: flex;
@@ -180,7 +228,6 @@
         display: block;
         animation: slideDown 0.3s ease;
       }
-
       @keyframes slideDown {
         from {
           opacity: 0;
@@ -192,7 +239,7 @@
         }
       }
 
-      /* 4. LIST ITEM DENGAN GAMBAR */
+      /* 4. LIST ITEM (DENGAN GAMBAR) */
       .list-item {
         display: flex;
         align-items: center;
@@ -292,7 +339,7 @@
         color: #fff;
       }
 
-      /* 5. FOOTER KERANJANG (DI ATAS LIGHTBOX) */
+      /* 5. FOOTER KERANJANG LOKAL */
       .cart-bar {
         position: fixed;
         bottom: 0;
@@ -300,7 +347,7 @@
         width: 100%;
         background: rgba(15, 15, 15, 0.98);
         border-top: 1px solid #333;
-        z-index: 3000; /* PENTING: Harus lebih besar dari lightbox (2000) */
+        z-index: 3000;
         box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.9);
         transform: translateY(100%);
         transition: transform 0.3s ease-out;
@@ -351,10 +398,10 @@
       }
 
       .btn-checkout {
-        background: linear-gradient(135deg, #ffd700, #f39c12);
+        background: #ffd700;
         color: #000;
         border: none;
-        padding: 12px 25px;
+        padding: 12px 20px;
         border-radius: 50px;
         font-weight: 700;
         cursor: pointer;
@@ -363,32 +410,27 @@
         align-items: center;
         box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
       }
-
-      .loader {
-        text-align: center;
-        padding: 50px;
-        color: #666;
-        font-size: 0.9rem;
+      .btn-checkout:active {
+        transform: scale(0.95);
       }
 
-      /* === 6. LIGHTBOX CANGGIH (ZOOM & SLIDER) === */
+      /* LIGHTBOX */
       #lightbox {
         display: none;
         position: fixed;
         inset: 0;
         background: rgba(0, 0, 0, 0.98);
-        z-index: 2000; /* Di bawah cart-bar (3000) */
+        z-index: 2000;
         align-items: center;
         justify-content: center;
         flex-direction: column;
         opacity: 0;
         transition: opacity 0.3s;
-        padding-bottom: 70px; /* Jarak agar tidak ketutupan keranjang */
+        padding-bottom: 70px;
       }
       #lightbox.show {
         opacity: 1;
       }
-
       .lb-close {
         position: absolute;
         top: 15px;
@@ -405,8 +447,6 @@
         border-radius: 50%;
         z-index: 2010;
       }
-
-      /* Tombol Navigasi Kiri-Kanan */
       .lb-nav {
         position: absolute;
         top: 40%;
@@ -436,8 +476,6 @@
       .lb-next {
         right: 10px;
       }
-
-      /* Konten dalam Lightbox */
       .lb-content {
         display: flex;
         flex-direction: column;
@@ -458,8 +496,6 @@
       #lightbox.show #lbImg {
         transform: scale(1);
       }
-
-      /* Kotak Info di bawah gambar */
       .lb-info-box {
         background: #111;
         border: 1px solid #333;
@@ -484,28 +520,62 @@
         font-size: 1.1rem;
         font-weight: bold;
       }
+
+      .loader {
+        text-align: center;
+        padding: 50px;
+        color: #666;
+        font-size: 0.9rem;
+      }
+
+      #toast {
+        position: fixed;
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #4ade80;
+        color: #000;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-weight: bold;
+        font-size: 0.85rem;
+        box-shadow: 0 4px 15px rgba(74, 222, 128, 0.4);
+        z-index: 99999;
+        display: none;
+        align-items: center;
+        gap: 8px;
+        transition: opacity 0.3s;
+      }
     </style>
   </head>
   <body>
+    <div id="toast">
+      <i class="fas fa-check-circle"></i> <span id="toastMsg">Sukses</span>
+    </div>
+
     <header>
-      <h1>
+      <div class="head-title-box">
         <i
           class="fas fa-arrow-left back-btn"
           onclick="window.location.href = 'index.html'"
         ></i>
-        Paket Mingguan
-      </h1>
-      <div class="header-badge">Cicilan 40x</div>
+        <h1>Paket Mingguan</h1>
+        <div class="header-badge">Cicilan 40x</div>
+      </div>
+      <div class="cart-icon-btn" onclick="goToCart()">
+        <i class="fas fa-shopping-basket"></i>
+        <span class="cart-badge" id="globalCartBadge">0</span>
+      </div>
     </header>
 
     <div id="productContainer" class="product-list">
       <div class="page-banner">
         <i class="fas fa-shopping-basket banner-icon"></i>
         <div class="banner-text">
-          <h2>Pilih Kebutuhan Anda</h2>
+          <h2>Rakit Paket Anda Sendiri</h2>
           <p>
-            Sentuh kategori di bawah untuk melihat katalog. Geser (swipe) foto
-            untuk melihat lainnya.
+            Kumpulkan barang kebutuhan Anda, lalu masukkan jadi 1 paket utuh ke
+            keranjang utama.
           </p>
         </div>
       </div>
@@ -527,8 +597,9 @@
           <span class="cart-total-label">Total Setoran Mingguan</span>
           <span class="cart-total-value" id="totalPrice">Rp 0</span>
         </div>
-        <button class="btn-checkout" onclick="checkoutWA()">
-          Pesan <i class="fab fa-whatsapp" style="font-size: 1.3rem"></i>
+        <button class="btn-checkout" onclick="bungkusKeKeranjangGlobal()">
+          Masukkan Keranjang
+          <i class="fas fa-arrow-right" style="margin-left: 5px"></i>
         </button>
       </div>
     </div>
@@ -539,7 +610,6 @@
         style="position: absolute; inset: 0; z-index: 1000"
         onclick="closeLightbox()"
       ></div>
-
       <div class="lb-close" onclick="closeLightbox()">&times;</div>
       <div class="lb-nav lb-prev" onclick="changeLightboxItem(-1)">
         <i class="fas fa-chevron-left"></i>
@@ -547,13 +617,11 @@
       <div class="lb-nav lb-next" onclick="changeLightboxItem(1)">
         <i class="fas fa-chevron-right"></i>
       </div>
-
       <div class="lb-content" style="z-index: 2000; pointer-events: none">
         <img id="lbImg" src="" />
         <div class="lb-info-box" style="pointer-events: auto">
           <div class="lb-title" id="lbTitle">Nama Barang</div>
           <div class="lb-price" id="lbPrice">Rp 0 /mgg</div>
-
           <div
             class="qty-control"
             style="transform: scale(1.1); margin-top: 5px"
@@ -574,32 +642,29 @@
       </div>
     </div>
 
+    <script src="script.js"></script>
+
     <script>
       // ==========================================
-      // 1. FUNGSI API & UTILITY
+      // STATE KHUSUS HALAMAN INI SAJA (KERANJANG LOKAL)
       // ==========================================
-      async function fetchData(action, params = {}) {
-        const url =
-          "https://script.google.com/macros/s/AKfycby0Y_PGrKsuLW9rThT0dBibLpk5eKLgoyV43a0nA6xYe52fXW0zpnY6WPtpp0jiQUW_jA/exec";
-        const queryString = new URLSearchParams({
-          action,
-          ...params,
-        }).toString();
-        try {
-          const response = await fetch(`${url}?${queryString}`);
-          return await response.json();
-        } catch (error) {
-          return null;
+      let allProducts = [];
+      let lightboxProducts = [];
+      let currentLightboxIndex = 0;
+      let localCart = {}; // Keranjang sementara sebelum dibungkus!
+      const TENOR_MINGGUAN = 40;
+
+      window.onload = async () => {
+        // updateGlobalCartBadge berjalan otomatis dari script.js
+        const data = await fetchData("getBarang");
+        if (data && data.length > 0) {
+          allProducts = data;
+          renderAccordionProducts(allProducts);
+        } else {
+          document.getElementById("productContainer").innerHTML =
+            '<div style="text-align:center; padding:50px; color:#ff6b6b;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><br>Koneksi gagal. Coba muat ulang halaman.</div>';
         }
-      }
-
-      function formatRupiah(angka) {
-        return "Rp " + parseInt(angka).toLocaleString("id-ID");
-      }
-
-      function kirimWA(nomor, pesan) {
-        window.open(`https://wa.me/${nomor}?text=${pesan}`, "_blank");
-      }
+      };
 
       function getCategoryIcon(catName) {
         const name = catName.toLowerCase();
@@ -615,29 +680,6 @@
         return "fas fa-tags";
       }
 
-      // ==========================================
-      // 2. STATE DATA
-      // ==========================================
-      let allProducts = [];
-      let lightboxProducts = []; // Menyimpan urutan barang untuk navigasi Lightbox
-      let currentLightboxIndex = 0;
-      let cart = {};
-      const TENOR_MINGGUAN = 40;
-
-      window.onload = async () => {
-        const data = await fetchData("getBarang");
-        if (data && data.length > 0) {
-          allProducts = data;
-          renderAccordionProducts(allProducts);
-        } else {
-          document.getElementById("productContainer").innerHTML =
-            '<div style="text-align:center; padding:50px; color:#ff6b6b;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><br>Koneksi gagal. Coba muat ulang halaman.</div>';
-        }
-      };
-
-      // ==========================================
-      // 3. RENDER KATEGORI & PRODUK
-      // ==========================================
       function renderAccordionProducts(products) {
         const container = document.getElementById("productContainer");
         const bannerHTML = container.innerHTML.split('<div class="loader">')[0];
@@ -650,14 +692,12 @@
           if (!item.nama) return;
           const kat = item.kategori ? item.kategori : "Lainnya";
           if (kategoriYangDihapus.includes(kat)) return;
-          if (!groupedProducts[kat]) {
-            groupedProducts[kat] = [];
-          }
+          if (!groupedProducts[kat]) groupedProducts[kat] = [];
           groupedProducts[kat].push(item);
         });
 
-        lightboxProducts = []; // Reset ulang array untuk lightbox
-        let globalIndex = 0; // Index berurutan untuk semua produk yang dirender
+        lightboxProducts = [];
+        let globalIndex = 0;
 
         for (const kategori in groupedProducts) {
           const kategoriId = kategori.replace(/\s+/g, "-").toLowerCase();
@@ -666,13 +706,16 @@
 
           let itemsHTML = "";
           itemsInKategori.forEach((item) => {
-            // Tambahkan ke array Lightbox
             lightboxProducts.push(item);
             const currentIndex = globalIndex;
             globalIndex++;
 
-            const id = item.nama.replace(/\s+/g, "-").toLowerCase();
-            const currentQty = cart[item.nama] ? cart[item.nama].qty : 0;
+            const safeId = item.nama.replace(/[^a-zA-Z0-9]/g, "");
+
+            // Cek di Keranjang LOKAL (Bukan Global)
+            const currentQty = localCart[item.nama]
+              ? localCart[item.nama].qty
+              : 0;
             const activeClass = currentQty > 0 ? "in-cart" : "";
 
             const hargaTotal = item.harga;
@@ -680,14 +723,29 @@
 
             const fallbackImg =
               "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23222'/%3E%3Ctext x='50' y='50' dominant-baseline='middle' text-anchor='middle' fill='%23555' font-family='sans-serif' font-size='12'%3ENo Img%3C/text%3E%3C/svg%3E";
+            const rawImg = item.foto || "";
+            // Memanggil fungsi getDriveThumbnail dari script.js
             const imgPath =
-              item.foto && item.foto.length > 10 ? item.foto : fallbackImg;
+              typeof getDriveThumbnail === "function"
+                ? getDriveThumbnail(rawImg)
+                : rawImg || fallbackImg;
 
-            // Simpan imgPath final ke object agar lightbox tidak perlu ngecek lagi
             lightboxProducts[currentIndex].finalImg = imgPath;
 
+            let btnHtml = "";
+            if (currentQty > 0) {
+              btnHtml = `
+                <div class="qty-control" id="ctrl-${safeId}">
+                    <button class="qty-btn" onclick="updateLocalCart('${item.nama}', ${hargaTotal}, -1, '${safeId}')">-</button>
+                    <div class="qty-val" id="qty-${safeId}">${currentQty}</div>
+                    <button class="qty-btn" onclick="updateLocalCart('${item.nama}', ${hargaTotal}, 1, '${safeId}')" style="background:#ffd700; color:#000;">+</button>
+                </div>`;
+            } else {
+              btnHtml = `<button class="qty-btn" id="btn-${safeId}" onclick="updateLocalCart('${item.nama}', ${hargaTotal}, 1, '${safeId}')" style="background:#ffd700; color:#000; width: 35px; height: 35px; font-size:1.2rem; border-radius:10px;"><i class="fas fa-plus"></i></button>`;
+            }
+
             itemsHTML += `
-                <div class="list-item ${activeClass}" id="card-${id}">
+                <div class="list-item ${activeClass}" id="card-${safeId}">
                   <img src="${imgPath}" class="item-img" loading="lazy" referrerpolicy="no-referrer" 
                        onerror="this.onerror=null; this.src='${fallbackImg}';" 
                        onclick="openLightbox(${currentIndex})">
@@ -699,13 +757,11 @@
                     </div>
                   </div>
                   
-                  <div class="qty-control">
-                    <button class="qty-btn" onclick="updateCart('${item.nama}', ${hargaTotal}, '${item.satuan}', -1)">-</button>
-                    <div class="qty-val" id="qty-${id}">${currentQty}</div>
-                    <button class="qty-btn" onclick="updateCart('${item.nama}', ${hargaTotal}, '${item.satuan}', 1)" style="background:#ffd700; color:#000;">+</button>
+                  <div id="action-area-${safeId}">
+                      ${btnHtml}
                   </div>
                 </div>
-                `;
+            `;
           });
 
           const htmlAccordion = `
@@ -744,52 +800,57 @@
       }
 
       // ==========================================
-      // 4. KERANJANG & CHECKOUT
+      // LOGIKA KERANJANG LOKAL (SEBELUM DI BUNGKUS)
       // ==========================================
-      function updateCart(name, priceTotal, unit, change) {
-        if (!cart[name]) cart[name] = { qty: 0, price: priceTotal, unit: unit };
+      function updateLocalCart(name, priceTotal, change, domId) {
+        // Simpan ke array Lokal
+        if (!localCart[name]) localCart[name] = { qty: 0, price: priceTotal };
+        localCart[name].qty += change;
+        if (localCart[name].qty <= 0) delete localCart[name];
 
-        cart[name].qty += change;
-        if (cart[name].qty < 0) cart[name].qty = 0;
+        // Render Ulang Tombol pada Produk Tersebut
+        const container = document.getElementById(`action-area-${domId}`);
+        const cardEl = document.getElementById(`card-${domId}`);
+        if (!container) return;
 
-        const id = name.replace(/\s+/g, "-").toLowerCase();
-        const qtyEl = document.getElementById(`qty-${id}`);
-        const cardEl = document.getElementById(`card-${id}`);
+        let currentQty = localCart[name] ? localCart[name].qty : 0;
 
-        if (qtyEl) qtyEl.innerText = cart[name].qty;
-
-        if (cart[name].qty > 0) {
-          if (cardEl) cardEl.classList.add("in-cart");
+        if (currentQty > 0) {
+          cardEl.classList.add("in-cart");
+          container.innerHTML = `
+            <div class="qty-control" id="ctrl-${domId}">
+                <button class="qty-btn" onclick="updateLocalCart('${name}', ${priceTotal}, -1, '${domId}')">-</button>
+                <div class="qty-val" id="qty-${domId}">${currentQty}</div>
+                <button class="qty-btn" onclick="updateLocalCart('${name}', ${priceTotal}, 1, '${domId}')" style="background:#ffd700; color:#000;">+</button>
+            </div>`;
         } else {
-          delete cart[name];
-          if (cardEl) cardEl.classList.remove("in-cart");
+          cardEl.classList.remove("in-cart");
+          container.innerHTML = `<button class="qty-btn" id="btn-${domId}" onclick="updateLocalCart('${name}', ${priceTotal}, 1, '${domId}')" style="background:#ffd700; color:#000; width: 35px; height: 35px; font-size:1.2rem; border-radius:10px;"><i class="fas fa-plus"></i></button>`;
         }
 
-        hitungTotal();
+        updateFloatingBar();
       }
 
-      function hitungTotal() {
-        let totalSemuaBarang = 0;
+      function updateFloatingBar() {
+        let totalMingguan = 0;
         let count = 0;
         let previewHTML = "";
 
-        for (let key in cart) {
-          let qty = cart[key].qty;
-          let price = cart[key].price;
+        for (let key in localCart) {
+          let item = localCart[key];
+          count += item.qty;
 
-          totalSemuaBarang += qty * price;
-          count += qty;
+          let hargaMingguanItem = Math.ceil(item.price / TENOR_MINGGUAN);
+          totalMingguan += hargaMingguanItem * item.qty;
 
-          let hargaMingguanItem = Math.ceil(price / TENOR_MINGGUAN);
           previewHTML += `
           <div class="mini-item">
-              <span>${key} <b>x${qty}</b></span>
-              <span class="mini-price">${formatRupiah(hargaMingguanItem * qty)}</span>
+              <span>${key} <b>x${item.qty}</b></span>
+              <span class="mini-price">${formatRupiah(hargaMingguanItem * item.qty)}</span>
           </div>
           `;
         }
 
-        const totalMingguan = Math.ceil(totalSemuaBarang / TENOR_MINGGUAN);
         document.getElementById("totalPrice").innerText =
           formatRupiah(totalMingguan);
         document.getElementById("cartPreview").innerHTML = previewHTML;
@@ -799,67 +860,83 @@
         else cartBar.classList.remove("show");
       }
 
-      function checkoutWA() {
-        if (Object.keys(cart).length === 0) return;
+      // ==========================================
+      // AKSI UTAMA: BUNGKUS LALU LEMPAR KE KERANJANG GLOBAL
+      // ==========================================
+      function bungkusKeKeranjangGlobal() {
+        if (Object.keys(localCart).length === 0) return;
 
-        let pesan =
-          "Halo Admin, saya mau daftar *PAKET MINGGUAN (40 Minggu)*:\n\n";
-        let totalHargaCash = 0;
+        let rincianArr = [];
+        let totalMingguan = 0; // Tambahan untuk menghitung harga
 
-        for (let key in cart) {
-          let subtotal = cart[key].qty * cart[key].price;
-          let hargaMingguanItem = Math.ceil(cart[key].price / TENOR_MINGGUAN);
-          totalHargaCash += subtotal;
+        // Susun daftar rincian barang
+        for (let key in localCart) {
+          let item = localCart[key];
+          rincianArr.push(`${key} x${item.qty}`);
 
-          pesan += `- ${key} (${cart[key].qty} ${cart[key].unit}) : ${formatRupiah(hargaMingguanItem * cart[key].qty)}\n`;
+          // Hitung cicilan mingguan untuk produk ini
+          let hargaMingguanItem = Math.ceil(item.price / TENOR_MINGGUAN);
+          totalMingguan += hargaMingguanItem * item.qty;
         }
 
-        const totalSetoran = Math.ceil(totalHargaCash / TENOR_MINGGUAN);
+        // Buat string nama paket (Termasuk Rincian)
+        let namaPaket = `Paket Mingguan (Isi: ${rincianArr.join(", ")})`;
 
-        pesan += `\n💰 *TOTAL SETORAN: ${formatRupiah(totalSetoran)} / minggu*\n`;
-        pesan += `(Selama 40x Kocokan)\n\nMohon dibantu pendaftarannya.`;
+        // Masukkan ke Keranjang Global menggunakan script.js beserta harganya
+        if (typeof addToGlobalCart === "function") {
+          addToGlobalCart(namaPaket, totalMingguan);
+        } else {
+          alert("Error: Script Global tidak ditemukan!");
+          return;
+        }
 
-        kirimWA("628122261036", encodeURIComponent(pesan));
+        // Kosongkan keranjang lokal
+        localCart = {};
+        renderAccordionProducts(allProducts); // Render ulang agar angka kembali 0
+        updateFloatingBar();
+
+        // Arahkan otomatis ke Halaman Utama (Index) dan buka Keranjang
+        showToast("Paket berhasil dibungkus!");
+        setTimeout(() => {
+          sessionStorage.setItem("autoOpenCart", "true");
+          window.location.href = "index.html";
+        }, 800);
+      }
+
+      // Menu Atas (Langsung ke Keranjang Global)
+      function goToCart() {
+        sessionStorage.setItem("autoOpenCart", "true");
+        window.location.href = "index.html";
       }
 
       // ==========================================
-      // 5. FITUR LIGHTBOX CANGGIH (ZOOM + SWIPE)
+      // LIGHTBOX CANGGIH (ZOOM + SWIPE)
       // ==========================================
-
-      // Buka Lightbox berdasarkan Index
       function openLightbox(index) {
         currentLightboxIndex = index;
         updateLightboxUI();
-
         const lb = document.getElementById("lightbox");
         lb.style.display = "flex";
         setTimeout(() => lb.classList.add("show"), 10);
       }
 
-      // Tutup Lightbox
       function closeLightbox() {
         const lb = document.getElementById("lightbox");
         lb.classList.remove("show");
         setTimeout(() => (lb.style.display = "none"), 300);
       }
 
-      // Ganti Gambar Kiri / Kanan
       function changeLightboxItem(step) {
         currentLightboxIndex += step;
-
-        // Loop balik jika sudah di ujung
         if (currentLightboxIndex < 0)
           currentLightboxIndex = lightboxProducts.length - 1;
         if (currentLightboxIndex >= lightboxProducts.length)
           currentLightboxIndex = 0;
-
         updateLightboxUI();
       }
 
-      // Update Data Tampilan di dalam Lightbox
       function updateLightboxUI() {
         const item = lightboxProducts[currentLightboxIndex];
-
         document.getElementById("lbImg").src = item.finalImg;
         document.getElementById("lbTitle").innerText = item.nama;
 
@@ -867,29 +944,26 @@
         document.getElementById("lbPrice").innerText =
           formatRupiah(hargaMgg) + " /mgg";
 
-        // Sinkronisasi jumlah di keranjang
-        const currentQty = cart[item.nama] ? cart[item.nama].qty : 0;
+        const currentQty = localCart[item.nama] ? localCart[item.nama].qty : 0;
         document.getElementById("lbQty").innerText = currentQty;
       }
 
-      // Fungsi Tambah/Kurang Barang dari dalam Lightbox
       function updateCartFromLightbox(change) {
         const item = lightboxProducts[currentLightboxIndex];
+        const safeId = item.nama.replace(/[^a-zA-Z0-9]/g, "");
 
-        // Panggil fungsi utama untuk mengupdate keranjang global & list di belakang layar
-        updateCart(item.nama, item.harga, item.satuan, change);
+        // Panggil fungsi lokal
+        updateLocalCart(item.nama, item.harga, change, safeId);
 
-        // Update angka di layar Lightbox secara langsung
-        const currentQty = cart[item.nama] ? cart[item.nama].qty : 0;
+        // Update teks di lightbox
+        const currentQty = localCart[item.nama] ? localCart[item.nama].qty : 0;
         document.getElementById("lbQty").innerText = currentQty;
       }
 
-      // --- LOGIKA SWIPE / GESER LAYAR HP ---
+      // --- LOGIKA SWIPE LAYAR HP ---
       let touchStartX = 0;
       let touchEndX = 0;
-
       const swipeArea = document.getElementById("swipeArea");
-
       swipeArea.addEventListener(
         "touchstart",
         (e) => {
@@ -897,7 +971,6 @@
         },
         { passive: true },
       );
-
       swipeArea.addEventListener(
         "touchend",
         (e) => {
@@ -908,16 +981,9 @@
       );
 
       function handleSwipe() {
-        const swipeThreshold = 50; // Jarak minimal geser agar dianggap swipe
-
-        if (touchEndX < touchStartX - swipeThreshold) {
-          // Geser ke kiri (Next)
-          changeLightboxItem(1);
-        }
-        if (touchEndX > touchStartX + swipeThreshold) {
-          // Geser ke kanan (Prev)
-          changeLightboxItem(-1);
-        }
+        const swipeThreshold = 50;
+        if (touchEndX < touchStartX - swipeThreshold) changeLightboxItem(1);
+        if (touchEndX > touchStartX + swipeThreshold) changeLightboxItem(-1);
       }
     </script>
   </body>
