@@ -6,9 +6,11 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Paket Uang - Nizami</title>
+    <title>Paket Uang - Nizami VIP</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
       rel="stylesheet"
     />
     <link
@@ -18,76 +20,133 @@
 
     <style>
       /* === GLOBAL STYLE === */
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
       body {
         background-color: #050505;
         color: #fff;
         font-family: "Poppins", sans-serif;
         margin: 0;
-        padding-bottom: 90px;
+        padding-bottom: 20px;
       }
 
-      /* HEADER */
+      /* === HEADER SHOPEE STYLE === */
       header {
-        padding: 20px 20px;
-        background: linear-gradient(180deg, #2a0a0a 0%, #050505 100%);
-        text-align: center;
+        padding: 15px 20px;
+        background: linear-gradient(180deg, #1a1500 0%, #050505 100%);
         position: sticky;
         top: 0;
         z-index: 50;
-        border-bottom: 1px solid #1a1a1a;
+        border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
       }
-
+      .back-icon {
+        color: #fff;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
       .app-title {
         font-family: "Playfair Display", serif;
         color: #ffd700;
         margin: 0;
-        font-size: 1.8rem;
+        font-size: 1.3rem;
         letter-spacing: 1px;
       }
-      .app-subtitle {
-        font-family: "Poppins", sans-serif;
-        font-size: 1.2rem;
-        color: #ff6b6b;
+
+      .cart-icon-btn {
+        position: relative;
+        background: rgba(255, 215, 0, 0.1);
+        border: 1px solid rgba(255, 215, 0, 0.3);
+        color: #ffd700;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: 0.2s;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      }
+      .cart-icon-btn:active {
+        transform: scale(0.9);
+      }
+      .cart-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #ff4d4d;
+        color: #fff;
+        font-size: 0.65rem;
         font-weight: bold;
-        margin-top: 5px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      }
+      @keyframes bounceIn {
+        0% {
+          transform: scale(0);
+        }
+        50% {
+          transform: scale(1.3);
+        }
+        100% {
+          transform: scale(1);
+        }
       }
 
-      /* INFO PROMO SYARAT */
+      /* === ELEGANT PROMO BANNER === */
       .promo-banner {
-        background: #250b0b;
-        border: 1px dashed #ff4d4d;
-        color: #ffcccc;
-        margin: 15px 20px 5px;
-        padding: 12px;
+        background: linear-gradient(90deg, #111, #1a1a1a, #111);
+        border: 1px solid #333;
+        border-left: 3px solid #ff4d4d;
+        color: #ddd;
+        margin: 20px;
+        padding: 15px;
         border-radius: 12px;
-        text-align: center;
+        text-align: left;
         font-size: 0.8rem;
-        line-height: 1.4;
+        line-height: 1.5;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
       }
       .promo-banner i {
         color: #ffd700;
-        margin-right: 5px;
-        font-size: 1rem;
+        font-size: 2rem;
+        opacity: 0.9;
       }
 
-      /* CONTAINER */
       .container {
-        padding: 15px 20px;
+        padding: 0 20px 20px 20px;
         max-width: 600px;
         margin: 0 auto;
       }
 
-      /* CARD STYLE */
+      /* === VIP CARDS (ACCORDION THEME) === */
       .money-card {
-        background: #111;
-        border: 1px solid #333;
+        background: linear-gradient(145deg, #151515, #0a0a0a);
+        border: 1px solid #222;
+        border-top: 1px solid var(--tier-color);
         border-radius: 20px;
-        padding: 20px;
-        margin-bottom: 20px;
+        padding: 20px 25px;
+        margin-bottom: 15px;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        transition: transform 0.2s;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+        cursor: pointer;
+        transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
       .money-card:active {
         transform: scale(0.98);
@@ -95,344 +154,672 @@
       .money-card::before {
         content: "";
         position: absolute;
-        top: -50%;
-        right: -50%;
-        width: 200px;
-        height: 200px;
+        top: -60px;
+        right: -60px;
+        width: 150px;
+        height: 150px;
         background: radial-gradient(
           circle,
-          rgba(255, 215, 0, 0.05) 0%,
+          var(--tier-color) 0%,
           transparent 70%
         );
-        border-radius: 50%;
+        opacity: 0.15;
         pointer-events: none;
       }
 
-      /* CARD CONTENT */
       .mc-header {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 15px;
+        align-items: center;
+      }
+      .mc-title-box {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
       }
       .mc-title {
-        font-size: 1.5rem;
-        font-family: "Playfair Display", serif;
+        font-family: "Poppins", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #aaa;
         margin: 0;
-        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
       }
       .mc-badge {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 5px 12px;
-        border-radius: 8px;
-        font-size: 0.8rem;
-        font-weight: bold;
-        border: 1px solid #555;
+        font-family: "Playfair Display", serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--tier-color);
+        margin: 0;
+      }
+      .mc-target-badge {
         display: inline-block;
-        margin-top: 5px;
+        background: rgba(255, 255, 255, 0.05);
+        color: #ddd;
+        font-size: 0.65rem;
+        padding: 2px 8px;
+        border-radius: 4px;
+        border: 1px dashed #444;
+        margin-top: 4px;
+        width: fit-content;
+      }
+      .mc-target-badge span {
+        color: #ffd700;
+        font-weight: bold;
+      }
+
+      .mc-icon-group {
+        display: flex;
+        align-items: center;
+        gap: 15px;
       }
       .mc-icon {
         width: 45px;
         height: 45px;
-        border-radius: 50%;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #000;
+        color: var(--tier-color);
+        font-size: 1.3rem;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+      }
+      .mc-chevron {
         font-size: 1.2rem;
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-        flex-shrink: 0;
+        color: #666;
+        transition: transform 0.3s ease;
       }
 
-      /* DETAILS */
-      .mc-details {
+      .mc-details-wrapper {
+        display: none;
+        margin-top: 20px;
+        padding-top: 20px;
         border-top: 1px dashed #333;
-        padding: 12px 0;
-        margin-bottom: 10px;
+        animation: fadeIn 0.4s ease;
+      }
+      .money-card.active .mc-details-wrapper {
+        display: block;
+      }
+      .money-card.active .mc-chevron {
+        transform: rotate(180deg);
+        color: var(--tier-color);
+      }
+      .money-card.active {
+        border-color: var(--tier-color);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .mc-val-area {
+        margin-bottom: 15px;
+        text-align: center;
+      }
+      .mc-total-label {
+        font-size: 0.7rem;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 5px;
+        display: block;
+      }
+      .mc-total-val {
+        font-family: "Playfair Display", serif;
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      }
+
+      .mc-details {
+        background: #0a0a0a;
+        border: 1px solid #1a1a1a;
+        border-radius: 12px;
+        padding: 12px 15px;
+        margin-bottom: 15px;
       }
       .mc-row {
         display: flex;
         justify-content: space-between;
-        font-size: 0.9rem;
-        color: #ccc;
+        font-size: 0.8rem;
+        color: #aaa;
       }
       .text-red {
         color: #ff6b6b;
-        font-weight: 600;
-        background: #2a0a0a;
-        padding: 2px 8px;
-        border-radius: 5px;
+        font-family: monospace;
+        font-size: 0.85rem;
       }
 
-      /* TOTAL SECTION */
-      .mc-total {
-        background: rgba(0, 0, 0, 0.5);
+      .mc-bonus {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 20px;
+        background: rgba(255, 215, 0, 0.03);
+        padding: 12px;
         border-radius: 12px;
-        padding: 15px;
-        text-align: center;
-        border: 1px solid #222;
+        border: 1px solid rgba(255, 215, 0, 0.1);
       }
-      .mc-total-label {
+      .bonus-icon {
+        background: linear-gradient(135deg, var(--tier-color), #222);
+        color: #000;
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-size: 0.8rem;
-        color: #aaa;
-        margin-bottom: 5px;
+        flex-shrink: 0;
+        margin-top: 3px;
+      }
+      .bonus-text {
+        font-size: 0.85rem;
+        color: #ddd;
+        font-weight: 500;
+        line-height: 1.4;
+      }
+      .bonus-text span {
+        color: var(--tier-color);
+        font-weight: bold;
+      }
+      .bonus-syarat {
+        display: block;
+        color: #ff6b6b;
+        font-size: 0.65rem;
+        margin-top: 2px;
+        font-weight: normal;
+      }
+
+      /* TOMBOL AKSI & QUANTITY */
+      .action-row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .mc-btn {
+        flex: 1;
+        padding: 14px;
+        background: transparent;
+        color: var(--tier-color);
+        border: 1px solid var(--tier-color);
+        border-radius: 12px;
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: 0.2s;
         text-transform: uppercase;
         letter-spacing: 1px;
-      }
-      .mc-total-val {
-        font-size: 1.6rem;
-        font-weight: bold;
-        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
       }
 
-      /* BONUS MINYAK */
-      .mc-bonus {
-        background: linear-gradient(90deg, #d4af37, #b8860b);
-        color: #000;
-        padding: 8px;
+      .qty-control {
+        flex: 1;
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        background: #000;
+        padding: 6px;
+        border-radius: 12px;
+        border: 1px solid #333;
+      }
+      .qty-btn {
+        width: 35px;
+        height: 35px;
+        background: #222;
+        border: none;
+        color: #fff;
         border-radius: 8px;
-        margin-top: 10px;
+        cursor: pointer;
         font-weight: bold;
-        font-size: 1rem;
+        font-size: 1.2rem;
+        transition: 0.1s;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
-        box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2);
+      }
+      .qty-btn:active {
+        background: #ffd700;
+        color: #000;
+        transform: scale(0.9);
+      }
+      .qty-val {
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #fff;
       }
 
-      /* INFO DAFTAR */
-      .info-reg {
-        text-align: center;
-        font-size: 0.75rem;
-        color: #666;
-        margin-top: 15px;
-        font-style: italic;
-      }
-
-      /* BACK BUTTON */
-      .fab-back {
+      /* === TOAST NOTIFICATION === */
+      #toast {
         position: fixed;
-        bottom: 20px;
+        top: 80px;
         left: 50%;
         transform: translateX(-50%);
-        background: #222;
-        border: 1px solid #444;
-        color: #fff;
-        padding: 12px 30px;
+        background: #4ade80;
+        color: #000;
+        padding: 10px 20px;
         border-radius: 50px;
         font-weight: bold;
-        display: flex;
+        font-size: 0.85rem;
+        box-shadow: 0 4px 15px rgba(74, 222, 128, 0.4);
+        z-index: 99999;
+        display: none;
         align-items: center;
-        gap: 10px;
-        text-decoration: none;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8);
-        z-index: 100;
-        font-family: "Poppins", sans-serif;
+        gap: 8px;
+        transition: opacity 0.3s;
       }
     </style>
   </head>
   <body>
+    <div id="toast">
+      <i class="fas fa-check-circle"></i>
+      <span id="toastMsg">Tersimpan di Keranjang</span>
+    </div>
+
     <header>
-      <div class="app-title">PAKET UANG</div>
-      <div class="app-subtitle">TARGET 330x SETORAN</div>
+      <div style="display: flex; align-items: center; gap: 15px">
+        <i
+          class="fas fa-arrow-left back-icon"
+          onclick="window.location.href = 'index.html'"
+        ></i>
+        <h1 class="app-title" style="font-size: 1.2rem">Paket Uang</h1>
+      </div>
+      <div class="cart-icon-btn" onclick="goToCart()">
+        <i class="fas fa-shopping-basket"></i>
+        <span class="cart-badge" id="globalCartBadge">0</span>
+      </div>
     </header>
 
     <div class="promo-banner">
-      <i class="fas fa-gift"></i> <b>INFO PENTING</b><br />
-      Tambahan Minyak didapatkan jika peserta melakukan simpanan sampai 330x
+      <i class="fas fa-gift"></i>
+      <div>
+        <div style="color: #ffd700; font-weight: bold; margin-bottom: 3px">
+          Peringatan Bonus Spesial
+        </div>
+        Tambahan Minyak Goreng <b>HANYA</b> diberikan jika peserta mencapai
+        target lunas <span style="color: #4ade80">330x Setoran</span> di akhir
+        periode.
+      </div>
     </div>
 
     <div class="container">
-      <div class="money-card" style="border-color: #2ed573">
+      <div
+        class="money-card"
+        style="--tier-color: #cd7f32"
+        onclick="toggleTier(this)"
+      >
         <div class="mc-header">
-          <div>
-            <h2 class="mc-title" style="color: #2ed573">Paket 5.000</h2>
-            <span class="mc-badge" style="color: #2ed573; border-color: #2ed573"
-              >Setor Rp 5.000 / hari</span
-            >
+          <div class="mc-title-box">
+            <h2 class="mc-title">Bronze Tier</h2>
+            <div class="mc-badge">Rp 5.000 / Hari</div>
+            <div class="mc-target-badge">
+              <i class="fas fa-check-circle"></i> Target:
+              <span>330x Setoran</span>
+            </div>
           </div>
-          <div class="mc-icon" style="background: #2ed573">
-            <i class="fas fa-coins"></i>
-          </div>
-        </div>
-        <div class="mc-details">
-          <div class="mc-row">
-            <span>Potongan Admin</span
-            ><span class="text-red">- Rp 300 / 1x</span>
+          <div class="mc-icon-group">
+            <div class="mc-icon"><i class="fas fa-coins"></i></div>
+            <i class="fas fa-chevron-down mc-chevron"></i>
           </div>
         </div>
-        <div class="mc-total">
-          <div class="mc-total-label">Total Uang Diterima</div>
-          <div class="mc-total-val">Rp 1.550.000</div>
+        <div class="mc-details-wrapper">
+          <div class="mc-val-area">
+            <span class="mc-total-label">Total Uang Diterima</span>
+            <div class="mc-total-val">Rp 1.550.000</div>
+          </div>
+          <div class="mc-details">
+            <div class="mc-row">
+              <span>Biaya Administrasi</span
+              ><span class="text-red">- Rp 300 / 1x</span>
+            </div>
+          </div>
           <div class="mc-bonus">
-            <i class="fas fa-tint"></i> + Minyak 1 Liter
+            <div class="bonus-icon"><i class="fas fa-tint"></i></div>
+            <div class="bonus-text">
+              Bonus <span>Minyak 1 Liter</span
+              ><span class="bonus-syarat">*(Wajib lunas 330x setoran)</span>
+            </div>
           </div>
-        </div>
-        <div class="info-reg">
-          <i class="fas fa-info-circle"></i> Tertarik? Daftar di menu
-          <b>Akun Saya</b>
+
+          <div class="action-row" id="action-PaketUang5000">
+            <button
+              class="mc-btn"
+              onclick="tambahKeKeranjang(event, 'Paket Uang 5.000', 5000)"
+            >
+              <i class="fas fa-cart-plus"></i> PILIH PAKET
+            </button>
+          </div>
         </div>
       </div>
 
-      <div class="money-card" style="border-color: #48dbfb">
+      <div
+        class="money-card"
+        style="--tier-color: #bdc3c7"
+        onclick="toggleTier(this)"
+      >
         <div class="mc-header">
-          <div>
-            <h2 class="mc-title" style="color: #48dbfb">Paket 10.000</h2>
-            <span class="mc-badge" style="color: #48dbfb; border-color: #48dbfb"
-              >Setor Rp 10.000 / hari</span
-            >
+          <div class="mc-title-box">
+            <h2 class="mc-title">Silver Tier</h2>
+            <div class="mc-badge">Rp 10.000 / Hari</div>
+            <div class="mc-target-badge">
+              <i class="fas fa-check-circle"></i> Target:
+              <span>330x Setoran</span>
+            </div>
           </div>
-          <div class="mc-icon" style="background: #48dbfb">
-            <i class="fas fa-money-bill"></i>
-          </div>
-        </div>
-        <div class="mc-details">
-          <div class="mc-row">
-            <span>Potongan Admin</span
-            ><span class="text-red">- Rp 450 / 1x</span>
+          <div class="mc-icon-group">
+            <div class="mc-icon"><i class="fas fa-money-bill-wave"></i></div>
+            <i class="fas fa-chevron-down mc-chevron"></i>
           </div>
         </div>
-        <div class="mc-total">
-          <div class="mc-total-label">Total Uang Diterima</div>
-          <div class="mc-total-val">Rp 3.150.000</div>
+        <div class="mc-details-wrapper">
+          <div class="mc-val-area">
+            <span class="mc-total-label">Total Uang Diterima</span>
+            <div class="mc-total-val">Rp 3.150.000</div>
+          </div>
+          <div class="mc-details">
+            <div class="mc-row">
+              <span>Biaya Administrasi</span
+              ><span class="text-red">- Rp 450 / 1x</span>
+            </div>
+          </div>
           <div class="mc-bonus">
-            <i class="fas fa-tint"></i> + Minyak 2 Liter
+            <div class="bonus-icon"><i class="fas fa-tint"></i></div>
+            <div class="bonus-text">
+              Bonus <span>Minyak 2 Liter</span
+              ><span class="bonus-syarat">*(Wajib lunas 330x setoran)</span>
+            </div>
           </div>
-        </div>
-        <div class="info-reg">
-          <i class="fas fa-info-circle"></i> Tertarik? Daftar di menu
-          <b>Akun Saya</b>
+          <div class="action-row" id="action-PaketUang10000">
+            <button
+              class="mc-btn"
+              onclick="tambahKeKeranjang(event, 'Paket Uang 10.000', 10000)"
+            >
+              <i class="fas fa-cart-plus"></i> PILIH PAKET
+            </button>
+          </div>
         </div>
       </div>
 
-      <div class="money-card" style="border-color: #ffa502">
+      <div
+        class="money-card"
+        style="--tier-color: #ffd700"
+        onclick="toggleTier(this)"
+      >
         <div class="mc-header">
-          <div>
-            <h2 class="mc-title" style="color: #ffa502">Paket 15.000</h2>
-            <span class="mc-badge" style="color: #ffa502; border-color: #ffa502"
-              >Setor Rp 15.000 / hari</span
-            >
+          <div class="mc-title-box">
+            <h2 class="mc-title">Gold Tier</h2>
+            <div class="mc-badge">Rp 15.000 / Hari</div>
+            <div class="mc-target-badge">
+              <i class="fas fa-check-circle"></i> Target:
+              <span>330x Setoran</span>
+            </div>
           </div>
-          <div class="mc-icon" style="background: #ffa502">
-            <i class="fas fa-wallet"></i>
-          </div>
-        </div>
-        <div class="mc-details">
-          <div class="mc-row">
-            <span>Potongan Admin</span
-            ><span class="text-red">- Rp 450 / 1x</span>
+          <div class="mc-icon-group">
+            <div class="mc-icon"><i class="fas fa-wallet"></i></div>
+            <i class="fas fa-chevron-down mc-chevron"></i>
           </div>
         </div>
-        <div class="mc-total">
-          <div class="mc-total-label">Total Uang Diterima</div>
-          <div class="mc-total-val">Rp 4.800.000</div>
+        <div class="mc-details-wrapper">
+          <div class="mc-val-area">
+            <span class="mc-total-label">Total Uang Diterima</span>
+            <div class="mc-total-val">Rp 4.800.000</div>
+          </div>
+          <div class="mc-details">
+            <div class="mc-row">
+              <span>Biaya Administrasi</span
+              ><span class="text-red">- Rp 450 / 1x</span>
+            </div>
+          </div>
           <div class="mc-bonus">
-            <i class="fas fa-tint"></i> + Minyak 2 Liter
+            <div class="bonus-icon"><i class="fas fa-tint"></i></div>
+            <div class="bonus-text">
+              Bonus <span>Minyak 2 Liter</span
+              ><span class="bonus-syarat">*(Wajib lunas 330x setoran)</span>
+            </div>
           </div>
-        </div>
-        <div class="info-reg">
-          <i class="fas fa-info-circle"></i> Tertarik? Daftar di menu
-          <b>Akun Saya</b>
+          <div class="action-row" id="action-PaketUang15000">
+            <button
+              class="mc-btn"
+              onclick="tambahKeKeranjang(event, 'Paket Uang 15.000', 15000)"
+            >
+              <i class="fas fa-cart-plus"></i> PILIH PAKET
+            </button>
+          </div>
         </div>
       </div>
 
-      <div class="money-card" style="border-color: #ff4757">
+      <div
+        class="money-card"
+        style="--tier-color: #4ade80"
+        onclick="toggleTier(this)"
+      >
         <div class="mc-header">
-          <div>
-            <h2 class="mc-title" style="color: #ff4757">Paket 20.000</h2>
-            <span class="mc-badge" style="color: #ff4757; border-color: #ff4757"
-              >Setor Rp 20.000 / hari</span
-            >
+          <div class="mc-title-box">
+            <h2 class="mc-title">Emerald Tier</h2>
+            <div class="mc-badge">Rp 20.000 / Hari</div>
+            <div class="mc-target-badge">
+              <i class="fas fa-check-circle"></i> Target:
+              <span>330x Setoran</span>
+            </div>
           </div>
-          <div class="mc-icon" style="background: #ff4757">
-            <i class="fas fa-sack-dollar"></i>
-          </div>
-        </div>
-        <div class="mc-details">
-          <div class="mc-row">
-            <span>Potongan Admin</span
-            ><span class="text-red">- Rp 600 / 1x</span>
+          <div class="mc-icon-group">
+            <div class="mc-icon"><i class="fas fa-sack-dollar"></i></div>
+            <i class="fas fa-chevron-down mc-chevron"></i>
           </div>
         </div>
-        <div class="mc-total">
-          <div class="mc-total-label">Total Uang Diterima</div>
-          <div class="mc-total-val">Rp 6.400.000</div>
+        <div class="mc-details-wrapper">
+          <div class="mc-val-area">
+            <span class="mc-total-label">Total Uang Diterima</span>
+            <div class="mc-total-val">Rp 6.400.000</div>
+          </div>
+          <div class="mc-details">
+            <div class="mc-row">
+              <span>Biaya Administrasi</span
+              ><span class="text-red">- Rp 600 / 1x</span>
+            </div>
+          </div>
           <div class="mc-bonus">
-            <i class="fas fa-tint"></i> + Minyak 4 Liter
+            <div class="bonus-icon"><i class="fas fa-tint"></i></div>
+            <div class="bonus-text">
+              Bonus <span>Minyak 4 Liter</span
+              ><span class="bonus-syarat">*(Wajib lunas 330x setoran)</span>
+            </div>
           </div>
-        </div>
-        <div class="info-reg">
-          <i class="fas fa-info-circle"></i> Tertarik? Daftar di menu
-          <b>Akun Saya</b>
+          <div class="action-row" id="action-PaketUang20000">
+            <button
+              class="mc-btn"
+              onclick="tambahKeKeranjang(event, 'Paket Uang 20.000', 20000)"
+            >
+              <i class="fas fa-cart-plus"></i> PILIH PAKET
+            </button>
+          </div>
         </div>
       </div>
 
-      <div class="money-card" style="border-color: #a55eea">
+      <div
+        class="money-card"
+        style="--tier-color: #a29bfe"
+        onclick="toggleTier(this)"
+      >
         <div class="mc-header">
-          <div>
-            <h2 class="mc-title" style="color: #a55eea">Paket 25.000</h2>
-            <span class="mc-badge" style="color: #a55eea; border-color: #a55eea"
-              >Setor Rp 25.000 / hari</span
-            >
+          <div class="mc-title-box">
+            <h2 class="mc-title">Sapphire Tier</h2>
+            <div class="mc-badge">Rp 25.000 / Hari</div>
+            <div class="mc-target-badge">
+              <i class="fas fa-check-circle"></i> Target:
+              <span>330x Setoran</span>
+            </div>
           </div>
-          <div class="mc-icon" style="background: #a55eea">
-            <i class="fas fa-gem"></i>
-          </div>
-        </div>
-        <div class="mc-details">
-          <div class="mc-row">
-            <span>Potongan Admin</span
-            ><span class="text-red">- Rp 750 / 1x</span>
+          <div class="mc-icon-group">
+            <div class="mc-icon"><i class="fas fa-gem"></i></div>
+            <i class="fas fa-chevron-down mc-chevron"></i>
           </div>
         </div>
-        <div class="mc-total">
-          <div class="mc-total-label">Total Uang Diterima</div>
-          <div class="mc-total-val">Rp 8.000.000</div>
+        <div class="mc-details-wrapper">
+          <div class="mc-val-area">
+            <span class="mc-total-label">Total Uang Diterima</span>
+            <div class="mc-total-val">Rp 8.000.000</div>
+          </div>
+          <div class="mc-details">
+            <div class="mc-row">
+              <span>Biaya Administrasi</span
+              ><span class="text-red">- Rp 750 / 1x</span>
+            </div>
+          </div>
           <div class="mc-bonus">
-            <i class="fas fa-tint"></i> + Minyak 5 Liter
+            <div class="bonus-icon"><i class="fas fa-tint"></i></div>
+            <div class="bonus-text">
+              Bonus <span>Minyak 5 Liter</span
+              ><span class="bonus-syarat">*(Wajib lunas 330x setoran)</span>
+            </div>
           </div>
-        </div>
-        <div class="info-reg">
-          <i class="fas fa-info-circle"></i> Tertarik? Daftar di menu
-          <b>Akun Saya</b>
+          <div class="action-row" id="action-PaketUang25000">
+            <button
+              class="mc-btn"
+              onclick="tambahKeKeranjang(event, 'Paket Uang 25.000', 25000)"
+            >
+              <i class="fas fa-cart-plus"></i> PILIH PAKET
+            </button>
+          </div>
         </div>
       </div>
 
-      <div class="money-card" style="border-color: #ff6b81">
+      <div
+        class="money-card"
+        style="--tier-color: #ff4757"
+        onclick="toggleTier(this)"
+      >
         <div class="mc-header">
-          <div>
-            <h2 class="mc-title" style="color: #ff6b81">Paket 30.000</h2>
-            <span class="mc-badge" style="color: #ff6b81; border-color: #ff6b81"
-              >Setor Rp 30.000 / hari</span
-            >
+          <div class="mc-title-box">
+            <h2 class="mc-title">Ruby Crown Tier</h2>
+            <div class="mc-badge">Rp 30.000 / Hari</div>
+            <div class="mc-target-badge">
+              <i class="fas fa-check-circle"></i> Target:
+              <span>330x Setoran</span>
+            </div>
           </div>
-          <div class="mc-icon" style="background: #ff6b81">
-            <i class="fas fa-crown"></i>
-          </div>
-        </div>
-        <div class="mc-details">
-          <div class="mc-row">
-            <span>Potongan Admin</span
-            ><span class="text-red">- Rp 750 / 1x</span>
+          <div class="mc-icon-group">
+            <div class="mc-icon"><i class="fas fa-crown"></i></div>
+            <i class="fas fa-chevron-down mc-chevron"></i>
           </div>
         </div>
-        <div class="mc-total">
-          <div class="mc-total-label">Total Uang Diterima</div>
-          <div class="mc-total-val">Rp 9.650.000</div>
+        <div class="mc-details-wrapper">
+          <div class="mc-val-area">
+            <span class="mc-total-label">Total Uang Diterima</span>
+            <div class="mc-total-val">Rp 9.650.000</div>
+          </div>
+          <div class="mc-details">
+            <div class="mc-row">
+              <span>Biaya Administrasi</span
+              ><span class="text-red">- Rp 750 / 1x</span>
+            </div>
+          </div>
           <div class="mc-bonus">
-            <i class="fas fa-tint"></i> + Minyak 5 Liter
+            <div class="bonus-icon" style="color: #fff">
+              <i class="fas fa-tint"></i>
+            </div>
+            <div class="bonus-text">
+              Bonus <span>Minyak 5 Liter</span
+              ><span class="bonus-syarat">*(Wajib lunas 330x setoran)</span>
+            </div>
           </div>
-        </div>
-        <div class="info-reg">
-          <i class="fas fa-info-circle"></i> Tertarik? Daftar di menu
-          <b>Akun Saya</b>
+          <div class="action-row" id="action-PaketUang30000">
+            <button
+              class="mc-btn"
+              onclick="tambahKeKeranjang(event, 'Paket Uang 30.000', 30000)"
+            >
+              <i class="fas fa-cart-plus"></i> PILIH PAKET
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
-    <a href="index.html" class="fab-back"
-      ><i class="fas fa-arrow-left"></i> Kembali</a
-    >
+    <script src="script.js"></script>
+
+    <script>
+      function toggleTier(element) {
+        const allCards = document.querySelectorAll(".money-card");
+        allCards.forEach((card) => {
+          if (card !== element) card.classList.remove("active");
+        });
+        element.classList.toggle("active");
+      }
+
+      // Jalankan saat halanan dibuka (Load UI Keranjang di kartu)
+      document.addEventListener("DOMContentLoaded", () => {
+        renderAllCardsUI();
+      });
+
+      function renderAllCardsUI() {
+        const pkts = [
+          { id: "PaketUang5000", name: "Paket Uang 5.000", price: 5000 },
+          { id: "PaketUang10000", name: "Paket Uang 10.000", price: 10000 },
+          { id: "PaketUang15000", name: "Paket Uang 15.000", price: 15000 },
+          { id: "PaketUang20000", name: "Paket Uang 20.000", price: 20000 },
+          { id: "PaketUang25000", name: "Paket Uang 25.000", price: 25000 },
+          { id: "PaketUang30000", name: "Paket Uang 30.000", price: 30000 },
+        ];
+
+        pkts.forEach((p) => updateLocalUI(p.id, p.name, p.price));
+      }
+
+      function tambahKeKeranjang(event, name, price) {
+        event.stopPropagation(); // Biar accordion ngga nutup
+        addToGlobalCart(name, price);
+        const domId = name.replace(/[^a-zA-Z0-9]/g, "");
+        updateLocalUI(domId, name, price);
+      }
+
+      function ubahJumlahKeranjang(event, name, price, change) {
+        event.stopPropagation();
+        updateCartItem(name, change);
+        const domId = name.replace(/[^a-zA-Z0-9]/g, "");
+        updateLocalUI(domId, name, price);
+      }
+
+      function updateLocalUI(domId, name, price) {
+        const container = document.getElementById(`action-${domId}`);
+        if (!container) return;
+
+        const existing = globalCart.find((item) => item.name === name);
+        const qty = existing ? existing.qty : 0;
+
+        if (qty > 0) {
+          container.innerHTML = `
+                <div class="qty-control" style="display:flex;">
+                    <button class="qty-btn" onclick="ubahJumlahKeranjang(event, '${name}', ${price}, -1)">-</button>
+                    <div class="qty-val">${qty}</div>
+                    <button class="qty-btn" onclick="ubahJumlahKeranjang(event, '${name}', ${price}, 1)" style="background:#ffd700; color:#000;">+</button>
+                </div>
+                <button class="mc-btn" onclick="goToCart(event)" style="background:var(--tier-color); color:#000;"><i class="fas fa-check"></i> LANJUT BAYAR</button>
+                `;
+        } else {
+          container.innerHTML = `<button class="mc-btn" onclick="tambahKeKeranjang(event, '${name}', ${price})"><i class="fas fa-cart-plus"></i> PILIH PAKET</button>`;
+        }
+      }
+
+      function goToCart(event) {
+        if (event) event.stopPropagation();
+        sessionStorage.setItem("autoOpenCart", "true");
+        window.location.href = "index.html";
+      }
+    </script>
   </body>
 </html>
