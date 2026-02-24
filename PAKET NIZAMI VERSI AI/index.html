@@ -17,7 +17,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
@@ -557,7 +556,6 @@
         margin-bottom: 20px;
       }
 
-      /* GRID STATISTIK MITRA BARU */
       .ms-stats-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -592,7 +590,6 @@
         line-height: 1.2;
       }
 
-      /* OVERLAY DETAIL PAKET */
       #paket-detail-wrapper {
         display: none;
         background: #0a0a0a;
@@ -718,7 +715,6 @@
         padding-top: 10px;
       }
 
-      /* TOMBOL KALENDER DI CARD */
       .btn-mini-pro {
         padding: 6px 12px;
         border-radius: 8px;
@@ -1016,7 +1012,6 @@
         animation: pulse-glow 2s infinite;
       }
 
-      /* PERBAIKAN WELCOME MODAL */
       .welcome-modal {
         position: fixed;
         top: 0;
@@ -1491,7 +1486,9 @@
               "
               >Paket yang Didaftarkan:</label
             >
+
             <div id="regCartSummary" style="margin-bottom: 15px"></div>
+
             <input
               type="text"
               id="regMitra"
@@ -2135,7 +2132,7 @@
       }
 
       // ==========================================
-      // FUNGSI KERANJANG GLOBAL
+      // FUNGSI KERANJANG GLOBAL (TAMPILAN RAPI)
       // ==========================================
       function openGlobalCart() {
         if (typeof renderCartUI === "function") renderCartUI();
@@ -2155,11 +2152,18 @@
         let html = "";
         globalCart.forEach((item) => {
           let isMingguan = item.name.toLowerCase().includes("mingguan");
+          let isCookies = item.name.toLowerCase().includes("cookies");
           let labelSetoran = isMingguan ? "/mgg" : "/hari";
-          let priceHtml =
-            item.price > 0
-              ? `<div style="color: #4ade80; font-size: 0.75rem; font-weight: normal; margin-top: 3px;"><i class="fas fa-money-bill-wave"></i> Setor: Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}</div>`
-              : "";
+
+          let priceHtml = "";
+          if (item.price > 0) {
+            if (isCookies) {
+              priceHtml = `<div style="color: #4ade80; font-size: 0.75rem; font-weight: normal; margin-top: 3px;"><i class="fas fa-money-bill-wave"></i> Setor: Rp 1.000/toples <br><span style="color:#aaa; font-size: 0.65rem;">(Total: Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran})</span></div>`;
+            } else {
+              priceHtml = `<div style="color: #4ade80; font-size: 0.75rem; font-weight: normal; margin-top: 3px;"><i class="fas fa-money-bill-wave"></i> Setor: Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}</div>`;
+            }
+          }
+
           let displayName = item.name;
           let rincianHtml = "";
 
@@ -2169,9 +2173,12 @@
             let rincianRaw = parts[1].replace(")", "").trim();
             let rincianList = rincianRaw
               .split(", ")
-              .map((r) => `<li style="margin-bottom:2px;">${r}</li>`)
+              .map(
+                (r) =>
+                  `<li style="margin-bottom:2px; list-style: disc; margin-left: 10px;">${r}</li>`,
+              )
               .join("");
-            rincianHtml = `<ul style="margin: 5px 0 0 0; padding-left: 15px; font-size: 0.7rem; color: #aaa; font-weight: normal; line-height: 1.3;">${rincianList}</ul>`;
+            rincianHtml = `<ul style="margin: 5px 0 0 0; padding-left: 10px; font-size: 0.7rem; color: #aaa; font-weight: normal; line-height: 1.4;">${rincianList}</ul>`;
           }
 
           html += `
@@ -2193,6 +2200,9 @@
         container.innerHTML = html;
       }
 
+      // ==========================================
+      // FUNGSI CHECKOUT WHATSAPP (FORMAT SUPER RAPI)
+      // ==========================================
       function checkoutGlobalCart() {
         if (globalCart.length === 0) return alert("Keranjang kosong!");
         const userStr = localStorage.getItem("nizami_user");
@@ -2205,26 +2215,38 @@
         }
 
         const user = JSON.parse(userStr);
-        let msg = `Halo Admin, saya ingin *TAMBAH PESANAN PAKET*.\n\n*DATA PESERTA*\nNama: ${user.nama}\nID: ${user.id}\n\n*PESANAN BARU:*\n`;
+        let msg = `Halo Admin, saya ingin *TAMBAH PESANAN PAKET*.\n\n*👤 DATA PESERTA*\nNama: ${user.nama}\nID: ${user.id}\n\n*🛒 PESANAN BARU:*\n`;
 
         globalCart.forEach((item) => {
           let isMingguan = item.name.toLowerCase().includes("mingguan");
+          let isCookies = item.name.toLowerCase().includes("cookies");
           let labelSetoran = isMingguan ? "/mgg" : "/hari";
-          let priceInfo =
-            item.price > 0
-              ? ` (Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran})`
-              : "";
 
           if (item.name.includes("(Isi:")) {
             let parts = item.name.split("(Isi:");
-            msg += `- ${item.qty}x ${parts[0].trim()}${priceInfo}\n`;
-            msg += `  Isi: ${parts[1].replace(")", "").trim()}\n`;
+            let mainName = parts[0].trim();
+            let rincianArray = parts[1].replace(")", "").trim().split(", ");
+
+            msg += `\n📦 *${item.qty}x ${mainName}*\n`;
+
+            if (isCookies) {
+              msg += ` ↳ Harga: Rp 1.000 ${labelSetoran} (per toples)\n`;
+              msg += ` ↳ Total Setor: *Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}*\n`;
+            } else if (item.price > 0) {
+              msg += ` ↳ Total Setor: *Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}*\n`;
+            }
+
+            msg += ` ↳ Rincian Isi:\n`;
+            rincianArray.forEach((r) => (msg += `    - ${r}\n`));
           } else {
-            msg += `- ${item.qty}x ${item.name}${priceInfo}\n`;
+            msg += `\n📦 *${item.qty}x ${item.name}*\n`;
+            if (item.price > 0) {
+              msg += ` ↳ Setor: *Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}*\n`;
+            }
           }
         });
 
-        msg += `\nMohon diproses.`;
+        msg += `\nMohon diproses. Terima kasih! 🙏`;
         localStorage.removeItem("nizami_global_cart");
         globalCart = [];
         updateGlobalCartBadge();
@@ -2235,8 +2257,63 @@
         );
       }
 
+      function submitDaftarWA(e) {
+        e.preventDefault();
+        if (globalCart.length === 0) {
+          alert("Keranjang kosong!");
+          closeModalDaftar();
+          switchTab("katalog");
+          return;
+        }
+        const n = document.getElementById("regNama").value;
+        const h = document.getElementById("regHP").value;
+        const a = document.getElementById("regAlamat").value;
+        const m = document.getElementById("regMitra").value || "-";
+
+        let msg = `Halo Admin, saya mau *DAFTAR PESERTA BARU*.\n\n*👤 DATA DIRI*\nNama: ${n}\nWA: ${h}\nAlamat: ${a}\nMitra: ${m}\n\n*🛒 PAKET DIPILIH:*\n`;
+
+        globalCart.forEach((item) => {
+          let isMingguan = item.name.toLowerCase().includes("mingguan");
+          let isCookies = item.name.toLowerCase().includes("cookies");
+          let labelSetoran = isMingguan ? "/mgg" : "/hari";
+
+          if (item.name.includes("(Isi:")) {
+            let parts = item.name.split("(Isi:");
+            let mainName = parts[0].trim();
+            let rincianArray = parts[1].replace(")", "").trim().split(", ");
+
+            msg += `\n📦 *${item.qty}x ${mainName}*\n`;
+
+            if (isCookies) {
+              msg += ` ↳ Harga: Rp 1.000 ${labelSetoran} (per toples)\n`;
+              msg += ` ↳ Total Setor: *Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}*\n`;
+            } else if (item.price > 0) {
+              msg += ` ↳ Total Setor: *Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}*\n`;
+            }
+
+            msg += ` ↳ Rincian Isi:\n`;
+            rincianArray.forEach((r) => (msg += `    - ${r}\n`));
+          } else {
+            msg += `\n📦 *${item.qty}x ${item.name}*\n`;
+            if (item.price > 0) {
+              msg += ` ↳ Setor: *Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}*\n`;
+            }
+          }
+        });
+
+        msg += `\nMohon dibantu pembuatan akunnya. Terima kasih! 🙏`;
+        localStorage.removeItem("nizami_global_cart");
+        globalCart = [];
+        updateGlobalCartBadge();
+        window.open(
+          `https://wa.me/628122261036?text=${encodeURIComponent(msg)}`,
+          "_blank",
+        );
+        closeModalDaftar();
+      }
+
       // ==========================================
-      // FUNGSI PENDAFTARAN & MODAL FORM
+      // FUNGSI LAINNYA
       // ==========================================
       function openModalTambahPesertaMitra() {
         openModalDaftar();
@@ -2292,70 +2369,42 @@
           '<div style="background: #0a0a0a; border: 1px solid #333; border-radius: 8px; padding: 10px;">';
         globalCart.forEach((item) => {
           let isMingguan = item.name.toLowerCase().includes("mingguan");
+          let isCookies = item.name.toLowerCase().includes("cookies");
           let labelSetoran = isMingguan ? "/mgg" : "/hari";
-          let priceHtml =
-            item.price > 0
-              ? ` - Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}`
-              : "";
+
+          let priceHtml = "";
+          if (item.price > 0) {
+            if (isCookies) priceHtml = ` - Rp 1.000/toples`;
+            else
+              priceHtml = ` - Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}`;
+          }
+
           let displayName = item.name;
           let rincianHtml = "";
           if (item.name.includes("(Isi:")) {
             let parts = item.name.split("(Isi:");
             displayName = parts[0].trim();
-            rincianHtml = `<div style="font-size: 0.65rem; color: #888; margin-top: 2px; line-height: 1.3;">Isi: ${parts[1].replace(")", "").trim()}</div>`;
+            let rincianList = parts[1]
+              .replace(")", "")
+              .trim()
+              .split(", ")
+              .map((r) => `<div style="padding-left:5px;">- ${r}</div>`)
+              .join("");
+            rincianHtml = `<div style="font-size: 0.65rem; color: #888; margin-top: 4px; line-height: 1.4;">${rincianList}</div>`;
           }
 
           html += `<div style="font-size: 0.85rem; color: #ddd; border-bottom: 1px dashed #222; padding: 8px 0;">
-                        <div style="display: flex; justify-content: space-between;">
-                            <span><b>${displayName}</b> <span style="color:#4ade80; font-size:0.75rem;">${priceHtml}</span></span>
-                            <span style="color: #ffd700; font-weight: bold;">${item.qty}x</span>
+                        <div style="display: flex; justify-content: space-between; align-items:flex-start;">
+                            <div style="width: 80%;">
+                                <b>${displayName}</b> <span style="color:#4ade80; font-size:0.75rem;">${priceHtml}</span>
+                                ${rincianHtml}
+                            </div>
+                            <span style="color: #ffd700; font-weight: bold; padding-left:10px;">${item.qty}x</span>
                         </div>
-                        ${rincianHtml}
                     </div>`;
         });
         html += `<div style="text-align:center; margin-top:10px;"><button type="button" onclick="closeModalDaftar(); openGlobalCart();" style="background:transparent; border:1px solid #4ade80; color:#4ade80; padding:6px 12px; border-radius:50px; font-size:0.75rem; cursor:pointer;"><i class="fas fa-edit"></i> Edit Keranjang</button></div></div>`;
         container.innerHTML = html;
-      }
-
-      function submitDaftarWA(e) {
-        e.preventDefault();
-        if (globalCart.length === 0) {
-          alert("Keranjang kosong!");
-          closeModalDaftar();
-          switchTab("katalog");
-          return;
-        }
-        const n = document.getElementById("regNama").value;
-        const h = document.getElementById("regHP").value;
-        const a = document.getElementById("regAlamat").value;
-        const m = document.getElementById("regMitra").value || "-";
-
-        let msg = `Halo Admin, saya mau *DAFTAR PESERTA BARU*.\n\n*DATA DIRI*\nNama: ${n}\nWA: ${h}\nAlamat: ${a}\nMitra: ${m}\n\n*PAKET DIPILIH*\n`;
-        globalCart.forEach((item) => {
-          let isMingguan = item.name.toLowerCase().includes("mingguan");
-          let labelSetoran = isMingguan ? "/mgg" : "/hari";
-          let priceInfo =
-            item.price > 0
-              ? ` (Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran})`
-              : "";
-
-          if (item.name.includes("(Isi:")) {
-            let parts = item.name.split("(Isi:");
-            msg += `- ${item.qty}x ${parts[0].trim()}${priceInfo}\n`;
-            msg += `  Isi: ${parts[1].replace(")", "").trim()}\n`;
-          } else {
-            msg += `- ${item.qty}x ${item.name}${priceInfo}\n`;
-          }
-        });
-
-        localStorage.removeItem("nizami_global_cart");
-        globalCart = [];
-        updateGlobalCartBadge();
-        window.open(
-          `https://wa.me/628122261036?text=${encodeURIComponent(msg)}`,
-          "_blank",
-        );
-        closeModalDaftar();
       }
 
       function submitMitraWA(e) {
