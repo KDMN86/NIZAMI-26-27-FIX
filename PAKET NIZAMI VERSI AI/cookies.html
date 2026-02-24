@@ -3,519 +3,713 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pilih Paket Cookies - Nizami</title>
+    <title>Paket Cookies - Nizami</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playball&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Pacifico&display=swap"
       rel="stylesheet"
     />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
+
     <style>
-      /* 1. SETUP DASAR */
+      /* === 1. SETUP DASAR === */
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
       body {
-        background: #1a0505;
+        background: #0f0707;
         color: #fff;
         font-family: "Poppins", sans-serif;
         padding-bottom: 200px;
         margin: 0;
       }
 
-      /* 2. HEADER */
+      /* === 2. HEADER TOP === */
       header {
-        text-align: center;
-        padding: 20px;
-        background: linear-gradient(to bottom, #2a0a0a, #1a0505);
+        padding: 15px 20px;
+        background: linear-gradient(180deg, #1f0b0b 0%, #0f0707 100%);
         position: sticky;
         top: 0;
-        z-index: 10;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        z-index: 99;
+        border-bottom: 1px solid #2a1111;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
-      h1 {
-        font-family: "Playball", cursive;
-        font-size: 2rem;
-        color: #ffd700;
-        margin: 0;
-      }
-      .header-desc {
-        font-size: 0.75rem;
-        color: #aaa;
-        margin-top: 5px;
-      }
-
-      /* 3. INFO KEMASAN */
-      .info-banner {
-        background: #330a0a;
-        border-bottom: 1px solid #551a1a;
-        padding: 15px;
-        text-align: center;
-        box-shadow: 0 5px 15px rgba(255, 215, 0, 0.1);
-      }
-      .info-banner i {
-        color: #ffd700;
+      .back-icon {
+        color: #fff;
         font-size: 1.2rem;
-        margin-right: 8px;
+        cursor: pointer;
       }
-      .info-banner span {
+      .head-title {
+        margin: 0;
         color: #ffd700;
-        font-weight: 600;
-        font-size: 0.95rem;
-      }
-      .info-banner small {
-        display: block;
-        color: #aaa;
-        font-size: 0.75rem;
-        margin-top: 3px;
+        font-size: 1.5rem;
+        font-family: "Pacifico", cursive;
       }
 
-      /* 4. GRID PRODUK */
-      .cookies-wrapper {
+      .cart-icon-btn {
+        position: relative;
+        background: rgba(255, 215, 0, 0.1);
+        border: 1px solid rgba(255, 215, 0, 0.3);
+        color: #ffd700;
+        width: 45px;
+        height: 45px;
+        border-radius: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: 0.2s;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      }
+      .cart-icon-btn:active {
+        transform: scale(0.9);
+      }
+      .cart-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #ff4d4d;
+        color: #fff;
+        font-size: 0.65rem;
+        font-weight: bold;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      }
+      @keyframes bounceIn {
+        0% {
+          transform: scale(0);
+        }
+        50% {
+          transform: scale(1.3);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .page-subtitle {
+        text-align: center;
+        color: #aaa;
+        font-size: 0.75rem;
+        padding: 10px 20px;
+        border-bottom: 1px dashed #333;
+        margin-bottom: 15px;
+      }
+
+      /* === 3. GRID COOKIES (TAMPILAN RAPI 1:1) === */
+      .product-list {
+        padding: 0 15px;
         max-width: 600px;
         margin: 0 auto;
-        padding: 15px 10px;
-      }
-
-      .cookies-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
       }
 
       .cookie-card {
-        background: #250b0b;
+        background: #1a0a0a;
+        border: 1px solid #ffd700;
         border-radius: 15px;
         overflow: hidden;
-        border: 1px solid #3d1212;
-        transition: 0.2s;
-      }
-      .cookie-card.selected {
-        border-color: #ffd700;
-        background: #1d1203;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
       }
 
-      /* GAMBAR */
-      .img-box {
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        background: #000;
+      .img-wrapper {
         position: relative;
+        width: 100%;
+        padding-top: 100%;
         cursor: pointer;
+        background: #000;
+        overflow: hidden;
       }
-      .img-box img {
+      .img-wrapper img {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
         object-fit: cover;
-      }
-      .zoom-hint {
-        position: absolute;
-        bottom: 5px;
-        right: 5px;
-        background: rgba(0, 0, 0, 0.6);
-        color: #fff;
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 0.7rem;
-        pointer-events: none;
+        opacity: 0.9;
       }
 
-      /* BODY KARTU & CONTROLLER QTY */
-      .card-body {
-        padding: 10px;
+      .zoom-btn {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        border: 1px solid #444;
+        z-index: 5;
+      }
+
+      .card-info {
+        padding: 12px;
+        width: 100%;
+        text-align: center;
         display: flex;
         flex-direction: column;
+        flex-grow: 1;
         justify-content: space-between;
-        background: #2a0c0c;
-        min-height: 75px;
       }
-      .cookie-name {
-        font-size: 0.8rem;
-        font-weight: 600;
-        text-align: center;
-        line-height: 1.2;
-        margin-bottom: 8px;
+
+      .c-title {
+        font-size: 0.85rem;
+        font-weight: bold;
+        color: #fff;
+        margin-bottom: 10px;
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        height: 2.6em;
       }
 
       .qty-control {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background: #1a0505;
-        padding: 4px;
+        background: #000;
+        padding: 5px;
         border-radius: 50px;
-        border: 1px solid #441111;
+        border: 1px solid #333;
       }
       .qty-btn {
-        width: 28px;
-        height: 28px;
-        background: #330a0a;
+        width: 30px;
+        height: 30px;
+        background: #2a1111;
         border: none;
-        color: #fff;
+        color: #ff6b6b;
         border-radius: 50%;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: bold;
-        font-size: 1rem;
-        transition: 0.2s;
+        font-size: 1.2rem;
+        transition: 0.1s;
       }
       .qty-btn:active {
+        background: #ffd700;
+        color: #000;
         transform: scale(0.9);
       }
       .qty-val {
-        font-weight: 600;
-        width: 20px;
-        text-align: center;
-        font-size: 0.85rem;
+        font-weight: bold;
+        font-size: 1rem;
         color: #fff;
+        width: 30px;
       }
 
-      /* 5. FOOTER KERANJANG */
-      .cart-drawer {
+      /* === 4. KERANJANG LOKAL MENGAMBANG (VERSI SIMPLE TEXT) === */
+      .cart-bar {
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
-        background: rgba(20, 5, 5, 0.98);
-        border-top: 1px solid #441111;
-        border-radius: 20px 20px 0 0;
+        background: rgba(20, 8, 8, 0.98);
+        border-top: 1px solid #ffd700;
+        z-index: 3000;
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.9);
         transform: translateY(100%);
-        transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-        z-index: 100;
+        transition: transform 0.3s ease-out;
         display: flex;
         flex-direction: column;
+        border-radius: 25px 25px 0 0;
+        padding: 20px;
       }
-      .cart-drawer.show {
+      .cart-bar.show {
         transform: translateY(0);
       }
 
-      .drawer-header {
-        padding: 15px 20px;
-        border-bottom: 1px solid #330a0a;
+      .cart-header-local {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 8px;
       }
-      .limit-info {
-        font-size: 0.9rem;
+      .ch-title {
+        font-weight: bold;
         color: #ffd700;
-        font-weight: bold;
+        font-size: 1rem;
       }
 
-      .selected-list {
-        max-height: 150px;
-        overflow-y: auto;
-        padding: 15px 20px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      .chip {
-        background: #3d1212;
-        border: 1px solid #551a1a;
-        padding: 6px 14px;
-        border-radius: 20px;
+      /* Kotak Summary Sederhana */
+      .simple-summary {
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px dashed #444;
+        border-radius: 8px;
+        padding: 10px 15px;
         font-size: 0.8rem;
-        color: #ddd;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-      .chip i {
-        cursor: pointer;
-        color: #ff6b6b;
-        font-size: 1rem;
+        color: #ccc;
+        line-height: 1.5;
+        margin-bottom: 15px;
+        max-height: 65px;
+        overflow-y: auto;
       }
 
-      .drawer-footer {
-        padding: 15px 20px 25px;
-        background: #110202;
-      }
-      .btn-submit {
-        background: linear-gradient(90deg, #d4af37, #b8860b);
+      .btn-checkout {
+        background: linear-gradient(135deg, #ffd700, #f39c12);
         color: #000;
-        width: 100%;
-        padding: 14px;
         border: none;
+        padding: 14px 20px;
         border-radius: 50px;
-        font-weight: bold;
-        font-size: 1rem;
+        font-weight: 700;
         cursor: pointer;
-      }
-      .btn-submit:disabled {
-        background: #444;
-        color: #888;
-        cursor: not-allowed;
-      }
-
-      /* 6. MODAL ZOOM */
-      .zoom-modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.95);
-        z-index: 9999;
+        display: flex;
         justify-content: center;
         align-items: center;
-        flex-direction: column;
-      }
-      .zoom-modal img {
+        gap: 8px;
         width: 100%;
-        max-height: 80vh;
-        object-fit: contain;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        font-size: 1rem;
       }
-      .close-zoom {
-        margin-top: 20px;
-        padding: 10px 30px;
-        background: transparent;
-        border: 1px solid #fff;
-        color: #fff;
-        border-radius: 50px;
-        cursor: pointer;
+      .btn-checkout:active {
+        transform: scale(0.98);
       }
-      .back-btn {
+
+      /* LIGHTBOX */
+      #lightbox {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.98);
+        z-index: 4000;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        opacity: 0;
+        transition: opacity 0.3s;
+        padding-bottom: 70px;
+      }
+      #lightbox.show {
+        opacity: 1;
+      }
+      .lb-close {
         position: absolute;
-        left: 20px;
-        top: 25px;
+        top: 15px;
+        right: 15px;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 50%;
+        z-index: 4010;
+      }
+      .lb-nav {
+        position: absolute;
+        top: 40%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
         color: #fff;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
         cursor: pointer;
         font-size: 1.2rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        z-index: 4010;
+        transition: 0.2s;
+      }
+      .lb-nav:active {
+        background: #ffd700;
+        color: #000;
+      }
+      .lb-prev {
+        left: 10px;
+      }
+      .lb-next {
+        right: 10px;
+      }
+      .lb-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 400px;
+        padding: 0 20px;
+      }
+      #lbImg {
+        max-width: 100%;
+        max-height: 60vh;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        object-fit: contain;
+        transform: scale(0.95);
+        transition: transform 0.3s;
+      }
+      #lightbox.show #lbImg {
+        transform: scale(1);
+      }
+      .lb-title {
+        color: #ffd700;
+        font-size: 1.2rem;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .loader {
+        text-align: center;
+        padding: 50px;
+        color: #888;
+        font-size: 0.9rem;
+        grid-column: span 2;
+      }
+
+      /* TOAST NOTIFICATION */
+      #toast {
+        position: fixed;
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #4ade80;
+        color: #000;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-weight: bold;
+        font-size: 0.85rem;
+        box-shadow: 0 4px 15px rgba(74, 222, 128, 0.4);
+        z-index: 99999;
+        display: none;
+        align-items: center;
+        gap: 8px;
+        transition: opacity 0.3s;
       }
     </style>
   </head>
   <body>
+    <div id="toast">
+      <i class="fas fa-check-circle"></i> <span id="toastMsg">Sukses</span>
+    </div>
+
     <header>
-      <i
-        class="fas fa-arrow-left back-btn"
-        onclick="window.location.href = 'index.html'"
-      ></i>
-      <h1>Paket Cookies</h1>
-      <p class="header-desc">Harga Flat 1000/hari 330x</p>
+      <div style="display: flex; align-items: center; gap: 15px">
+        <i
+          class="fas fa-arrow-left back-icon"
+          onclick="window.location.href = 'index.html'"
+        ></i>
+        <h1 class="head-title">Paket Cookies</h1>
+      </div>
+      <div class="cart-icon-btn" onclick="goToCart()">
+        <i class="fas fa-shopping-basket"></i>
+        <span class="cart-badge" id="globalCartBadge">0</span>
+      </div>
     </header>
 
-    <div class="info-banner">
-      <i class="fas fa-box-open"></i> <span>Kemasan Toples (1000ml)</span>
-      <span>/ Kemasan Plastik (500g)</span>
-      <small>Boleh campur / pilih yang sama (Maksimal 5 Toples)</small>
+    <div class="page-subtitle">Harga Flat 1.000/hari 330x (Per Toples)</div>
+
+    <div id="productContainer" class="product-list">
+      <div class="loader">
+        <i
+          class="fas fa-spinner fa-spin"
+          style="font-size: 2rem; margin-bottom: 10px; color: #ffd700"
+        ></i
+        ><br />
+        Mengambil katalog kue dari server...
+      </div>
     </div>
 
-    <div id="gridWrapper" class="cookies-wrapper">
-      <div id="cookiesList" class="cookies-grid">
-        <div
-          style="
-            grid-column: span 2;
-            text-align: center;
-            color: #666;
-            padding: 40px;
-          "
-        >
-          <i class="fas fa-circle-notch fa-spin"></i> Memuat daftar kue...
+    <div id="cartBar" class="cart-bar">
+      <div class="cart-header-local">
+        <div class="ch-title">
+          Isi Paket:
+          <span id="totalToplesText" style="color: #fff">0 / 5</span> Toples
         </div>
       </div>
+
+      <div class="simple-summary" id="chipContainer"></div>
+
+      <button class="btn-checkout" onclick="bungkusKeKeranjangGlobal()">
+        Masukkan Keranjang <i class="fas fa-arrow-right"></i>
+      </button>
     </div>
 
-    <div id="cartDrawer" class="cart-drawer">
-      <div class="drawer-header">
-        <div class="limit-info" id="limitText">Terpilih: 0 / 5 Toples</div>
-        <div style="font-size: 0.7rem; color: #888">Klik (X) untuk hapus</div>
+    <div id="lightbox">
+      <div
+        id="swipeArea"
+        style="position: absolute; inset: 0; z-index: 1000"
+        onclick="closeLightbox()"
+      ></div>
+      <div class="lb-close" onclick="closeLightbox()">&times;</div>
+      <div class="lb-nav lb-prev" onclick="changeLightboxItem(-1)">
+        <i class="fas fa-chevron-left"></i>
       </div>
-      <div id="chipContainer" class="selected-list"></div>
-      <div class="drawer-footer">
-        <button
-          id="btnOrder"
-          class="btn-submit"
-          onclick="pesanCookies()"
-          disabled
-        >
-          Pesan Sekarang
-        </button>
+      <div class="lb-nav lb-next" onclick="changeLightboxItem(1)">
+        <i class="fas fa-chevron-right"></i>
+      </div>
+      <div class="lb-content" style="z-index: 2000; pointer-events: none">
+        <img id="lbImg" src="" />
+        <div class="lb-title" id="lbTitle">Nama Barang</div>
       </div>
     </div>
 
-    <div id="zoomModal" class="zoom-modal" onclick="closeZoom()">
-      <img id="zoomImg" src="" alt="Zoom" />
-      <button class="close-zoom">Tutup</button>
-    </div>
+    <script src="script.js"></script>
 
     <script>
-      async function fetchData(action, params = {}) {
-        const url =
-          "https://script.google.com/macros/s/AKfycbzDvfm6gWbv4cOf2yIs5qCWuxusxMbGqepR7BtenGywceGO-7SXo8ympSy_iMnjSvJF6w/exec";
-        const queryString = new URLSearchParams({
-          action,
-          ...params,
-        }).toString();
-        try {
-          const response = await fetch(`${url}?${queryString}`);
-          return await response.json();
-        } catch (error) {
-          console.error("Error:", error);
-          return null;
-        }
-      }
-
-      function kirimWA(nomor, pesan) {
-        window.open(`https://wa.me/${nomor}?text=${pesan}`, "_blank");
-      }
-
-      // LOGIKA KERANJANG BARU (Menggunakan Kuota / Qty)
-      let cart = {}; // Menyimpan format { "Nama Kue": jumlah }
-      let totalItems = 0;
-      const maxLimit = 5;
+      // ==========================================
+      // STATE KHUSUS HALAMAN INI
+      // ==========================================
+      let lightboxProducts = [];
+      let currentLightboxIndex = 0;
+      let localCart = {}; // Keranjang lokal kue
+      const HARGA_PER_TOPLES = 1000; // Harga cicilan per toples
 
       window.onload = async () => {
+        // Ambil data dari MASTER_BARANG (script.js)
         const data = await fetchData("getBarang");
         if (data && data.length > 0) {
-          const cookiesOnly = data.filter(
-            (item) => item.kategori === "Cookies",
-          );
-          if (cookiesOnly.length > 0) {
-            renderCookies(cookiesOnly);
-          } else {
-            renderCookies(data);
-          }
+          renderCookiesGrid(data);
         } else {
-          document.getElementById("cookiesList").innerHTML =
-            '<div style="grid-column: span 2; text-align: center; color: #ff6b6b; padding: 40px;">Gagal memuat data.</div>';
+          document.getElementById("productContainer").innerHTML =
+            '<div style="text-align:center; padding:50px; color:#ff6b6b; grid-column: span 2;"><i class="fas fa-exclamation-triangle fa-2x"></i><br><br>Katalog kosong atau koneksi gagal.</div>';
         }
       };
 
-      function renderCookies(list) {
-        const container = document.getElementById("cookiesList");
+      function renderCookiesGrid(products) {
+        const container = document.getElementById("productContainer");
         container.innerHTML = "";
 
-        list.forEach((item) => {
-          if (!item.nama) return;
-
-          const imgName =
-            item.nama.toLowerCase().replace(/\s+/g, "-").replace(/\//g, "") +
-            ".jpg";
-          const imgPath = `image/cookies/${imgName}`;
-          const idName = item.nama.replace(/\s+/g, "-");
-
-          // Cek qty saat render ulang (jika ada)
-          const currentQty = cart[item.nama] || 0;
-          const activeClass = currentQty > 0 ? "selected" : "";
-
-          const div = document.createElement("div");
-          div.className = `cookie-card ${activeClass}`;
-          div.id = `card-${idName}`;
-
-          div.innerHTML = `
-          <div class="img-box" onclick="openZoom('${imgPath}')">
-            <img src="${imgPath}" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\\'fas fa-cookie\\' style=\\'color:#551a1a; font-size:3rem; margin-top:30%;\\'></i>';">
-            <div class="zoom-hint"><i class="fas fa-search-plus"></i></div>
-          </div>
-          <div class="card-body">
-            <div class="cookie-name">${item.nama}</div>
-            <div class="qty-control">
-                <button class="qty-btn" onclick="updateQty('${item.nama}', -1)">-</button>
-                <div class="qty-val" id="qty-${idName}">${currentQty}</div>
-                <button class="qty-btn" onclick="updateQty('${item.nama}', 1)" style="background:#ffd700; color:#000;">+</button>
-            </div>
-          </div>
-        `;
-          container.appendChild(div);
+        // FILTER PINTAR: HANYA MENGAMBIL KATEGORI "Cookies"
+        const cookiesList = products.filter((p) => {
+          if (!p.nama) return false;
+          let kat = p.kategori ? p.kategori.toLowerCase().trim() : "";
+          return kat === "cookies";
         });
-      }
 
-      // Fungsi menambah / mengurangi jumlah kue
-      function updateQty(name, change) {
-        let currentQty = cart[name] || 0;
-
-        // Mencegah penambahan jika total sudah limit
-        if (change > 0 && totalItems >= maxLimit) {
-          alert(
-            `Maksimal ${maxLimit} toples. Harap kurangi kue lain terlebih dahulu.`,
-          );
+        if (cookiesList.length === 0) {
+          container.innerHTML =
+            '<div style="text-align:center; padding:50px; color:#888; grid-column: span 2;">Belum ada data barang di kategori Cookies.</div>';
           return;
         }
 
-        let newQty = currentQty + change;
-        if (newQty < 0) newQty = 0; // Tidak boleh minus
+        lightboxProducts = [];
 
-        cart[name] = newQty;
-        if (newQty === 0) {
-          delete cart[name]; // Hapus dari keranjang jika 0
-        }
+        cookiesList.forEach((item, index) => {
+          lightboxProducts.push(item);
 
-        // Hitung ulang total semua item di keranjang
-        totalItems = Object.values(cart).reduce((sum, val) => sum + val, 0);
+          const safeId = item.nama.replace(/[^a-zA-Z0-9]/g, "");
+          const currentQty = localCart[item.nama]
+            ? localCart[item.nama].qty
+            : 0;
 
-        // Update Text Qty di Kartu
-        const idName = name.replace(/\s+/g, "-");
-        const qtyEl = document.getElementById(`qty-${idName}`);
-        const cardEl = document.getElementById(`card-${idName}`);
+          const fallbackImg =
+            "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23222'/%3E%3Ctext x='50' y='50' dominant-baseline='middle' text-anchor='middle' fill='%23555' font-family='sans-serif' font-size='10'%3ENo Img%3C/text%3E%3C/svg%3E";
+          const rawImg = item.foto || "";
+          // Menggunakan getDriveThumbnail dari script.js untuk kualitas HD
+          const imgPath =
+            typeof getDriveThumbnail === "function"
+              ? getDriveThumbnail(rawImg)
+              : rawImg || fallbackImg;
+          lightboxProducts[index].finalImg = imgPath;
 
-        if (qtyEl) qtyEl.innerText = newQty;
-
-        // Beri highlight warna emas jika kue dipilih
-        if (newQty > 0) {
-          if (cardEl) cardEl.classList.add("selected");
-        } else {
-          if (cardEl) cardEl.classList.remove("selected");
-        }
-
-        updateUI();
-      }
-
-      function updateUI() {
-        const limitText = document.getElementById("limitText");
-        limitText.innerText = `Terpilih: ${totalItems} / ${maxLimit} Toples`;
-        limitText.style.color = totalItems === maxLimit ? "#28a745" : "#ffd700";
-
-        const chipContainer = document.getElementById("chipContainer");
-        chipContainer.innerHTML = "";
-
-        // Render ulang list di laci keranjang
-        for (let name in cart) {
-          chipContainer.innerHTML += `
-            <div class="chip">
-                <b>${cart[name]}x</b> ${name} 
-                <i class="fas fa-times-circle" onclick="updateQty('${name}', -${cart[name]})"></i>
+          const cardHtml = `
+            <div class="cookie-card">
+                <div class="img-wrapper" onclick="openLightbox(${index})">
+                    <img src="${imgPath}" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='${fallbackImg}';">
+                    <div class="zoom-btn"><i class="fas fa-search-plus"></i></div>
+                </div>
+                <div class="card-info">
+                    <div class="c-title">${item.nama}</div>
+                    <div class="qty-control">
+                        <button class="qty-btn" onclick="updateLocalCart('${item.nama}', -1, '${safeId}')">-</button>
+                        <div class="qty-val" id="qty-${safeId}">${currentQty}</div>
+                        <button class="qty-btn" onclick="updateLocalCart('${item.nama}', 1, '${safeId}')" style="color: #4ade80;">+</button>
+                    </div>
+                </div>
             </div>
-          `;
+            `;
+          container.insertAdjacentHTML("beforeend", cardHtml);
+        });
+      }
+
+      function updateLocalCart(name, change, domId) {
+        // HITUNG TOTAL SAAT INI UNTUK VALIDASI MAKSIMAL 5
+        let totalToples = 0;
+        for (let k in localCart) totalToples += localCart[k].qty;
+
+        // Cegah penambahan jika sudah 5
+        if (change > 0 && totalToples >= 5) {
+          // Ubah warna toast khusus untuk peringatan
+          const t = document.getElementById("toast");
+          t.style.background = "#ff4d4d";
+          t.style.color = "#fff";
+          showToast("Maksimal 5 toples per paket!");
+
+          // Kembalikan ke warna sukses (hijau) setelah toast hilang
+          setTimeout(() => {
+            t.style.background = "#4ade80";
+            t.style.color = "#000";
+          }, 2500);
+
+          return; // Hentikan proses
         }
 
-        const drawer = document.getElementById("cartDrawer");
-        const btn = document.getElementById("btnOrder");
+        if (!localCart[name]) localCart[name] = { qty: 0 };
 
-        if (totalItems > 0) {
-          drawer.classList.add("show");
-          btn.disabled = false;
-          btn.innerText = `Pesan ${totalItems} Toples via WA`;
+        localCart[name].qty += change;
+        if (localCart[name].qty <= 0) delete localCart[name];
+
+        const qtyEl = document.getElementById(`qty-${domId}`);
+        if (qtyEl) {
+          qtyEl.innerText = localCart[name] ? localCart[name].qty : 0;
+          qtyEl.style.transform = "scale(1.3)";
+          setTimeout(() => (qtyEl.style.transform = "scale(1)"), 150);
+        }
+
+        updateBottomBar();
+      }
+
+      function updateBottomBar() {
+        let totalToples = 0;
+        let summaryArr = [];
+
+        // Buat array teks rincian
+        for (let key in localCart) {
+          let qty = localCart[key].qty;
+          totalToples += qty;
+          summaryArr.push(`<b>${key}</b> x${qty}`);
+        }
+
+        // Tampilkan teks X / 5
+        document.getElementById("totalToplesText").innerText =
+          `${totalToples} / 5`;
+
+        // Tampilkan rangkuman teks rapi
+        const summaryEl = document.getElementById("chipContainer");
+        if (summaryArr.length > 0) {
+          // Pisahkan antar kue dengan garis vertikal agar manis
+          summaryEl.innerHTML = summaryArr.join(
+            " <span style='color:#666; margin: 0 5px;'>|</span> ",
+          );
         } else {
-          drawer.classList.remove("show");
-          btn.disabled = true;
-        }
-      }
-
-      function openZoom(src) {
-        document.getElementById("zoomImg").src = src;
-        document.getElementById("zoomModal").style.display = "flex";
-      }
-
-      function closeZoom() {
-        document.getElementById("zoomModal").style.display = "none";
-      }
-
-      function pesanCookies() {
-        let pesan = `Halo Admin, saya mau daftar *PAKET COOKIES*.%0A`;
-        pesan += `📦 Kemasan: *Toples (1000ml)*%0A%0A`;
-        pesan += `Pilihan Saya (%2B):%0A`;
-
-        let index = 1;
-        for (let name in cart) {
-          pesan += `${index}. ${name} (${cart[name]} Toples)%0A`;
-          index++;
+          summaryEl.innerHTML = "";
         }
 
-        pesan += `%0AProgram: Tabungan Rp 1.000/hari.%0AMohon dibantu pendaftarannya.`;
-        kirimWA("628122261036", pesan);
+        const cartBar = document.getElementById("cartBar");
+        if (totalToples > 0) cartBar.classList.add("show");
+        else cartBar.classList.remove("show");
+      }
+
+      function bungkusKeKeranjangGlobal() {
+        if (Object.keys(localCart).length === 0) return;
+
+        let rincianArr = [];
+        let totalToples = 0;
+
+        for (let key in localCart) {
+          let qty = localCart[key].qty;
+          rincianArr.push(`${key} x${qty}`);
+          totalToples += qty;
+        }
+
+        let totalSetoranHari = totalToples * HARGA_PER_TOPLES;
+        let namaPaket = `Paket Cookies (Isi: ${rincianArr.join(", ")})`;
+
+        if (typeof addToGlobalCart === "function") {
+          addToGlobalCart(namaPaket, totalSetoranHari);
+        } else {
+          alert("Error: Script Global tidak ditemukan!");
+          return;
+        }
+
+        setTimeout(() => {
+          sessionStorage.setItem("autoOpenCart", "true");
+          window.location.href = "index.html";
+        }, 500);
+      }
+
+      function goToCart() {
+        sessionStorage.setItem("autoOpenCart", "true");
+        window.location.href = "index.html";
+      }
+
+      // ==========================================
+      // LIGHTBOX CANGGIH (ZOOM + SWIPE)
+      // ==========================================
+      function openLightbox(index) {
+        currentLightboxIndex = index;
+        updateLightboxUI();
+        const lb = document.getElementById("lightbox");
+        lb.style.display = "flex";
+        setTimeout(() => lb.classList.add("show"), 10);
+      }
+
+      function closeLightbox() {
+        const lb = document.getElementById("lightbox");
+        lb.classList.remove("show");
+        setTimeout(() => (lb.style.display = "none"), 300);
+      }
+
+      function changeLightboxItem(step) {
+        currentLightboxIndex += step;
+        if (currentLightboxIndex < 0)
+          currentLightboxIndex = lightboxProducts.length - 1;
+        if (currentLightboxIndex >= lightboxProducts.length)
+          currentLightboxIndex = 0;
+        updateLightboxUI();
+      }
+
+      function updateLightboxUI() {
+        const item = lightboxProducts[currentLightboxIndex];
+        document.getElementById("lbImg").src = item.finalImg;
+        document.getElementById("lbTitle").innerText = item.nama;
+      }
+
+      let touchStartX = 0;
+      let touchEndX = 0;
+      const swipeArea = document.getElementById("swipeArea");
+      swipeArea.addEventListener(
+        "touchstart",
+        (e) => {
+          touchStartX = e.changedTouches[0].screenX;
+        },
+        { passive: true },
+      );
+      swipeArea.addEventListener(
+        "touchend",
+        (e) => {
+          touchEndX = e.changedTouches[0].screenX;
+          handleSwipe();
+        },
+        { passive: true },
+      );
+
+      function handleSwipe() {
+        const swipeThreshold = 50;
+        if (touchEndX < touchStartX - swipeThreshold) changeLightboxItem(1);
+        if (touchEndX > touchStartX + swipeThreshold) changeLightboxItem(-1);
       }
     </script>
   </body>
