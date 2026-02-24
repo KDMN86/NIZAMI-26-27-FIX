@@ -284,11 +284,11 @@
         animation: fadeIn 0.3s;
       }
       .video-frame-container {
-        width: 100%; /* Memenuhi lebar layar 100% */
-        max-width: 800px;
-        aspect-ratio: 16/9;
+        width: 100%;
+        height: 85vh; /* Menggunakan 85% dari total tinggi layar HP */
+        max-width: 500px;
         background: #000;
-        /* Hapus border agar menyatu dengan layar HP */
+        margin-bottom: 20px;
       }
       .video-frame-container iframe {
         width: 100%;
@@ -1087,28 +1087,28 @@
       </div>
       <div class="menu-grid">
         <a href="mom.html" class="menu-card"
-          ><i class="fas fa-female" style="color: #ff6b6b"></i
-          ><h3>PAKET MOM</h3></a
+          ><i class="fas fa-female" style="color: #ff6b6b"></i>
+          <h3>PAKET MOM</h3></a
         >
         <a href="kids.html" class="menu-card"
-          ><i class="fas fa-child" style="color: #4ade80"></i
-          ><h3>PAKET Kids</h3></a
+          ><i class="fas fa-child" style="color: #4ade80"></i>
+          <h3>PAKET Kids</h3></a
         >
         <a href="mingguan.html" class="menu-card"
-          ><i class="fas fa-shopping-basket" style="color: #ffa502"></i
-          ><h3>PAKET Mingguan</h3></a
+          ><i class="fas fa-shopping-basket" style="color: #ffa502"></i>
+          <h3>PAKET Mingguan</h3></a
         >
         <a href="cookies.html" class="menu-card"
-          ><i class="fas fa-cookie-bite" style="color: #a55eea"></i
-          ><h3>PAKET Cookies</h3></a
+          ><i class="fas fa-cookie-bite" style="color: #a55eea"></i>
+          <h3>PAKET Cookies</h3></a
         >
         <a href="uang.html" class="menu-card"
-          ><i class="fas fa-money-bill-wave" style="color: #48dbfb"></i
-          ><h3>PAKET Uang</h3></a
+          ><i class="fas fa-money-bill-wave" style="color: #48dbfb"></i>
+          <h3>PAKET Uang</h3></a
         >
         <a href="gallery.html" class="menu-card"
-          ><i class="fas fa-images" style="color: #0fb9b1"></i
-          ><h3>Galeri</h3></a
+          ><i class="fas fa-images" style="color: #0fb9b1"></i>
+          <h3>Galeri</h3></a
         >
       </div>
 
@@ -1118,7 +1118,7 @@
       >
         Panduan Aplikasi
       </div>
-      
+
       <div class="video-compact-item" onclick="playVideo('jqyhS0ovxNA')">
         <div class="v-thumb-box">
           <img
@@ -1132,7 +1132,7 @@
           <span><i class="fas fa-clock"></i> Tonton Video</span>
         </div>
       </div>
-      
+
       <div class="video-compact-item" onclick="playVideo('oO25rE0LDA8')">
         <div class="v-thumb-box">
           <img
@@ -2419,7 +2419,7 @@
           `https://wa.me/628122261036?text=${encodeURIComponent(`Halo Admin, Daftar Mitra.\nNama: ${document.getElementById("mitraNama").value}\nWA: ${document.getElementById("mitraHP").value}\nAlamat: ${document.getElementById("mitraAlamat").value}`)}`,
         );
       }
-      
+
       // === FUNGSI VIDEO PLAYER (FULLSCREEN EFFECT) ===
       function playVideo(vid) {
         // Menggunakan playsinline dan rel=0 agar video lebih bersih
