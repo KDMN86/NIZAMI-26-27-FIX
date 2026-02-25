@@ -670,8 +670,8 @@
 
       <div id="pesertaContainer">
         <div class="loader">
-          <i class="fas fa-spinner fa-spin fa-2x"></i><br /><br />Mengambil data
-          peserta...
+          <i class="fas fa-spinner fa-spin fa-2x"></i><br /><br />Memproses
+          data...
         </div>
       </div>
     </div>
@@ -912,6 +912,51 @@
       let userId = "";
 
       window.onload = async () => {
+        // 1. CEK APAKAH ADA ID "MAGIC LINK" DI URL?
+        const urlParams = new URLSearchParams(window.location.search);
+        const magicId = urlParams.get("id");
+
+        if (magicId) {
+          // Jika ada ID di URL, lakukan Auto-Login (Bypass LocalStorage Kosong)
+          await processAutoLogin(magicId);
+        } else {
+          // Jika tidak ada ID di URL, gunakan cara konvensional (Cek LocalStorage)
+          checkLocalSession();
+        }
+      };
+
+      // === FUNGSI AUTO-LOGIN (MAGIC LINK) ===
+      async function processAutoLogin(id) {
+        document.getElementById("mitraName").innerText = "Memverifikasi...";
+
+        // Panggil API untuk cek ID tersebut
+        const data = await fetchData("cekStatusDetail", { id: id });
+
+        if (data && !data.error && data.type === "MITRA") {
+          // JIKA VALID MITRA:
+          // 1. Simpan ke LocalStorage agar next time tidak perlu link lagi
+          const userData = {
+            id: id,
+            type: "MITRA",
+            nama: data.nama || "Mitra",
+            paket: "MITRA",
+          };
+          localStorage.setItem("nizami_user", JSON.stringify(userData));
+
+          // 2. Bersihkan URL (Hapus ?id=... agar rapi)
+          window.history.replaceState({}, document.title, "mitra.html");
+
+          // 3. Lanjut inisialisasi halaman
+          userId = id;
+          initMitraPage(userData);
+        } else {
+          // JIKA ID TIDAK VALID / BUKAN MITRA
+          alert("Link tidak valid atau Anda bukan Mitra.");
+          window.location.href = "index.html";
+        }
+      }
+
+      function checkLocalSession() {
         const userStr = localStorage.getItem("nizami_user");
         if (!userStr) {
           window.location.href = "index.html";
@@ -923,20 +968,25 @@
           return;
         }
 
+        // Sesi Valid
         userId = user.id;
+        initMitraPage(user);
+      }
+
+      async function initMitraPage(user) {
         document.getElementById("mitraName").innerText = user.nama;
 
         // AUTO-LOAD DARI DRAFT LOKAL
         const savedDraft = localStorage.getItem("mitra_draft_" + userId);
         if (savedDraft) {
           batchCart = JSON.parse(savedDraft);
-          // Auto-patch Tanggal
           for (let k in batchCart) {
             if (!batchCart[k].date || batchCart[k].date === "-")
               batchCart[k].date = getFormattedDate();
           }
         }
 
+        // AMBIL DATA PESERTA
         const data = await fetchData("cekStatusDetail", { id: userId });
         if (data && data.data && data.data.length > 0) {
           rawPesertaData = data.data.map((item) => ({
@@ -952,7 +1002,7 @@
           document.getElementById("pesertaContainer").innerHTML =
             '<div style="text-align:center; color:#888; padding:30px;">Belum ada peserta terdaftar.</div>';
         }
-      };
+      }
 
       function getFormattedDate() {
         const now = new Date();
@@ -1348,7 +1398,6 @@
       // LOGIKA PENDAFTARAN PESERTA BARU OLEH MITRA
       // ==========================================
       function bukaModalDaftarBaru() {
-        // Ambil isi keranjang belanja Global
         let gc = JSON.parse(localStorage.getItem("nizami_global_cart") || "[]");
         const container = document.getElementById("regCartSummary");
 
@@ -1455,9 +1504,7 @@
 
         msg += `\nMohon dibantu pembuatan akunnya. Terima kasih! 🙏`;
 
-        // Bersihkan keranjang Global setelah dikirim
         localStorage.removeItem("nizami_global_cart");
-
         window.open(
           `https://wa.me/628122261036?text=${encodeURIComponent(msg)}`,
           "_blank",
