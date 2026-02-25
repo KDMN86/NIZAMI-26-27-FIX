@@ -57,7 +57,6 @@
         gap: 8px;
         align-items: center;
       }
-
       .btn-top {
         padding: 6px 12px;
         border-radius: 8px;
@@ -122,7 +121,6 @@
         border-radius: 20px;
         margin-bottom: 15px;
       }
-
       .stats-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -228,7 +226,6 @@
         border-left: 4px solid #3498db;
         opacity: 0.8;
       }
-
       .pc-head {
         display: flex;
         justify-content: space-between;
@@ -245,7 +242,6 @@
         align-items: flex-end;
         gap: 6px;
       }
-
       .pc-name {
         font-weight: bold;
         font-size: 1rem;
@@ -256,7 +252,6 @@
         flex-wrap: wrap;
         gap: 5px;
       }
-
       .badge-id,
       .badge-cal {
         font-size: 0.65rem;
@@ -287,7 +282,6 @@
         background: #4ade80;
         color: #000;
       }
-
       .pc-paket {
         font-size: 0.65rem;
         color: #aaa;
@@ -304,7 +298,6 @@
         gap: 5px;
         margin-top: 6px;
       }
-
       .pc-done {
         font-size: 1.3rem;
         font-weight: bold;
@@ -413,7 +406,6 @@
       .batch-bar.show {
         transform: translateY(0);
       }
-
       .bb-header {
         padding: 12px 20px;
         font-weight: bold;
@@ -435,7 +427,6 @@
         transition: transform 0.3s ease;
         color: #aaa;
       }
-
       .batch-details {
         max-height: 0;
         overflow-y: auto;
@@ -452,7 +443,6 @@
         transform: rotate(180deg);
         color: #ffd700;
       }
-
       .batch-item {
         display: flex;
         justify-content: space-between;
@@ -518,7 +508,6 @@
         border: 1px solid #333;
         position: relative;
       }
-
       .input-dark {
         width: 100%;
         padding: 12px;
@@ -533,7 +522,6 @@
         border-color: #4ade80;
         outline: none;
       }
-
       #preview-img-container {
         text-align: center;
         background: #111;
@@ -558,7 +546,6 @@
         padding: 20px;
         font-family: "Courier New", Courier, monospace;
       }
-
       #toast {
         position: fixed;
         top: 80px;
@@ -577,13 +564,77 @@
         gap: 8px;
         transition: opacity 0.3s;
       }
-
       .loader {
         text-align: center;
         padding: 50px;
         color: #888;
         font-size: 0.9rem;
       }
+
+      /* TAMBAHAN UNTUK SELECTOR PAKET (MANDIRI) */
+      .cs-label {
+        font-size: 0.75rem;
+        color: #aaa;
+        margin-bottom: 5px;
+        display: block;
+      }
+      .cs-select {
+        width: 100%;
+        padding: 12px;
+        background: #222;
+        color: #fff;
+        border: 1px solid #444;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        outline: none;
+        margin-bottom: 10px;
+      }
+      .cs-select:focus {
+        border-color: #ffd700;
+      }
+      .cs-options-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .cs-option-btn {
+        background: #111;
+        border: 1px solid #333;
+        padding: 20px;
+        border-radius: 8px;
+        color: #ddd;
+        font-size: 1rem;
+        cursor: pointer;
+        text-align: center;
+        font-weight: bold;
+      }
+      .cs-option-btn:active {
+        border-color: #ffd700;
+        background: rgba(255, 215, 0, 0.05);
+      }
+      .reg-cart-list {
+        background: #000;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px dashed #333;
+        min-height: 50px;
+        margin-bottom: 15px;
+      }
+      .rc-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #222;
+        padding: 8px 0;
+        font-size: 0.85rem;
+      }
+      .rc-del {
+        color: #ff6b6b;
+        cursor: pointer;
+        padding: 5px;
+      }
+
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -696,9 +747,7 @@
           <i class="fas fa-trash"></i> Hapus
         </span>
       </div>
-
       <div class="batch-details" id="batchDetails"></div>
-
       <div class="batch-summary">
         <div>
           <span class="bs-label">Total Uang ke Admin</span>
@@ -787,11 +836,17 @@
     <div id="modalDaftarBaru" class="modal-overlay">
       <div
         class="modal-card"
-        style="padding: 0; overflow: hidden; max-height: 90vh"
+        style="
+          padding: 0;
+          overflow: hidden;
+          max-height: 90vh;
+          display: flex;
+          flex-direction: column;
+        "
       >
         <div
           style="
-            padding: 20px;
+            padding: 15px 20px;
             border-bottom: 1px solid #333;
             background: #111;
             display: flex;
@@ -815,8 +870,12 @@
             &times;
           </button>
         </div>
-        <div style="padding: 20px; overflow-y: auto; max-height: 70vh">
+
+        <div style="padding: 20px; overflow-y: auto; flex: 1">
           <form id="formPendaftaran" onsubmit="submitDaftarPesertaWA(event)">
+            <label class="cs-label" style="color: #ffd700; font-weight: bold"
+              >1. Data Diri</label
+            >
             <input
               type="text"
               id="regNama"
@@ -840,15 +899,58 @@
             ></textarea>
 
             <label
-              style="
-                color: #aaa;
-                font-size: 0.8rem;
-                display: block;
-                margin-bottom: 5px;
-              "
-              >Paket yang Didaftarkan:</label
+              class="cs-label"
+              style="color: #ffd700; font-weight: bold; margin-top: 10px"
+              >2. Pilih Paket</label
             >
-            <div id="regCartSummary" style="margin-bottom: 15px"></div>
+            <select
+              id="regPaket"
+              class="cs-select"
+              onchange="checkPaketMitra(this)"
+              required
+            >
+              <option value="" disabled selected>-- Memuat Paket... --</option>
+            </select>
+
+            <button
+              type="button"
+              id="btnPilihBarang"
+              class="btn-tambah-peserta"
+              onclick="bukaPilihBarang()"
+              style="display: none; width: 100%; margin-bottom: 15px"
+            >
+              <i class="fas fa-shopping-basket"></i> Pilih Rincian Barang
+            </button>
+
+            <label class="cs-label" style="color: #4ade80"
+              >Rincian Barang yang Diambil:</label
+            >
+            <div id="regCartList" class="reg-cart-list">
+              <div
+                style="
+                  text-align: center;
+                  color: #444;
+                  font-size: 0.8rem;
+                  padding: 10px;
+                "
+              >
+                Belum ada barang dipilih.
+              </div>
+            </div>
+
+            <div
+              style="
+                text-align: right;
+                font-weight: bold;
+                color: #fff;
+                margin-bottom: 20px;
+              "
+            >
+              Target Setoran:
+              <div id="regTotal" style="color: #ffd700; font-size: 1.1rem">
+                Rp 0
+              </div>
+            </div>
 
             <button
               type="submit"
@@ -864,6 +966,76 @@
               <i class="fas fa-paper-plane"></i> Kirim Pendaftaran via WA
             </button>
           </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="modalPilihBarang" class="modal-overlay" style="z-index: 10000">
+      <div
+        class="modal-card"
+        style="
+          padding: 0;
+          overflow: hidden;
+          max-height: 90vh;
+          display: flex;
+          flex-direction: column;
+        "
+      >
+        <div
+          style="
+            padding: 15px 20px;
+            border-bottom: 1px solid #333;
+            background: #111;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <h3 style="margin: 0; color: #ffd700; font-size: 1.1rem" id="pbTitle">
+            <i class="fas fa-box-open"></i> Pilih Barang
+          </h3>
+          <button
+            type="button"
+            style="
+              background: none;
+              border: none;
+              color: #aaa;
+              font-size: 1.5rem;
+              cursor: pointer;
+            "
+            onclick="tutupPilihBarang()"
+          >
+            &times;
+          </button>
+        </div>
+        <div id="pbBody" style="padding: 15px; overflow-y: auto; flex: 1"></div>
+        <div
+          style="
+            padding: 15px;
+            background: #050505;
+            border-top: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <div>
+            <div style="font-size: 0.7rem; color: #888">Total Nilai Barang</div>
+            <div
+              id="pbTotal"
+              style="color: #4ade80; font-weight: bold; font-size: 1.1rem"
+            >
+              Rp 0
+            </div>
+          </div>
+          <button
+            type="button"
+            onclick="selesaiPilihBarang()"
+            class="btn-checkout"
+            style="padding: 10px 15px"
+          >
+            <i class="fas fa-check"></i> Selesai
+          </button>
         </div>
       </div>
     </div>
@@ -911,30 +1083,29 @@
       let base64StrukImg = "";
       let userId = "";
 
+      // VARIABEL KHUSUS DAFTAR MANDIRI
+      let masterPaket = [];
+      let masterBarang = [];
+      let regCart = [];
+      let tempItems = {};
+      let currentMode = "normal";
+
       window.onload = async () => {
-        // 1. CEK APAKAH ADA ID "MAGIC LINK" DI URL?
         const urlParams = new URLSearchParams(window.location.search);
         const magicId = urlParams.get("id");
 
         if (magicId) {
-          // Jika ada ID di URL, lakukan Auto-Login (Bypass LocalStorage Kosong)
           await processAutoLogin(magicId);
         } else {
-          // Jika tidak ada ID di URL, gunakan cara konvensional (Cek LocalStorage)
           checkLocalSession();
         }
       };
 
-      // === FUNGSI AUTO-LOGIN (MAGIC LINK) ===
       async function processAutoLogin(id) {
         document.getElementById("mitraName").innerText = "Memverifikasi...";
-
-        // Panggil API untuk cek ID tersebut
         const data = await fetchData("cekStatusDetail", { id: id });
 
         if (data && !data.error && data.type === "MITRA") {
-          // JIKA VALID MITRA:
-          // 1. Simpan ke LocalStorage agar next time tidak perlu link lagi
           const userData = {
             id: id,
             type: "MITRA",
@@ -942,15 +1113,10 @@
             paket: "MITRA",
           };
           localStorage.setItem("nizami_user", JSON.stringify(userData));
-
-          // 2. Bersihkan URL (Hapus ?id=... agar rapi)
           window.history.replaceState({}, document.title, "mitra.html");
-
-          // 3. Lanjut inisialisasi halaman
           userId = id;
           initMitraPage(userData);
         } else {
-          // JIKA ID TIDAK VALID / BUKAN MITRA
           alert("Link tidak valid atau Anda bukan Mitra.");
           window.location.href = "index.html";
         }
@@ -968,15 +1134,14 @@
           return;
         }
 
-        // Sesi Valid
         userId = user.id;
         initMitraPage(user);
       }
 
+      // MODIFIKASI: Ambil data Paket & Barang sekaligus saat Mitra login
       async function initMitraPage(user) {
         document.getElementById("mitraName").innerText = user.nama;
 
-        // AUTO-LOAD DARI DRAFT LOKAL
         const savedDraft = localStorage.getItem("mitra_draft_" + userId);
         if (savedDraft) {
           batchCart = JSON.parse(savedDraft);
@@ -986,21 +1151,33 @@
           }
         }
 
-        // AMBIL DATA PESERTA
-        const data = await fetchData("cekStatusDetail", { id: userId });
-        if (data && data.data && data.data.length > 0) {
-          rawPesertaData = data.data.map((item) => ({
-            id: item.id,
-            nama: item.nama,
-            paket: item.paket,
-            done: parseInt(item.tercapai) || 0,
-            target: parseInt(item.target) || 330,
-            harga: parseInt(item.nilai) || 0,
-          }));
-          processAndRender(rawPesertaData);
-        } else {
-          document.getElementById("pesertaContainer").innerHTML =
-            '<div style="text-align:center; color:#888; padding:30px;">Belum ada peserta terdaftar.</div>';
+        try {
+          const [resPeserta, resPaket, resBarang] = await Promise.all([
+            fetchData("cekStatusDetail", { id: userId }),
+            fetchData("getPaket"),
+            fetchData("getBarang"),
+          ]);
+
+          if (resPaket) masterPaket = Array.isArray(resPaket) ? resPaket : [];
+          if (resBarang)
+            masterBarang = Array.isArray(resBarang) ? resBarang : [];
+
+          if (resPeserta && resPeserta.data && resPeserta.data.length > 0) {
+            rawPesertaData = resPeserta.data.map((item) => ({
+              id: item.id,
+              nama: item.nama,
+              paket: item.paket,
+              done: parseInt(item.tercapai) || 0,
+              target: parseInt(item.target) || 330,
+              harga: parseInt(item.nilai) || 0,
+            }));
+            processAndRender(rawPesertaData);
+          } else {
+            document.getElementById("pesertaContainer").innerHTML =
+              '<div style="text-align:center; color:#888; padding:30px;">Belum ada peserta terdaftar.</div>';
+          }
+        } catch (e) {
+          console.error("Gagal load data", e);
         }
       }
 
@@ -1038,10 +1215,10 @@
         if (expected > target) expected = target;
 
         let selisih = done - expected;
-        let statusKategori = "lancar";
-        let text = "";
-        let colorClass = "text-green";
-        let icon = "fa-check-circle";
+        let statusKategori = "lancar",
+          text = "",
+          colorClass = "text-green",
+          icon = "fa-check-circle";
 
         if (done >= target) {
           statusKategori = "lunas";
@@ -1070,20 +1247,17 @@
       }
 
       function processAndRender(data) {
-        let total = data.length;
-        let nunggak = 0;
-        let lancarLunas = 0;
-
+        let total = data.length,
+          nunggak = 0,
+          lancarLunas = 0;
         data.forEach((p) => {
           p.kalkulasi = getStatusCalculation(p.paket, p.done, p.target);
           if (p.kalkulasi.kategori === "nunggak") nunggak++;
           else lancarLunas++;
         });
-
         document.getElementById("stat-total").innerText = total;
         document.getElementById("stat-nunggak").innerText = nunggak;
         document.getElementById("stat-lancar").innerText = lancarLunas;
-
         applyFilter("semua");
       }
 
@@ -1092,7 +1266,6 @@
           .querySelectorAll(".filter-chip")
           .forEach((el) => el.classList.remove("active"));
         document.getElementById(`flt-${tipe}`).classList.add("active");
-
         const container = document.getElementById("pesertaContainer");
         container.innerHTML = "";
 
@@ -1114,9 +1287,8 @@
           if (kal.kategori === "lunas") cardStyle = "lunas";
 
           let qtyCart = batchCart[p.id] ? batchCart[p.id].qty : 0;
-
-          let idBtnHtml = `<span class="badge-id" onclick="window.location.href='kartu-digital.html?id=${p.id}'" title="Kartu Digital"><i class="fas fa-id-card"></i> ${p.id}</span>`;
-          let kalenderBtnHtml = `<span class="badge-cal" onclick="window.location.href='kalender.html?id=${p.id}&nama=${encodeURIComponent(p.nama)}&paket=${encodeURIComponent(p.paket)}&jumlah=${p.done}'" title="Kalender"><i class="far fa-calendar-alt"></i></span>`;
+          let idBtnHtml = `<span class="badge-id" onclick="window.location.href='kartu-digital.html?id=${p.id}'"><i class="fas fa-id-card"></i> ${p.id}</span>`;
+          let kalenderBtnHtml = `<span class="badge-cal" onclick="window.location.href='kalender.html?id=${p.id}&nama=${encodeURIComponent(p.nama)}&paket=${encodeURIComponent(p.paket)}&jumlah=${p.done}'"><i class="far fa-calendar-alt"></i></span>`;
 
           let stepperHtml = "";
           if (kal.kategori !== "lunas") {
@@ -1133,12 +1305,7 @@
           let btnWaHtml = "";
           if (kal.kategori === "nunggak" && p.harga > 0) {
             let nominalNunggak = p.harga * kal.telatCount;
-            btnWaHtml = `
-                <div class="wa-action-box">
-                    <button class="btn-wa" onclick="tagihWA('${p.nama}', '${p.paket}', ${kal.telatCount}, ${nominalNunggak})">
-                        <i class="fab fa-whatsapp" style="font-size:1rem;"></i> Tagih Tunggakan (Rp ${nominalNunggak.toLocaleString("id-ID")})
-                    </button>
-                </div>`;
+            btnWaHtml = `<div class="wa-action-box"><button class="btn-wa" onclick="tagihWA('${p.nama}', '${p.paket}', ${kal.telatCount}, ${nominalNunggak})"><i class="fab fa-whatsapp" style="font-size:1rem;"></i> Tagih Tunggakan (Rp ${nominalNunggak.toLocaleString("id-ID")})</button></div>`;
           }
 
           container.insertAdjacentHTML(
@@ -1147,15 +1314,9 @@
                 <div class="peserta-card ${cardStyle}">
                     <div class="pc-head">
                         <div class="pc-info">
-                            <div class="pc-name">
-                                ${p.nama} 
-                                ${idBtnHtml}
-                                ${kalenderBtnHtml}
-                            </div>
+                            <div class="pc-name">${p.nama} ${idBtnHtml} ${kalenderBtnHtml}</div>
                             <div class="pc-paket">${p.paket}</div>
-                            <div class="pc-status ${kal.colorClass}">
-                                <i class="fas ${kal.icon}"></i> ${kal.text}
-                            </div>
+                            <div class="pc-status ${kal.colorClass}"><i class="fas ${kal.icon}"></i> ${kal.text}</div>
                         </div>
                         <div class="pc-right">
                             <div class="pc-done">${p.done}<span style="font-size:0.75rem; color:#888;">/${p.target}</span></div>
@@ -1163,17 +1324,12 @@
                         </div>
                     </div>
                     ${btnWaHtml}
-                </div>
-            `,
+                </div>`,
           );
         });
-
         updateBatchUI();
       }
 
-      // ==========================================
-      // LOGIKA AUTO-SAVE DRAFT (SETORAN)
-      // ==========================================
       function updateDraft(id, nama, paket, harga, currentDone, change) {
         if (!batchCart[id]) {
           batchCart[id] = {
@@ -1184,19 +1340,15 @@
             qty: 0,
           };
         }
-
         batchCart[id].qty += change;
         batchCart[id].date = getFormattedDate();
-
         if (batchCart[id].qty <= 0) delete batchCart[id];
-
         saveDraftAndRender();
         if (change > 0) showToast("Tersimpan di Draft!");
       }
 
       function setDraft(id, nama, paket, harga, currentDone, val) {
         let qty = parseInt(val) || 0;
-
         if (qty <= 0) {
           delete batchCart[id];
         } else {
@@ -1219,7 +1371,6 @@
         delete batchCart[id];
         saveDraftAndRender();
       }
-
       function clearBatchCart(e) {
         if (e) e.stopPropagation();
         if (confirm("Yakin ingin menghapus semua draft setoran hari ini?")) {
@@ -1247,24 +1398,19 @@
 
       function toggleBatchCart() {
         const bar = document.getElementById("batchBar");
-        if (Object.keys(batchCart).length > 0) {
-          bar.classList.toggle("expanded");
-        }
+        if (Object.keys(batchCart).length > 0) bar.classList.toggle("expanded");
       }
 
       function updateBatchUI() {
-        let totalUang = 0;
-        let countItem = 0;
-        let html = "";
-
+        let totalUang = 0,
+          countItem = 0,
+          html = "";
         for (let id in batchCart) {
           let item = batchCart[id];
           if (!item.date || item.date === "-") item.date = getFormattedDate();
-
           let subtotal = item.qty * item.harga;
           totalUang += subtotal;
           countItem++;
-
           html += `
             <div class="batch-item">
                 <div style="max-width:65%;">
@@ -1278,12 +1424,10 @@
                 </div>
             </div>`;
         }
-
         document.getElementById("batchDetails").innerHTML = html;
         document.getElementById("batchTotalRp").innerText =
           `Rp ${totalUang.toLocaleString("id-ID")}`;
         document.getElementById("cartCountBadge").innerText = countItem;
-
         const bar = document.getElementById("batchBar");
         if (countItem > 0) bar.classList.add("show");
         else {
@@ -1292,22 +1436,16 @@
         }
       }
 
-      // ==========================================
-      // PEMBUATAN STRUK
-      // ==========================================
       function generateStruk() {
         if (Object.keys(batchCart).length === 0) return;
-
         const btn = document.querySelector(".btn-checkout");
         const oldHtml = btn.innerHTML;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-
         const u = JSON.parse(localStorage.getItem("nizami_user"));
         document.getElementById("struk-mitra").innerText =
           "Mitra: " + (u ? u.nama : "-");
         document.getElementById("struk-date").innerText =
           new Date().toLocaleString("id-ID");
-
         const ic = document.getElementById("struk-items");
         ic.innerHTML = "";
         let totalRp = 0;
@@ -1319,15 +1457,11 @@
           let prev = item.currentDone;
           let curr = prev + item.qty;
           let tglText = item.date || "";
-
           ic.insertAdjacentHTML(
             "beforeend",
             `
                 <div style="font-size: 11px; border-bottom: 1px dashed #ccc; padding-bottom: 5px; margin-bottom: 5px;">
-                    <div style="display:flex; justify-content:space-between;">
-                        <span style="font-weight:bold; font-size:12px;">${item.nama}</span>
-                        <span style="font-size:9px; color:#666;">${tglText}</span>
-                    </div>
+                    <div style="display:flex; justify-content:space-between;"><span style="font-weight:bold; font-size:12px;">${item.nama}</span><span style="font-size:9px; color:#666;">${tglText}</span></div>
                     <div style="display:flex; justify-content:space-between; margin-top:3px; color:#333;">
                         <div style="width:40%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.paket}</div>
                         <div style="width:30%; text-align:center;">(${prev} ➔ ${curr})</div>
@@ -1337,21 +1471,17 @@
                 </div>`,
           );
         }
-
         document.getElementById("struk-total-val").innerText =
           "Rp " + totalRp.toLocaleString("id-ID");
-
         const wrapper = document.getElementById("struk-area");
         wrapper.style.left = "0px";
         wrapper.style.zIndex = "-1";
-
         setTimeout(() => {
           html2canvas(wrapper, { scale: 2 }).then((c) => {
             base64StrukImg = c.toDataURL("image/jpeg", 0.9);
             document.getElementById("preview-img-container").innerHTML =
               `<img src="${base64StrukImg}">`;
             wrapper.style.left = "-9999px";
-
             document.getElementById("modalPreviewImg").classList.add("show");
             btn.innerHTML = oldHtml;
           });
@@ -1361,7 +1491,6 @@
       function tutupPreviewImg() {
         document.getElementById("modalPreviewImg").classList.remove("show");
       }
-
       function downloadStruk() {
         if (!base64StrukImg) return;
         const a = document.createElement("a");
@@ -1371,19 +1500,16 @@
         a.click();
         document.body.removeChild(a);
       }
-
       function kirimWaAdmin() {
         const u = JSON.parse(localStorage.getItem("nizami_user"));
         let t = 0;
         for (let k in batchCart) {
           t += batchCart[k].qty * batchCart[k].harga;
         }
-
         let msg = `*LAPORAN SETORAN HARIAN*\nMitra: ${u ? u.nama : "-"}\nTotal Setor: Rp ${t.toLocaleString("id-ID")}\n\nStruk rincian terlampir (Silakan kirim gambar struk secara manual).`;
         window.open(
           `https://wa.me/628122261036?text=${encodeURIComponent(msg)}`,
         );
-
         batchCart = {};
         localStorage.removeItem("mitra_draft_" + userId);
         document
@@ -1395,63 +1521,23 @@
       }
 
       // ==========================================
-      // LOGIKA PENDAFTARAN PESERTA BARU OLEH MITRA
+      // LOGIKA PENDAFTARAN PESERTA (MANDIRI)
       // ==========================================
       function bukaModalDaftarBaru() {
-        let gc = JSON.parse(localStorage.getItem("nizami_global_cart") || "[]");
-        const container = document.getElementById("regCartSummary");
+        document.getElementById("regNama").value = "";
+        document.getElementById("regHP").value = "";
+        document.getElementById("regAlamat").value = "";
 
-        if (gc.length === 0) {
-          container.innerHTML = `
-            <div style="padding: 15px; background: rgba(255,77,77,0.1); border: 1px dashed #ff4d4d; border-radius: 8px; text-align: center;">
-                <div style="color: #ffcccc; font-size: 0.85rem; margin-bottom:10px;">Anda belum memilih paket apapun.</div>
-                <button type="button" onclick="window.location.href='index.html'" style="background:#ffd700; color:#000; border:none; padding:8px 15px; border-radius:50px; font-weight:bold; cursor:pointer; font-size:0.8rem;">
-                    <i class="fas fa-box-open"></i> Pilih Paket di Katalog
-                </button>
-            </div>`;
-        } else {
-          let html =
-            '<div style="background: #0a0a0a; border: 1px solid #333; border-radius: 8px; padding: 10px;">';
-          gc.forEach((item) => {
-            let isMingguan = item.name.toLowerCase().includes("mingguan");
-            let isCookies = item.name.toLowerCase().includes("cookies");
-            let labelSetoran = isMingguan ? "/mgg" : "/hari";
+        let optHtml =
+          '<option value="" disabled selected>-- Pilih Jenis Paket --</option>';
+        masterPaket.forEach((p) => {
+          optHtml += `<option value="${p.nama}">${p.nama}</option>`;
+        });
+        document.getElementById("regPaket").innerHTML = optHtml;
+        document.getElementById("btnPilihBarang").style.display = "none";
 
-            let priceHtml = "";
-            if (item.price > 0) {
-              if (isCookies) priceHtml = ` - Rp 1.000/toples`;
-              else
-                priceHtml = ` - Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}`;
-            }
-
-            let displayName = item.name;
-            let rincianHtml = "";
-            if (item.name.includes("(Isi:")) {
-              let parts = item.name.split("(Isi:");
-              displayName = parts[0].trim();
-              let rincianList = parts[1]
-                .replace(")", "")
-                .trim()
-                .split(", ")
-                .map((r) => `<div style="padding-left:5px;">- ${r}</div>`)
-                .join("");
-              rincianHtml = `<div style="font-size: 0.65rem; color: #888; margin-top: 4px; line-height: 1.4;">${rincianList}</div>`;
-            }
-
-            html += `<div style="font-size: 0.85rem; color: #ddd; border-bottom: 1px dashed #222; padding: 8px 0;">
-                            <div style="display: flex; justify-content: space-between; align-items:flex-start;">
-                                <div style="width: 80%;">
-                                    <b>${displayName}</b> <span style="color:#4ade80; font-size:0.75rem;">${priceHtml}</span>
-                                    ${rincianHtml}
-                                </div>
-                                <span style="color: #ffd700; font-weight: bold; padding-left:10px;">${item.qty}x</span>
-                            </div>
-                        </div>`;
-          });
-          html += `<div style="text-align:center; margin-top:10px;"><button type="button" onclick="window.location.href='index.html'" style="background:transparent; border:1px solid #4ade80; color:#4ade80; padding:6px 12px; border-radius:50px; font-size:0.75rem; cursor:pointer;"><i class="fas fa-edit"></i> Edit Keranjang di Katalog</button></div></div>`;
-          container.innerHTML = html;
-        }
-
+        regCart = [];
+        updateRegCartUI();
         document.getElementById("modalDaftarBaru").classList.add("show");
       }
 
@@ -1459,52 +1545,214 @@
         document.getElementById("modalDaftarBaru").classList.remove("show");
       }
 
-      function submitDaftarPesertaWA(e) {
-        e.preventDefault();
-        let gc = JSON.parse(localStorage.getItem("nizami_global_cart") || "[]");
-        if (gc.length === 0) {
-          alert("Harap pilih paket di Katalog terlebih dahulu!");
-          window.location.href = "index.html";
+      function checkPaketMitra(sel) {
+        const val = sel.value.toLowerCase();
+        const btn = document.getElementById("btnPilihBarang");
+        btn.style.display = "flex";
+
+        if (val.includes("mingguan")) {
+          currentMode = "mingguan";
+          btn.innerHTML =
+            '<i class="fas fa-shopping-basket"></i> Pilih Sembako (Mingguan)';
+        } else if (val.includes("cookies")) {
+          currentMode = "cookies";
+          btn.innerHTML =
+            '<i class="fas fa-cookie-bite"></i> Pilih Kue (Cookies)';
+        } else {
+          currentMode = "normal";
+          btn.innerHTML =
+            '<i class="fas fa-edit"></i> Pilih Barang Khusus (Opsional)';
+        }
+
+        regCart = [];
+        tempItems = {};
+        updateRegCartUI();
+      }
+
+      function bukaPilihBarang() {
+        document.getElementById("modalPilihBarang").classList.add("show");
+        renderCatMitra();
+      }
+
+      function tutupPilihBarang() {
+        document.getElementById("modalPilihBarang").classList.remove("show");
+      }
+
+      function renderCatMitra() {
+        const body = document.getElementById("pbBody");
+        document.getElementById("pbTitle").innerHTML =
+          `<i class="fas fa-box-open"></i> Pilih Kategori`;
+        const categories = [
+          ...new Set(masterBarang.map((item) => item.kategori)),
+        ];
+
+        let html = `<div class="cs-options-grid">`;
+        categories.forEach((cat) => {
+          if (cat)
+            html += `<div class="cs-option-btn" onclick="renderItemMitra('${cat}')">${cat}</div>`;
+        });
+        html += `</div>`;
+        body.innerHTML = html;
+        updatePilihBarangTotal();
+      }
+
+      function renderItemMitra(cat) {
+        const body = document.getElementById("pbBody");
+        document.getElementById("pbTitle").innerHTML =
+          `<i class="fas fa-tag"></i> Kategori: ${cat}`;
+        let html = `<button type="button" onclick="renderCatMitra()" style="background:#333; color:#fff; border:none; padding:8px 15px; border-radius:8px; margin-bottom:15px; cursor:pointer; font-weight:bold;"><i class="fas fa-arrow-left"></i> Kembali</button>`;
+
+        masterBarang.forEach((b) => {
+          if (b.kategori === cat) {
+            const qty = tempItems[b.nama] || 0;
+            html += `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #222;">
+                    <div style="flex:1; padding-right:10px;">
+                        <div style="font-weight:bold; color:#fff;">${b.nama}</div>
+                        <div style="font-size:0.75rem; color:#aaa;">Rp ${b.harga.toLocaleString("id-ID")} / ${b.satuan}</div>
+                    </div>
+                    <div class="stepper-control">
+                        <button type="button" class="stepper-btn" onclick="changeQtyMitra('${b.nama}', -1)">-</button>
+                        <input type="number" readonly class="stepper-input" id="pb_qty_${b.nama.replace(/[\s\W]/g, "")}" value="${qty}">
+                        <button type="button" class="stepper-btn" onclick="changeQtyMitra('${b.nama}', 1)">+</button>
+                    </div>
+                </div>`;
+          }
+        });
+        body.innerHTML = html;
+      }
+
+      function changeQtyMitra(nama, change) {
+        let current = tempItems[nama] || 0;
+        current += change;
+        if (current < 0) current = 0;
+
+        if (current === 0) delete tempItems[nama];
+        else tempItems[nama] = current;
+
+        document.getElementById(`pb_qty_${nama.replace(/[\s\W]/g, "")}`).value =
+          current;
+        updatePilihBarangTotal();
+      }
+
+      function updatePilihBarangTotal() {
+        let total = 0;
+        for (let key in tempItems) {
+          let item = masterBarang.find((b) => b.nama === key);
+          if (item) total += item.harga * tempItems[key];
+        }
+        document.getElementById("pbTotal").innerText =
+          "Rp " + total.toLocaleString("id-ID");
+      }
+
+      function selesaiPilihBarang() {
+        regCart = [];
+        for (let key in tempItems) {
+          let item = masterBarang.find((b) => b.nama === key);
+          if (item)
+            regCart.push({
+              name: item.nama,
+              price: item.harga,
+              qty: tempItems[key],
+            });
+        }
+        tutupPilihBarang();
+        updateRegCartUI();
+      }
+
+      function removeFromRegCart(idx) {
+        let itemToRemove = regCart[idx].name;
+        regCart.splice(idx, 1);
+        delete tempItems[itemToRemove];
+        updateRegCartUI();
+      }
+
+      function updateRegCartUI() {
+        const list = document.getElementById("regCartList");
+        if (regCart.length === 0) {
+          list.innerHTML = `<div style="text-align:center; color:#444; font-size:0.8rem; padding:10px;">Belum ada barang dipilih.</div>`;
+          document.getElementById("regTotal").innerHTML = "Rp 0";
           return;
         }
 
+        let html = "";
+        let totalHarga = 0;
+
+        regCart.forEach((item, idx) => {
+          let sub = item.qty * item.price;
+          totalHarga += sub;
+          html += `
+            <div class="rc-item">
+                <div style="flex:1;">
+                    <div style="font-weight:bold; color:#ddd;">${item.name}</div>
+                    <div style="font-size:0.7rem; color:#aaa;">Rp ${item.price.toLocaleString("id-ID")} x ${item.qty}</div>
+                </div>
+                <div style="font-weight:bold; color:#4ade80; margin:0 10px;">Rp ${sub.toLocaleString("id-ID")}</div>
+                <i class="fas fa-trash rc-del" onclick="removeFromRegCart(${idx})"></i>
+            </div>`;
+        });
+
+        list.innerHTML = html;
+
+        let txtSetoran = "";
+        if (currentMode === "mingguan") {
+          txtSetoran = `Rp ${Math.ceil(totalHarga / 40).toLocaleString("id-ID")} <span style="font-size:0.8rem; font-weight:normal;">/mgg</span>`;
+        } else if (currentMode === "cookies") {
+          txtSetoran = `Rp ${Math.ceil(totalHarga / 330).toLocaleString("id-ID")} <span style="font-size:0.8rem; font-weight:normal;">/hari</span>`;
+        } else {
+          txtSetoran = `Mengikuti Aturan Dasar Paket`;
+        }
+
+        document.getElementById("regTotal").innerHTML = `
+            ${txtSetoran}
+            <div style="font-size:0.75rem; color:#aaa; margin-top:3px; font-weight:normal;">
+                Total Nilai Barang: Rp ${totalHarga.toLocaleString("id-ID")}
+            </div>
+        `;
+      }
+
+      function submitDaftarPesertaWA(e) {
+        e.preventDefault();
         const n = document.getElementById("regNama").value;
         const h = document.getElementById("regHP").value;
         const a = document.getElementById("regAlamat").value;
-        const mitraName = document.getElementById("mitraName").innerText;
+        const selPaket = document.getElementById("regPaket");
+        const pkt = selPaket.options[selPaket.selectedIndex]?.text || "";
+        const mitra = document.getElementById("mitraName").innerText;
 
-        let msg = `Halo Admin, saya Mitra *${mitraName}* ingin mendaftarkan *PESERTA BARU*.\n\n*👤 DATA PESERTA*\nNama: ${n}\nWA: ${h}\nAlamat: ${a}\nMitra: ${mitraName}\n\n*🛒 PAKET DIPILIH:*\n`;
+        if (!n || !h || selPaket.value === "") {
+          alert("Harap lengkapi Nama, Nomor WA, dan Jenis Paket!");
+          return;
+        }
 
-        gc.forEach((item) => {
-          let isMingguan = item.name.toLowerCase().includes("mingguan");
-          let isCookies = item.name.toLowerCase().includes("cookies");
-          let labelSetoran = isMingguan ? "/mgg" : "/hari";
+        let msg = `Halo Admin, saya Mitra *${mitra}* ingin mendaftarkan *PESERTA BARU*.\n\n`;
+        msg += `*👤 DATA PESERTA*\n`;
+        msg += `Nama: ${n}\nWA: ${h}\nAlamat: ${a}\nMitra: ${mitra}\n\n`;
+        msg += `*📦 PAKET DIPILIH:*\n*${pkt}*\n`;
 
-          if (item.name.includes("(Isi:")) {
-            let parts = item.name.split("(Isi:");
-            let mainName = parts[0].trim();
-            let rincianArray = parts[1].replace(")", "").trim().split(", ");
+        if (regCart.length > 0) {
+          msg += `\n*🛒 RINCIAN BARANG:*\n`;
+          let totalHarga = 0;
+          regCart.forEach((item) => {
+            msg += `- ${item.qty}x ${item.name}\n`;
+            totalHarga += item.qty * item.price;
+          });
 
-            msg += `\n📦 *${item.qty}x ${mainName}*\n`;
-            if (isCookies) {
-              msg += ` ↳ Harga: Rp 1.000 ${labelSetoran} (per toples)\n`;
-              msg += ` ↳ Total Setor: *Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}*\n`;
-            } else if (item.price > 0) {
-              msg += ` ↳ Total Setor: *Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}*\n`;
-            }
-            msg += ` ↳ Rincian Isi:\n`;
-            rincianArray.forEach((r) => (msg += `    - ${r}\n`));
+          let txtTarget = "";
+          if (currentMode === "mingguan") {
+            txtTarget = `Rp ${Math.ceil(totalHarga / 40).toLocaleString("id-ID")} /minggu`;
+          } else if (currentMode === "cookies") {
+            txtTarget = `Rp ${Math.ceil(totalHarga / 330).toLocaleString("id-ID")} /hari`;
           } else {
-            msg += `\n📦 *${item.qty}x ${item.name}*\n`;
-            if (item.price > 0) {
-              msg += ` ↳ Setor: *Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}*\n`;
-            }
+            txtTarget = `Sesuai aturan dasar Paket ${pkt}`;
           }
-        });
+
+          msg += `\n*Total Nilai Barang:* Rp ${totalHarga.toLocaleString("id-ID")}\n`;
+          msg += `🎯 *Target Setoran:* ${txtTarget}\n`;
+        }
 
         msg += `\nMohon dibantu pembuatan akunnya. Terima kasih! 🙏`;
 
-        localStorage.removeItem("nizami_global_cart");
         window.open(
           `https://wa.me/628122261036?text=${encodeURIComponent(msg)}`,
           "_blank",
@@ -1512,6 +1760,7 @@
         tutupModalDaftarBaru();
       }
 
+      // LAIN-LAIN
       function tagihWA(nama, paket, telat, nominal) {
         let txt = `Assalamu'alaikum Kak *${nama}*,\n\nSekadar mengingatkan untuk setoran *${paket}* saat ini ada keterlambatan *${telat}x setoran* (Total: Rp ${nominal.toLocaleString("id-ID")}).\n\nYuk semangat nabungnya biar Lebaran panen! 🙏`;
         window.open(`whatsapp://send?text=${encodeURIComponent(txt)}`);
