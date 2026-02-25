@@ -941,7 +941,21 @@
             &times;
           </button>
         </div>
+
         <div id="pbBody" style="padding: 15px; overflow-y: auto; flex: 1"></div>
+
+        <div
+          id="pbSelectedItems"
+          style="
+            padding: 10px 15px;
+            background: #1a1a1a;
+            border-top: 1px solid #333;
+            max-height: 120px;
+            overflow-y: auto;
+            display: none;
+          "
+        ></div>
+
         <div
           style="
             padding: 15px;
@@ -1023,7 +1037,7 @@
       let masterBarang = [];
       let formCountMitra = 0;
       let currentEditingRowIdMitra = null;
-      let rowDataMitra = {}; // { row_1: { mode: 'normal', items: {} } }
+      let rowDataMitra = {};
 
       window.onload = async () => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -1384,7 +1398,7 @@
         for (let k in batchCart) {
           t += batchCart[k].qty * batchCart[k].harga;
         }
-        let msg = `*LAPORAN SETORAN HARIAN*\nMitra: ${u ? u.nama : "-"}\nTotal Setor: Rp ${t.toLocaleString("id-ID")}\n\nStruk rincian terlampir (Silakan kirim gambar struk secara manual).`;
+        let msg = `*LAPORAN SETORAN HARIAN*\\nMitra: ${u ? u.nama : "-"}\\nTotal Setor: Rp ${t.toLocaleString("id-ID")}\\n\\nStruk rincian terlampir (Silakan kirim gambar struk secara manual).`;
         window.open(
           `https://wa.me/628122261036?text=${encodeURIComponent(msg)}`,
         );
@@ -1482,7 +1496,7 @@
             '<i class="fas fa-edit"></i> Pilih Barang Khusus (Opsional)';
         }
 
-        rowDataMitra[`row_${id}`].items = {}; // Reset keranjang tiap ganti jenis paket
+        rowDataMitra[`row_${id}`].items = {};
         updateRegCartUIMitra(id);
       }
 
@@ -1491,17 +1505,11 @@
         const mode = rowDataMitra[`row_${id}`].mode;
         document.getElementById("modalPilihBarang").classList.add("show");
 
-        // JIKA COOKIES, LANGSUNG BUKA ITEM KUE SAJA (LEWATI KATEGORI)
         if (mode === "cookies") {
-          // Kita cari nama kategori yang merepresentasikan cookies di database (Bisa "Cookies", "Kue", dll)
+          // LANGSUNG BUKA DAFTAR BARANG YANG KATEGORINYA "COOKIES"
           let cookieCatName = [
             ...new Set(masterBarang.map((item) => item.kategori)),
-          ].find(
-            (c) =>
-              c &&
-              (c.toLowerCase().includes("cookie") ||
-                c.toLowerCase().includes("kue")),
-          );
+          ].find((c) => c && c.toLowerCase() === "cookies");
           renderItemMitra(cookieCatName || "Cookies");
         } else {
           renderCatMitra();
@@ -1526,13 +1534,23 @@
           if (!cat) return;
           let cLow = cat.toLowerCase();
 
-          // JIKA MINGGUAN: Filter out/Hilangkan Kids dan Cookies
           if (mode === "mingguan") {
+            if (
+              cLow === "sembako 2" ||
+              cLow === "mie 2" ||
+              cLow.includes("kerupuk") ||
+              cLow.includes("bumbu")
+            )
+              return;
             if (
               cLow.includes("cookie") ||
               cLow.includes("kids") ||
-              cLow.includes("kue") ||
               cLow.includes("snack")
+            )
+              return;
+            if (
+              cLow.includes("kue") &&
+              !(cLow.includes("kue kaleng") || cLow.includes("kue balbalan"))
             )
               return;
           }
@@ -1551,20 +1569,21 @@
         const mode = rowDataMitra[`row_${currentEditingRowIdMitra}`].mode;
 
         let html = "";
-        // Jika mode cookies, tidak perlu tombol kembali karena menunya dilompati
-        if (mode !== "cookies") {
+
+        if (mode === "cookies") {
+          html += `<div style="background:rgba(255, 215, 0, 0.1); border:1px solid rgba(255, 215, 0, 0.3); color:#ffd700; padding:10px; border-radius:8px; margin-bottom:15px; font-size:0.8rem; text-align:center;">
+                <i class="fas fa-exclamation-circle"></i> <b>Wajib Tepat 5 Toples!</b> Anda harus memilih tepat 5 item untuk melanjutkan.
+            </div>`;
+        } else {
           html += `<button type="button" onclick="renderCatMitra()" style="background:#333; color:#fff; border:none; padding:8px 15px; border-radius:8px; margin-bottom:15px; cursor:pointer; font-weight:bold;"><i class="fas fa-arrow-left"></i> Kembali</button>`;
         }
 
         masterBarang.forEach((b) => {
           let showItem = false;
+
           if (mode === "cookies") {
-            // Tampilkan semua barang yang kategorinya berbau cookie/kue
-            if (
-              b.kategori &&
-              (b.kategori.toLowerCase().includes("cookie") ||
-                b.kategori.toLowerCase().includes("kue"))
-            )
+            // Secara spesifik hanya mengambil kategori "Cookies", BUKAN "Kue Kaleng" atau kue lainnya.
+            if (b.kategori && b.kategori.toLowerCase() === "cookies")
               showItem = true;
           } else {
             if (b.kategori === cat) showItem = true;
@@ -1575,12 +1594,15 @@
               rowDataMitra[`row_${currentEditingRowIdMitra}`].items[b.nama] ||
               0;
 
-            // LOGIKA HARGA MINGGUAN DIBAGI 40
             let displayPrice = b.harga;
             let labelSatuan = b.satuan;
             if (mode === "mingguan") {
               displayPrice = Math.ceil(b.harga / 40);
               labelSatuan = "minggu";
+            } else if (mode === "cookies") {
+              // Harga cookies dibagi 330
+              displayPrice = Math.ceil(b.harga / 330);
+              labelSatuan = "hari";
             }
 
             html += `
@@ -1603,7 +1625,21 @@
 
       function changeQtyMitra(nama, change) {
         const id = currentEditingRowIdMitra;
+        const mode = rowDataMitra[`row_${id}`].mode;
+
+        let currentTotalQty = 0;
+        for (let k in rowDataMitra[`row_${id}`].items) {
+          currentTotalQty += rowDataMitra[`row_${id}`].items[k];
+        }
+
         let current = rowDataMitra[`row_${id}`].items[nama] || 0;
+
+        // VALIDASI MAKSIMAL 5 ITEM UNTUK COOKIES
+        if (mode === "cookies" && change > 0 && currentTotalQty >= 5) {
+          alert("Paket Cookies maksimal hanya boleh memilih 5 toples.");
+          return;
+        }
+
         current += change;
         if (current < 0) current = 0;
 
@@ -1620,25 +1656,81 @@
         const mode = rowDataMitra[`row_${id}`].mode;
         let total = 0;
         let lblTxt = "Total Nilai Barang";
+        let selectedItemsHtml = "";
+        let totalQtyCookies = 0;
 
         for (let key in rowDataMitra[`row_${id}`].items) {
           let item = masterBarang.find((b) => b.nama === key);
           let qty = rowDataMitra[`row_${id}`].items[key];
-          if (item) {
+
+          if (item && qty > 0) {
+            let displayPrice = item.harga;
+            totalQtyCookies += qty;
+
             if (mode === "mingguan") {
-              total += Math.ceil(item.harga / 40) * qty;
+              let perMgg = Math.ceil(item.harga / 40);
+              total += perMgg * qty;
               lblTxt = "Total Setoran Per Minggu";
+              displayPrice = perMgg;
+            } else if (mode === "cookies") {
+              let perHari = Math.ceil(item.harga / 330);
+              total += perHari * qty;
+              lblTxt = "Total Setoran Per Hari";
+              displayPrice = perHari;
             } else {
               total += item.harga * qty;
             }
+
+            let subtotal = displayPrice * qty;
+            selectedItemsHtml += `
+                <div style="display:flex; justify-content:space-between; margin-bottom: 4px; border-bottom: 1px dotted #333; padding-bottom: 2px;">
+                    <span style="flex:1; padding-right:10px; font-size:0.75rem; color:#ccc;">${qty}x ${item.nama}</span>
+                    <span style="color:#ffd700; font-size:0.75rem; font-weight:bold;">Rp ${subtotal.toLocaleString("id-ID")}</span>
+                </div>
+              `;
           }
         }
+
         document.getElementById("pbTotalLabel").innerText = lblTxt;
-        document.getElementById("pbTotal").innerText =
-          "Rp " + total.toLocaleString("id-ID");
+
+        if (mode === "cookies") {
+          document.getElementById("pbTotal").innerHTML =
+            `Rp ${total.toLocaleString("id-ID")} <br><span style="font-size:0.7rem; color:${totalQtyCookies === 5 ? "#4ade80" : "#ff6b6b"}">(${totalQtyCookies}/5 Toples)</span>`;
+        } else {
+          document.getElementById("pbTotal").innerText =
+            "Rp " + total.toLocaleString("id-ID");
+        }
+
+        const summaryDiv = document.getElementById("pbSelectedItems");
+        if (selectedItemsHtml !== "") {
+          summaryDiv.innerHTML =
+            `<div style="font-size:0.7rem; color:#4ade80; margin-bottom:6px; font-weight:bold;">Telah Dipilih:</div>` +
+            selectedItemsHtml;
+          summaryDiv.style.display = "block";
+        } else {
+          summaryDiv.innerHTML = "";
+          summaryDiv.style.display = "none";
+        }
       }
 
       function selesaiPilihBarang() {
+        const id = currentEditingRowIdMitra;
+        const mode = rowDataMitra[`row_${id}`].mode;
+
+        // VALIDASI TEPAT 5 SEBELUM TUTUP MODAL
+        if (mode === "cookies") {
+          let totalQty = 0;
+          for (let k in rowDataMitra[`row_${id}`].items) {
+            totalQty += rowDataMitra[`row_${id}`].items[k];
+          }
+          if (totalQty !== 5) {
+            alert(
+              `Paket Cookies harus memilih TEPAT 5 toples. Saat ini Anda baru memilih ${totalQty} toples.`,
+            );
+            return;
+          }
+        }
+
         tutupPilihBarang();
         updateRegCartUIMitra(currentEditingRowIdMitra);
       }
@@ -1677,6 +1769,9 @@
           if (mode === "mingguan") {
             displayPrice = Math.ceil(b.harga / 40);
             displaySub = displayPrice * qty;
+          } else if (mode === "cookies") {
+            displayPrice = Math.ceil(b.harga / 330);
+            displaySub = displayPrice * qty;
           }
           totalDisplay += displaySub;
 
@@ -1697,15 +1792,14 @@
         if (mode === "mingguan") {
           txtSetoran = `Rp ${totalDisplay.toLocaleString("id-ID")} <span style="font-size:0.8rem; font-weight:normal;">/mgg</span>`;
         } else if (mode === "cookies") {
-          txtSetoran = `Rp ${Math.ceil(totalHargaAsli / 330).toLocaleString("id-ID")} <span style="font-size:0.8rem; font-weight:normal;">/hari</span>`;
+          txtSetoran = `Rp ${totalDisplay.toLocaleString("id-ID")} <span style="font-size:0.8rem; font-weight:normal;">/hari</span>`;
         } else {
           txtSetoran = `Mengikuti Aturan Dasar Paket`;
         }
 
         document.getElementById(`regTotal_${id}`).innerHTML = `
             ${txtSetoran}
-            <div style="font-size:0.75rem; color:#aaa; margin-top:3px; font-weight:normal;">
-                Total Nilai Barang Asli: Rp ${totalHargaAsli.toLocaleString("id-ID")}
+            <div style="font-size:0.75rem; color:#aaa; margin-top:3px; font-weight:normal;">  
             </div>
         `;
       }
@@ -1713,7 +1807,7 @@
       function submitDaftarPesertaWA(e) {
         e.preventDefault();
         const mitra = document.getElementById("mitraName").innerText;
-        let msg = `Halo Admin, saya Mitra *${mitra}* ingin mendaftarkan *PESERTA BARU*.\n\n`;
+        let msg = `Halo Admin, saya Mitra *${mitra}* ingin mendaftarkan *PESERTA BARU*.\\n\\n`;
         let validCount = 0;
 
         for (let i = 1; i <= formCountMitra; i++) {
@@ -1732,26 +1826,41 @@
             return;
           }
 
-          validCount++;
-          msg += `*👤 PESERTA ${validCount}*\n`;
-          msg += `Nama: ${n}\nWA: ${h}\nAlamat: ${a}\n📦 Paket: *${pkt}*\n`;
-
           const items = rowDataMitra[`row_${i}`].items;
           const mode = rowDataMitra[`row_${i}`].mode;
 
+          // VALIDASI LAPIS KEDUA UNTUK COOKIES SAAT KLIK SUBMIT
+          if (mode === "cookies") {
+            let checkQty = 0;
+            for (let k in items) checkQty += items[k];
+            if (checkQty !== 5) {
+              alert(
+                `Pendaftaran gagal! Pada Peserta #${i}, Paket Cookies wajib memilih TEPAT 5 toples. Anda memilih ${checkQty} toples.`,
+              );
+              return;
+            }
+          }
+
+          validCount++;
+          msg += `*👤 PESERTA ${validCount}*\\n`;
+          msg += `Nama: ${n}\\nWA: ${h}\\nAlamat: ${a}\\n📦 Paket: *${pkt}*\\n`;
+
           if (Object.keys(items).length > 0) {
-            msg += `🛒 Rincian Barang:\n`;
+            msg += `🛒 Rincian Barang:\\n`;
             let totalHargaAsli = 0;
             let totalMingguan = 0;
+            let totalCookies = 0;
 
             for (let key in items) {
               let qty = items[key];
               let b = masterBarang.find((item) => item.nama === key);
               if (b) {
-                msg += `- ${qty}x ${key}\n`;
+                msg += `- ${qty}x ${key}\\n`;
                 totalHargaAsli += b.harga * qty;
                 if (mode === "mingguan")
                   totalMingguan += Math.ceil(b.harga / 40) * qty;
+                if (mode === "cookies")
+                  totalCookies += Math.ceil(b.harga / 330) * qty;
               }
             }
 
@@ -1759,15 +1868,15 @@
             if (mode === "mingguan") {
               txtTarget = `Rp ${totalMingguan.toLocaleString("id-ID")} /minggu`;
             } else if (mode === "cookies") {
-              txtTarget = `Rp ${Math.ceil(totalHargaAsli / 330).toLocaleString("id-ID")} /hari`;
+              txtTarget = `Rp ${totalCookies.toLocaleString("id-ID")} /hari`;
             } else {
               txtTarget = `Sesuai aturan dasar Paket ${pkt}`;
             }
 
-            msg += `Total Nilai Barang: Rp ${totalHargaAsli.toLocaleString("id-ID")}\n`;
-            msg += `🎯 *Target Setoran: ${txtTarget}*\n`;
+            msg += `Total Nilai Barang: Rp ${totalHargaAsli.toLocaleString("id-ID")}\\n`;
+            msg += `🎯 *Target Setoran: ${txtTarget}*\\n`;
           }
-          msg += `---------------------------\n\n`;
+          msg += `---------------------------\\n\\n`;
         }
 
         if (validCount === 0) {
@@ -1786,7 +1895,7 @@
 
       // LAIN-LAIN
       function tagihWA(nama, paket, telat, nominal) {
-        let txt = `Assalamu'alaikum Kak *${nama}*,\n\nSekadar mengingatkan untuk setoran *${paket}* saat ini ada keterlambatan *${telat}x setoran* (Total: Rp ${nominal.toLocaleString("id-ID")}).\n\nYuk semangat nabungnya biar Lebaran panen! 🙏`;
+        let txt = `Assalamu'alaikum Kak *${nama}*,\\n\\nSekadar mengingatkan untuk setoran *${paket}* saat ini ada keterlambatan *${telat}x setoran* (Total: Rp ${nominal.toLocaleString("id-ID")}).\\n\\nYuk semangat nabungnya biar Lebaran panen! 🙏`;
         window.open(`whatsapp://send?text=${encodeURIComponent(txt)}`);
       }
       function logoutMitra() {
