@@ -1811,7 +1811,7 @@
         }
       }
 
-      // === LOGIKA LOGIN & DASHBOARD ===
+      // === LOGIKA LOGIN & REDIRECT CERDAS ===
       function checkLoginStatus() {
         const userStr = localStorage.getItem("nizami_user");
         if (!userStr) {
@@ -1819,23 +1819,22 @@
           document.getElementById("user-profile").style.display = "none";
         } else {
           const user = JSON.parse(userStr);
+          // Jika yang login adalah MITRA, langsung lempar ke halaman Portal Mitra
+          if (user.type === "MITRA") {
+            window.location.href = "mitra.html";
+            return;
+          }
+
+          // Jika Peserta biasa, jalankan dashboard peserta
           document.getElementById("login-form").style.display = "none";
           document.getElementById("user-profile").style.display = "block";
           document.getElementById("prof-nama").innerText = user.nama;
           document.getElementById("prof-id").innerText = user.id;
           document.getElementById("prof-role").innerText = user.type;
 
-          if (user.type === "MITRA") {
-            document.getElementById("state-mitra-dash").style.display = "block";
-            document.getElementById("state-peserta-dash").style.display =
-              "none";
-            loadMitraDashboard(user.id);
-          } else {
-            document.getElementById("state-peserta-dash").style.display =
-              "block";
-            document.getElementById("state-mitra-dash").style.display = "none";
-            loadPesertaDashboard(user.id);
-          }
+          document.getElementById("state-peserta-dash").style.display = "block";
+          document.getElementById("state-mitra-dash").style.display = "none";
+          loadPesertaDashboard(user.id);
         }
       }
 
@@ -1858,15 +1857,23 @@
             let fixNama = data.nama || "Member";
             if (!data.nama && data.data && data.data.length > 0)
               fixNama = data.data[0].nama;
+
+            const userType = data.type || (data.data ? "MITRA" : "PESERTA");
             const userData = {
               id: id,
-              type: data.type || (data.data ? "MITRA" : "PESERTA"),
+              type: userType,
               nama: fixNama,
-              paket: data.type === "PESERTA" ? data.paket : "MITRA",
+              paket: userType === "PESERTA" ? data.paket : "MITRA",
             };
             localStorage.setItem("nizami_user", JSON.stringify(userData));
-            sessionStorage.setItem("activeTab", "akun");
-            location.reload();
+
+            // Redirect otomatis sesuai peran
+            if (userType === "MITRA") {
+              window.location.href = "mitra.html";
+            } else {
+              sessionStorage.setItem("activeTab", "akun");
+              location.reload();
+            }
           }
         });
       }
