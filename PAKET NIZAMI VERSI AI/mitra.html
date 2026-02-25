@@ -347,9 +347,7 @@
         color: #3498db;
       }
 
-      /* =======================================
-       PERBAIKAN: FLOATING CART LIPAT (COLLAPSIBLE)
-       ======================================= */
+      /* FLOATING CART LIPAT (COLLAPSIBLE) */
       .batch-bar {
         position: fixed;
         bottom: 0;
@@ -369,7 +367,6 @@
         transform: translateY(0);
       }
 
-      /* Header Keranjang yang bisa diklik */
       .bb-header {
         padding: 12px 20px;
         font-weight: bold;
@@ -392,7 +389,6 @@
         color: #aaa;
       }
 
-      /* Area Rincian (Disembunyikan secara default) */
       .batch-details {
         max-height: 0;
         overflow-y: auto;
@@ -401,7 +397,6 @@
           max-height 0.3s ease,
           padding 0.3s ease;
       }
-      /* Saat class expanded aktif, rincian muncul */
       .batch-bar.expanded .batch-details {
         max-height: 35vh;
         padding: 15px 20px 5px;
@@ -758,6 +753,55 @@
       let userId = "";
 
       window.onload = async () => {
+        // ==========================================
+        // 1. AUTO LOGIN JIKA ADA PARAMETER ?id=MTR-XXX
+        // ==========================================
+        const urlParams = new URLSearchParams(window.location.search);
+        const autoId = urlParams.get("id");
+
+        let isAutoLogin = false;
+        let preloadedData = null;
+
+        if (autoId) {
+          // Tampilkan loading saat verifikasi
+          document.getElementById("pesertaContainer").innerHTML =
+            '<div class="loader"><i class="fas fa-spinner fa-spin fa-2x"></i><br /><br />Memverifikasi Akses Mitra...</div>';
+
+          try {
+            const res = await fetchData("cekStatusDetail", { id: autoId });
+            if (res && res.type === "MITRA") {
+              // Simpan sesi login ke penyimpanan HP
+              localStorage.setItem(
+                "nizami_user",
+                JSON.stringify({
+                  type: "MITRA",
+                  id: res.id,
+                  nama: res.nama,
+                }),
+              );
+              // Bersihkan link di atas agar lebih rapi (menghapus ?id=...)
+              window.history.replaceState(
+                {},
+                document.title,
+                window.location.pathname,
+              );
+              isAutoLogin = true;
+              preloadedData = res;
+            } else {
+              alert("Akses ditolak! ID Mitra tidak valid.");
+              window.location.href = "index.html"; // Lempar kembali ke halaman depan
+              return;
+            }
+          } catch (err) {
+            alert("Koneksi gagal saat auto-login. Silakan coba lagi.");
+            window.location.href = "index.html";
+            return;
+          }
+        }
+
+        // ==========================================
+        // 2. CEK SESI LOGIN NORMAL
+        // ==========================================
         const userStr = localStorage.getItem("nizami_user");
         if (!userStr) {
           window.location.href = "index.html";
@@ -782,7 +826,13 @@
           }
         }
 
-        const data = await fetchData("cekStatusDetail", { id: userId });
+        // ==========================================
+        // 3. AMBIL DATA PESERTA (Atau gunakan hasil Auto-Login)
+        // ==========================================
+        let data = isAutoLogin
+          ? preloadedData
+          : await fetchData("cekStatusDetail", { id: userId });
+
         if (data && data.data && data.data.length > 0) {
           rawPesertaData = data.data.map((item) => ({
             id: item.id,
@@ -970,9 +1020,6 @@
         updateBatchUI();
       }
 
-      // ==========================================
-      // LOGIKA AUTO-SAVE DRAFT & TANGGAL
-      // ==========================================
       function updateDraft(id, nama, paket, harga, currentDone, change) {
         if (!batchCart[id]) {
           batchCart[id] = {
@@ -1020,7 +1067,7 @@
       }
 
       function clearBatchCart(e) {
-        if (e) e.stopPropagation(); // Mencegah keranjang terlipat/terbuka saat klik tombol Hapus
+        if (e) e.stopPropagation();
 
         if (confirm("Yakin ingin menghapus semua draft setoran hari ini?")) {
           batchCart = {};
@@ -1029,8 +1076,6 @@
             .querySelectorAll(".stepper-input")
             .forEach((inp) => (inp.value = 0));
           updateBatchUI();
-
-          // Tutup keranjang jika kosong
           document.getElementById("batchBar").classList.remove("expanded");
         }
       }
@@ -1049,10 +1094,8 @@
         updateBatchUI();
       }
 
-      // Fungsi Buka/Tutup Keranjang
       function toggleBatchCart() {
         const bar = document.getElementById("batchBar");
-        // Hanya bisa dibuka kalau ada isinya
         if (Object.keys(batchCart).length > 0) {
           bar.classList.toggle("expanded");
         }
@@ -1065,8 +1108,6 @@
 
         for (let id in batchCart) {
           let item = batchCart[id];
-
-          // Penambal: Pastikan selalu ada tanggal meski data lama
           if (!item.date || item.date === "-") item.date = getFormattedDate();
 
           let subtotal = item.qty * item.harga;
@@ -1098,13 +1139,10 @@
           bar.classList.add("show");
         } else {
           bar.classList.remove("show");
-          bar.classList.remove("expanded"); // Tutup otomatis kalau habis
+          bar.classList.remove("expanded");
         }
       }
 
-      // ==========================================
-      // PEMBUATAN STRUK
-      // ==========================================
       function generateStruk() {
         if (Object.keys(batchCart).length === 0) return;
 
