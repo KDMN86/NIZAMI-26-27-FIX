@@ -151,15 +151,37 @@
         margin-top: 2px;
       }
 
-      /* TOMBOL TAMBAH PESERTA */
+      /* TOMBOL AKSI DASHBOARD */
       .btn-tambah-peserta {
-        width: 100%;
         padding: 12px;
         border-radius: 12px;
         border: 1px dashed #4ade80;
         background: rgba(74, 222, 128, 0.1);
         color: #4ade80;
-        margin-top: 15px;
+        font-weight: bold;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+      .btn-tambah-peserta:active {
+        background: #4ade80;
+        color: #000;
+        border-style: solid;
+      }
+
+      /* TOMBOL PILIH BARANG (KUNING UNTUK FORM) */
+      .btn-pilih-barang {
+        width: 100%;
+        padding: 12px;
+        border-radius: 12px;
+        border: 1px dashed #ffd700;
+        background: rgba(255, 215, 0, 0.1);
+        color: #ffd700;
+        margin-bottom: 15px;
         font-weight: bold;
         font-size: 0.9rem;
         cursor: pointer;
@@ -169,8 +191,8 @@
         justify-content: center;
         gap: 8px;
       }
-      .btn-tambah-peserta:active {
-        background: #4ade80;
+      .btn-pilih-barang:active {
+        background: #ffd700;
         color: #000;
         border-style: solid;
       }
@@ -315,6 +337,7 @@
         overflow: hidden;
         width: 90px;
         height: 28px;
+        flex-shrink: 0;
       }
       .stepper-btn {
         background: #222;
@@ -375,12 +398,6 @@
       .btn-wa:active {
         background: #ff6b6b;
         color: #000;
-      }
-      .text-red {
-        color: #ff6b6b;
-      }
-      .text-green {
-        color: #4ade80;
       }
 
       /* BATCH BAR */
@@ -580,27 +597,6 @@
       .cs-select:focus {
         border-color: #ffd700;
       }
-      .cs-options-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        margin-top: 10px;
-      }
-      .cs-option-btn {
-        background: #111;
-        border: 1px solid #333;
-        padding: 20px;
-        border-radius: 8px;
-        color: #ddd;
-        font-size: 1rem;
-        cursor: pointer;
-        text-align: center;
-        font-weight: bold;
-      }
-      .cs-option-btn:active {
-        border-color: #ffd700;
-        background: rgba(255, 215, 0, 0.05);
-      }
       .reg-cart-list {
         background: #000;
         padding: 10px;
@@ -635,6 +631,82 @@
       }
       .btn-fab-add:active {
         background: #333;
+      }
+
+      /* GAYA BARU UNTUK ACCORDION KATEGORI BARANG (MENGAMBANG/STICKY) */
+      .accordion-header {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+        color: #ffd700;
+        cursor: pointer;
+        transition: background 0.2s;
+        position: -webkit-sticky;
+        position: sticky;
+        top: -1px;
+        z-index: 10;
+        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.9);
+      }
+      .accordion-header:active {
+        background: #2a2a2a;
+      }
+      .accordion-body {
+        background: #0a0a0a;
+        border: 1px solid #222;
+        border-top: none;
+        padding: 0 15px;
+        border-radius: 0 0 8px 8px;
+        margin-bottom: 15px;
+        margin-top: -5px;
+      }
+
+      /* ITEM SETOR MASAL COMPACT */
+      .sm-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #222;
+        padding: 12px 0;
+      }
+      .sm-info {
+        flex: 1;
+        padding-right: 10px;
+      }
+      .sm-name {
+        font-weight: bold;
+        font-size: 0.95rem;
+        color: #fff;
+        margin-bottom: 2px;
+      }
+      .sm-paket {
+        font-size: 0.7rem;
+        color: #888;
+        margin-bottom: 4px;
+      }
+      .sm-calc {
+        font-size: 0.75rem;
+        color: #aaa;
+        background: #222;
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 4px;
+      }
+      .sm-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 6px;
+      }
+      .sm-subtotal {
+        font-weight: bold;
+        color: #ffd700;
+        font-size: 0.9rem;
       }
 
       @keyframes fadeIn {
@@ -687,9 +759,29 @@
             ><span class="stat-label">Lancar/Lunas</span>
           </div>
         </div>
-        <button class="btn-tambah-peserta" onclick="bukaModalDaftarBaru()">
-          <i class="fas fa-user-plus"></i> Daftarkan Peserta Baru
-        </button>
+
+        <div style="display: flex; gap: 10px; margin-top: 15px">
+          <button
+            class="btn-tambah-peserta"
+            style="margin-top: 0; flex: 1"
+            onclick="bukaModalDaftarBaru()"
+          >
+            <i class="fas fa-user-plus"></i> Peserta Baru
+          </button>
+          <button
+            class="btn-tambah-peserta"
+            style="
+              margin-top: 0;
+              flex: 1;
+              border-color: #3498db;
+              color: #3498db;
+              background: rgba(52, 152, 219, 0.1);
+            "
+            onclick="bukaModalSetorMasal()"
+          >
+            <i class="fas fa-list-check"></i> Setor Masal
+          </button>
+        </div>
       </div>
 
       <div class="filter-wrapper">
@@ -832,6 +924,76 @@
       </div>
     </div>
 
+    <div id="modalSetorMasal" class="modal-overlay" style="z-index: 9999">
+      <div
+        class="modal-card"
+        style="
+          padding: 0;
+          overflow: hidden;
+          max-height: 90vh;
+          display: flex;
+          flex-direction: column;
+        "
+      >
+        <div
+          style="
+            padding: 15px 20px;
+            border-bottom: 1px solid #333;
+            background: #111;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <h3 style="margin: 0; color: #3498db">
+            <i class="fas fa-list-check"></i> Setoran Masal
+          </h3>
+          <button
+            style="
+              background: none;
+              border: none;
+              color: #aaa;
+              font-size: 1.5rem;
+              cursor: pointer;
+            "
+            onclick="tutupModalSetorMasal()"
+          >
+            &times;
+          </button>
+        </div>
+        <div id="smBody" style="padding: 15px; overflow-y: auto; flex: 1"></div>
+        <div
+          style="
+            padding: 15px;
+            background: #050505;
+            border-top: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <div>
+            <div style="font-size: 0.7rem; color: #888">
+              Total Setoran Keseluruhan
+            </div>
+            <div
+              id="smTotalRp"
+              style="color: #4ade80; font-weight: bold; font-size: 1.1rem"
+            >
+              Rp 0
+            </div>
+          </div>
+          <button
+            onclick="tutupModalSetorMasal()"
+            class="btn-checkout"
+            style="background: #3498db; padding: 10px 15px"
+          >
+            <i class="fas fa-save"></i> Simpan Draft
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div id="modalDaftarBaru" class="modal-overlay">
       <div
         class="modal-card"
@@ -942,7 +1104,15 @@
           </button>
         </div>
 
-        <div id="pbBody" style="padding: 15px; overflow-y: auto; flex: 1"></div>
+        <div
+          id="pbBody"
+          style="
+            padding: 0 15px 15px 15px;
+            overflow-y: auto;
+            flex: 1;
+            position: relative;
+          "
+        ></div>
 
         <div
           id="pbSelectedItems"
@@ -1229,7 +1399,7 @@
           let kalenderBtnHtml = `<span class="badge-cal" onclick="window.location.href='kalender.html?id=${p.id}&nama=${encodeURIComponent(p.nama)}&paket=${encodeURIComponent(p.paket)}&jumlah=${p.done}'"><i class="far fa-calendar-alt"></i></span>`;
           let stepperHtml = "";
           if (kal.kategori !== "lunas") {
-            stepperHtml = `<div class="stepper-control"><button class="stepper-btn" onclick="updateDraft('${p.id}', '${p.nama}', '${p.paket}', ${p.harga}, ${p.done}, -1)">-</button><input type="number" class="stepper-input" id="draft-input-${p.id}" value="${qtyCart}" onchange="setDraft('${p.id}', '${p.nama}', '${p.paket}', ${p.harga}, ${p.done}, this.value)" /><button class="stepper-btn" onclick="updateDraft('${p.id}', '${p.nama}', '${p.paket}', ${p.harga}, ${p.done}, 1)">+</button></div>`;
+            stepperHtml = `<div class="stepper-control"><button class="stepper-btn" onclick="updateDraft('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, -1)">-</button><input type="number" class="stepper-input" id="draft-input-${p.id}" value="${qtyCart}" onchange="setDraft('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, this.value)" /><button class="stepper-btn" onclick="updateDraft('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, 1)">+</button></div>`;
           } else {
             stepperHtml = `<div style="font-size:0.75rem; color:#3498db; font-weight:bold;"><i class="fas fa-check-circle"></i> Selesai</div>`;
           }
@@ -1244,6 +1414,100 @@
           );
         });
         updateBatchUI();
+      }
+
+      // ==========================================
+      // FUNGSI MODAL SETOR MASAL
+      // ==========================================
+      function bukaModalSetorMasal() {
+        renderSetorMasal();
+        document.getElementById("modalSetorMasal").classList.add("show");
+      }
+
+      function tutupModalSetorMasal() {
+        document.getElementById("modalSetorMasal").classList.remove("show");
+        // Sync kembali ke halaman utama saat ditutup
+        saveDraftAndRender();
+      }
+
+      function renderSetorMasal() {
+        const body = document.getElementById("smBody");
+        if (rawPesertaData.length === 0) {
+          body.innerHTML = `<div style="text-align:center; padding:20px; color:#888;">Belum ada peserta.</div>`;
+          return;
+        }
+
+        let html = "";
+        let totalRp = 0;
+
+        rawPesertaData.forEach((p) => {
+          let qty = batchCart[p.id] ? batchCart[p.id].qty : 0;
+          let subtotal = qty * p.harga;
+          totalRp += subtotal;
+          let curr = p.done + qty;
+
+          html += `
+              <div class="sm-item" id="sm_row_${p.id}">
+                  <div class="sm-info">
+                      <div class="sm-name">${p.nama}</div>
+                      <div class="sm-paket">${p.paket}</div>
+                      <div class="sm-calc" id="sm_calc_${p.id}">
+                          <i class="fas fa-history"></i> Setoran: ${p.done} ➔ <b style="color:#fff">${curr}</b>
+                      </div>
+                  </div>
+                  <div class="sm-right">
+                      <div class="sm-subtotal" id="sm_sub_${p.id}">Rp ${subtotal.toLocaleString("id-ID")}</div>
+                      <div class="stepper-control">
+                          <button type="button" class="stepper-btn" onclick="updateQtySM('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, -1)">-</button>
+                          <input type="number" readonly class="stepper-input" id="sm_qty_${p.id}" value="${qty}">
+                          <button type="button" class="stepper-btn" onclick="updateQtySM('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, 1)">+</button>
+                      </div>
+                  </div>
+              </div>`;
+        });
+
+        body.innerHTML = html;
+        document.getElementById("smTotalRp").innerText =
+          "Rp " + totalRp.toLocaleString("id-ID");
+      }
+
+      function updateQtySM(id, nama, paket, harga, done, change) {
+        if (!batchCart[id]) {
+          batchCart[id] = {
+            nama: nama,
+            paket: paket,
+            harga: harga,
+            currentDone: done,
+            qty: 0,
+          };
+        }
+        batchCart[id].qty += change;
+
+        if (batchCart[id].qty < 0) batchCart[id].qty = 0;
+        batchCart[id].date = getFormattedDate();
+
+        if (batchCart[id].qty <= 0) {
+          delete batchCart[id];
+        }
+
+        // Update text realtime di Modal (tanpa render ulang seluruh loop agar tidak berat)
+        let newQty = batchCart[id] ? batchCart[id].qty : 0;
+        let newSub = newQty * harga;
+        let newCurr = done + newQty;
+
+        document.getElementById(`sm_qty_${id}`).value = newQty;
+        document.getElementById(`sm_calc_${id}`).innerHTML =
+          `<i class="fas fa-history"></i> Setoran: ${done} ➔ <b style="color:#fff">${newCurr}</b>`;
+        document.getElementById(`sm_sub_${id}`).innerText =
+          "Rp " + newSub.toLocaleString("id-ID");
+
+        // Update Total Keseluruhan SM
+        let totalRp = 0;
+        for (let k in batchCart) {
+          totalRp += batchCart[k].qty * batchCart[k].harga;
+        }
+        document.getElementById("smTotalRp").innerText =
+          "Rp " + totalRp.toLocaleString("id-ID");
       }
 
       function updateDraft(id, nama, paket, harga, currentDone, change) {
@@ -1453,7 +1717,7 @@
                 ${optHtml}
             </select>
 
-            <button type="button" id="btnPilihBarang_${id}" class="btn-tambah-peserta" onclick="bukaPilihBarangMitra(${id})" style="display:none; margin-bottom:15px;">
+            <button type="button" id="btnPilihBarang_${id}" class="btn-pilih-barang" onclick="bukaPilihBarangMitra(${id})" style="display:none;">
                 <i class="fas fa-shopping-basket"></i> Pilih Rincian Barang
             </button>
 
@@ -1500,19 +1764,16 @@
         updateRegCartUIMitra(id);
       }
 
+      // ==== FUNGSI PENGATUR MODAL ====
       function bukaPilihBarangMitra(id) {
         currentEditingRowIdMitra = id;
         const mode = rowDataMitra[`row_${id}`].mode;
         document.getElementById("modalPilihBarang").classList.add("show");
 
         if (mode === "cookies") {
-          // LANGSUNG BUKA DAFTAR BARANG YANG KATEGORINYA "COOKIES"
-          let cookieCatName = [
-            ...new Set(masterBarang.map((item) => item.kategori)),
-          ].find((c) => c && c.toLowerCase() === "cookies");
-          renderItemMitra(cookieCatName || "Cookies");
+          renderCookiesOnly();
         } else {
-          renderCatMitra();
+          renderCatMitraAccordion();
         }
       }
 
@@ -1520,19 +1781,47 @@
         document.getElementById("modalPilihBarang").classList.remove("show");
       }
 
-      function renderCatMitra() {
+      // ==== FUNGSI RENDER SPESIFIK UNTUK COOKIES ====
+      function renderCookiesOnly() {
         const body = document.getElementById("pbBody");
         document.getElementById("pbTitle").innerHTML =
-          `<i class="fas fa-box-open"></i> Pilih Kategori`;
+          `<i class="fas fa-cookie-bite"></i> Pilih Cookies`;
+
+        let html = `<div style="height: 15px;"></div><div style="background:rgba(255, 215, 0, 0.1); border:1px solid rgba(255, 215, 0, 0.3); color:#ffd700; padding:10px; border-radius:8px; margin-bottom:15px; font-size:0.8rem; text-align:center;">
+            <i class="fas fa-exclamation-circle"></i> <b>Wajib Tepat 5 Toples!</b> Anda harus memilih tepat 5 item untuk melanjutkan.
+        </div>`;
+
+        masterBarang.forEach((b) => {
+          if (b.kategori && b.kategori.toLowerCase() === "cookies") {
+            const qty =
+              rowDataMitra[`row_${currentEditingRowIdMitra}`].items[b.nama] ||
+              0;
+            let displayPrice = Math.ceil(b.harga / 330);
+            html += generateItemRowHTML(b, displayPrice, "hari", qty);
+          }
+        });
+        body.innerHTML = html;
+        updatePilihBarangTotalMitra();
+      }
+
+      // ==== FUNGSI RENDER ACCORDION UNTUK MINGGUAN & NORMAL ====
+      function renderCatMitraAccordion() {
+        const body = document.getElementById("pbBody");
+        document.getElementById("pbTitle").innerHTML =
+          `<i class="fas fa-box-open"></i> Pilih Barang`;
+        const mode = rowDataMitra[`row_${currentEditingRowIdMitra}`].mode;
+
         const categories = [
           ...new Set(masterBarang.map((item) => item.kategori)),
         ];
-        const mode = rowDataMitra[`row_${currentEditingRowIdMitra}`].mode;
 
-        let html = `<div class="cs-options-grid">`;
+        let html = `<div style="height: 15px;"></div>`;
+
         categories.forEach((cat) => {
           if (!cat) return;
           let cLow = cat.toLowerCase();
+
+          if (cLow.includes("wadah")) return;
 
           if (mode === "mingguan") {
             if (
@@ -1555,72 +1844,66 @@
               return;
           }
 
-          html += `<div class="cs-option-btn" onclick="renderItemMitra('${cat}')">${cat}</div>`;
+          let catId = cat.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_]/g, "");
+
+          html += `
+          <div class="accordion-header" onclick="toggleAccordion('${catId}')">
+              <span><i class="fas fa-tag" style="margin-right:8px; opacity:0.7;"></i> ${cat}</span>
+              <i class="fas fa-chevron-down" id="icon_${catId}"></i>
+          </div>
+          <div class="accordion-body" id="body_${catId}" style="display:none;">
+          `;
+
+          masterBarang.forEach((b) => {
+            if (b.kategori === cat) {
+              const qty =
+                rowDataMitra[`row_${currentEditingRowIdMitra}`].items[b.nama] ||
+                0;
+              let displayPrice = b.harga;
+              let labelSatuan = b.satuan;
+
+              if (mode === "mingguan") {
+                displayPrice = Math.ceil(b.harga / 40);
+                labelSatuan = "minggu";
+              }
+              html += generateItemRowHTML(b, displayPrice, labelSatuan, qty);
+            }
+          });
+          html += `</div>`;
         });
-        html += `</div>`;
+
         body.innerHTML = html;
         updatePilihBarangTotalMitra();
       }
 
-      function renderItemMitra(cat) {
-        const body = document.getElementById("pbBody");
-        document.getElementById("pbTitle").innerHTML =
-          `<i class="fas fa-tag"></i> ${cat}`;
-        const mode = rowDataMitra[`row_${currentEditingRowIdMitra}`].mode;
-
-        let html = "";
-
-        if (mode === "cookies") {
-          html += `<div style="background:rgba(255, 215, 0, 0.1); border:1px solid rgba(255, 215, 0, 0.3); color:#ffd700; padding:10px; border-radius:8px; margin-bottom:15px; font-size:0.8rem; text-align:center;">
-                <i class="fas fa-exclamation-circle"></i> <b>Wajib Tepat 5 Toples!</b> Anda harus memilih tepat 5 item untuk melanjutkan.
+      function generateItemRowHTML(b, displayPrice, labelSatuan, qty) {
+        let safeName = b.nama.replace(/'/g, "\\'");
+        let inputId = `pb_qty_${b.nama.replace(/[\s\W]/g, "")}`;
+        return `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #222;">
+                <div style="flex:1; padding-right:10px;">
+                    <div style="font-weight:bold; color:#fff; font-size:0.9rem;">${b.nama}</div>
+                    <div style="font-size:0.75rem; color:#aaa;">Rp ${displayPrice.toLocaleString("id-ID")} / ${labelSatuan}</div>
+                </div>
+                <div class="stepper-control">
+                    <button type="button" class="stepper-btn" onclick="changeQtyMitra('${safeName}', -1)">-</button>
+                    <input type="number" readonly class="stepper-input" id="${inputId}" value="${qty}">
+                    <button type="button" class="stepper-btn" onclick="changeQtyMitra('${safeName}', 1)">+</button>
+                </div>
             </div>`;
+      }
+
+      function toggleAccordion(catId) {
+        const body = document.getElementById(`body_${catId}`);
+        const icon = document.getElementById(`icon_${catId}`);
+
+        if (body.style.display === "none") {
+          body.style.display = "block";
+          icon.classList.replace("fa-chevron-down", "fa-chevron-up");
         } else {
-          html += `<button type="button" onclick="renderCatMitra()" style="background:#333; color:#fff; border:none; padding:8px 15px; border-radius:8px; margin-bottom:15px; cursor:pointer; font-weight:bold;"><i class="fas fa-arrow-left"></i> Kembali</button>`;
+          body.style.display = "none";
+          icon.classList.replace("fa-chevron-up", "fa-chevron-down");
         }
-
-        masterBarang.forEach((b) => {
-          let showItem = false;
-
-          if (mode === "cookies") {
-            // Secara spesifik hanya mengambil kategori "Cookies", BUKAN "Kue Kaleng" atau kue lainnya.
-            if (b.kategori && b.kategori.toLowerCase() === "cookies")
-              showItem = true;
-          } else {
-            if (b.kategori === cat) showItem = true;
-          }
-
-          if (showItem) {
-            const qty =
-              rowDataMitra[`row_${currentEditingRowIdMitra}`].items[b.nama] ||
-              0;
-
-            let displayPrice = b.harga;
-            let labelSatuan = b.satuan;
-            if (mode === "mingguan") {
-              displayPrice = Math.ceil(b.harga / 40);
-              labelSatuan = "minggu";
-            } else if (mode === "cookies") {
-              // Harga cookies dibagi 330
-              displayPrice = Math.ceil(b.harga / 330);
-              labelSatuan = "hari";
-            }
-
-            html += `
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #222;">
-                    <div style="flex:1; padding-right:10px;">
-                        <div style="font-weight:bold; color:#fff;">${b.nama}</div>
-                        <div style="font-size:0.75rem; color:#aaa;">Rp ${displayPrice.toLocaleString("id-ID")} / ${labelSatuan}</div>
-                    </div>
-                    <div class="stepper-control">
-                        <button type="button" class="stepper-btn" onclick="changeQtyMitra('${b.nama.replace(/'/g, "\\'")}', -1)">-</button>
-                        <input type="number" readonly class="stepper-input" id="pb_qty_${b.nama.replace(/[\s\W]/g, "")}" value="${qty}">
-                        <button type="button" class="stepper-btn" onclick="changeQtyMitra('${b.nama.replace(/'/g, "\\'")}', 1)">+</button>
-                    </div>
-                </div>`;
-          }
-        });
-        body.innerHTML = html;
-        updatePilihBarangTotalMitra();
       }
 
       function changeQtyMitra(nama, change) {
@@ -1634,7 +1917,6 @@
 
         let current = rowDataMitra[`row_${id}`].items[nama] || 0;
 
-        // VALIDASI MAKSIMAL 5 ITEM UNTUK COOKIES
         if (mode === "cookies" && change > 0 && currentTotalQty >= 5) {
           alert("Paket Cookies maksimal hanya boleh memilih 5 toples.");
           return;
@@ -1717,7 +1999,6 @@
         const id = currentEditingRowIdMitra;
         const mode = rowDataMitra[`row_${id}`].mode;
 
-        // VALIDASI TEPAT 5 SEBELUM TUTUP MODAL
         if (mode === "cookies") {
           let totalQty = 0;
           for (let k in rowDataMitra[`row_${id}`].items) {
@@ -1799,7 +2080,8 @@
 
         document.getElementById(`regTotal_${id}`).innerHTML = `
             ${txtSetoran}
-            <div style="font-size:0.75rem; color:#aaa; margin-top:3px; font-weight:normal;">  
+            <div style="font-size:0.75rem; color:#aaa; margin-top:3px; font-weight:normal;">
+                Total Nilai Barang Asli: Rp ${totalHargaAsli.toLocaleString("id-ID")}
             </div>
         `;
       }
@@ -1829,7 +2111,6 @@
           const items = rowDataMitra[`row_${i}`].items;
           const mode = rowDataMitra[`row_${i}`].mode;
 
-          // VALIDASI LAPIS KEDUA UNTUK COOKIES SAAT KLIK SUBMIT
           if (mode === "cookies") {
             let checkQty = 0;
             for (let k in items) checkQty += items[k];
@@ -1893,7 +2174,6 @@
         tutupModalDaftarBaru();
       }
 
-      // LAIN-LAIN
       function tagihWA(nama, paket, telat, nominal) {
         let txt = `Assalamu'alaikum Kak *${nama}*,\\n\\nSekadar mengingatkan untuk setoran *${paket}* saat ini ada keterlambatan *${telat}x setoran* (Total: Rp ${nominal.toLocaleString("id-ID")}).\\n\\nYuk semangat nabungnya biar Lebaran panen! 🙏`;
         window.open(`whatsapp://send?text=${encodeURIComponent(txt)}`);
