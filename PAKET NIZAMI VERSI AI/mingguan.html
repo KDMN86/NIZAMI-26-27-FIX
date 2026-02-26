@@ -736,9 +736,12 @@
             const hargaTotal = item.harga;
             const hargaPerMinggu = Math.ceil(hargaTotal / TENOR_MINGGUAN);
 
+            // PERBAIKAN ERROR UNCAUGHT HTTP:
+            // Encoding double quotes (%22) digunakan agar tidak konflik dengan atribut onclick/onerror
             const fallbackImg =
-              "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23222'/%3E%3Ctext x='50' y='50' dominant-baseline='middle' text-anchor='middle' fill='%23555' font-family='sans-serif' font-size='12'%3ENo Img%3C/text%3E%3C/svg%3E";
+              "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23222%22/%3E%3Ctext x=%2250%22 y=%2250%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23555%22 font-family=%22sans-serif%22 font-size=%2212%22%3ENo Img%3C/text%3E%3C/svg%3E";
             const rawImg = item.foto || "";
+
             // Memanggil fungsi getDriveThumbnail dari script.js
             const imgPath =
               typeof getDriveThumbnail === "function"
@@ -751,12 +754,12 @@
             if (currentQty > 0) {
               btnHtml = `
                 <div class="qty-control" id="ctrl-${safeId}">
-                    <button class="qty-btn" onclick="updateLocalCart('${item.nama}', ${hargaTotal}, -1, '${safeId}')">-</button>
+                    <button class="qty-btn" onclick="updateLocalCart('${item.nama.replace(/'/g, "\\'")}', ${hargaTotal}, -1, '${safeId}')">-</button>
                     <div class="qty-val" id="qty-${safeId}">${currentQty}</div>
-                    <button class="qty-btn" onclick="updateLocalCart('${item.nama}', ${hargaTotal}, 1, '${safeId}')" style="background:#ffd700; color:#000;">+</button>
+                    <button class="qty-btn" onclick="updateLocalCart('${item.nama.replace(/'/g, "\\'")}', ${hargaTotal}, 1, '${safeId}')" style="background:#ffd700; color:#000;">+</button>
                 </div>`;
             } else {
-              btnHtml = `<button class="qty-btn" id="btn-${safeId}" onclick="updateLocalCart('${item.nama}', ${hargaTotal}, 1, '${safeId}')" style="background:#ffd700; color:#000; width: 35px; height: 35px; font-size:1.2rem; border-radius:10px;"><i class="fas fa-plus"></i></button>`;
+              btnHtml = `<button class="qty-btn" id="btn-${safeId}" onclick="updateLocalCart('${item.nama.replace(/'/g, "\\'")}', ${hargaTotal}, 1, '${safeId}')" style="background:#ffd700; color:#000; width: 35px; height: 35px; font-size:1.2rem; border-radius:10px;"><i class="fas fa-plus"></i></button>`;
             }
 
             itemsHTML += `
@@ -829,18 +832,19 @@
         if (!container) return;
 
         let currentQty = localCart[name] ? localCart[name].qty : 0;
+        let safeName = name.replace(/'/g, "\\'");
 
         if (currentQty > 0) {
           cardEl.classList.add("in-cart");
           container.innerHTML = `
             <div class="qty-control" id="ctrl-${domId}">
-                <button class="qty-btn" onclick="updateLocalCart('${name}', ${priceTotal}, -1, '${domId}')">-</button>
+                <button class="qty-btn" onclick="updateLocalCart('${safeName}', ${priceTotal}, -1, '${domId}')">-</button>
                 <div class="qty-val" id="qty-${domId}">${currentQty}</div>
-                <button class="qty-btn" onclick="updateLocalCart('${name}', ${priceTotal}, 1, '${domId}')" style="background:#ffd700; color:#000;">+</button>
+                <button class="qty-btn" onclick="updateLocalCart('${safeName}', ${priceTotal}, 1, '${domId}')" style="background:#ffd700; color:#000;">+</button>
             </div>`;
         } else {
           cardEl.classList.remove("in-cart");
-          container.innerHTML = `<button class="qty-btn" id="btn-${domId}" onclick="updateLocalCart('${name}', ${priceTotal}, 1, '${domId}')" style="background:#ffd700; color:#000; width: 35px; height: 35px; font-size:1.2rem; border-radius:10px;"><i class="fas fa-plus"></i></button>`;
+          container.innerHTML = `<button class="qty-btn" id="btn-${domId}" onclick="updateLocalCart('${safeName}', ${priceTotal}, 1, '${domId}')" style="background:#ffd700; color:#000; width: 35px; height: 35px; font-size:1.2rem; border-radius:10px;"><i class="fas fa-plus"></i></button>`;
         }
 
         updateFloatingBar();
