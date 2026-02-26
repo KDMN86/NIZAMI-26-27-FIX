@@ -1732,7 +1732,7 @@
         for (let k in batchCart) {
           t += batchCart[k].qty * batchCart[k].harga;
         }
-        let msg = `*LAPORAN SETORAN HARIAN*\\nMitra: ${u ? u.nama : "-"}\\nTotal Setor: Rp ${t.toLocaleString("id-ID")}\\n\\nStruk rincian terlampir (Silakan kirim gambar struk secara manual).`;
+        let msg = `*LAPORAN SETORAN HARIAN*\nMitra: ${u ? u.nama : "-"}\nTotal Setor: Rp ${t.toLocaleString("id-ID")}\n\nStruk rincian terlampir (Silakan kirim gambar struk secara manual).`;
         window.open(
           `https://wa.me/628122261036?text=${encodeURIComponent(msg)}`,
         );
@@ -2199,7 +2199,7 @@
       function submitDaftarPesertaWA(e) {
         e.preventDefault();
         const mitra = document.getElementById("mitraName").innerText;
-        let msg = `Halo Admin, saya Mitra *${mitra}* ingin mendaftarkan *PESERTA BARU*.\\n\\n`;
+        let msg = `Halo Admin, saya Mitra *${mitra}* ingin mendaftarkan *PESERTA BARU*.\n\n`;
         let validCount = 0;
 
         for (let i = 1; i <= formCountMitra; i++) {
@@ -2239,15 +2239,15 @@
           }
 
           validCount++;
-          msg += `*👤 DATA PESERTA ${validCount}*\\n`;
-          msg += `Nama: ${n}\\nWA: ${h}\\nAlamat: ${a}\\n\\n`;
-          msg += `*📦 PAKET YANG DIAMBIL:*\\n\\n`;
+          msg += `*👤 DATA PESERTA ${validCount}*\n`;
+          msg += `Nama: ${n}\nWA: ${h}\nAlamat: ${a}\nMitra: ${mitra}\n\n`;
+          msg += `*📦 PAKET YANG DIAMBIL:*\n\n`;
 
           pkgs.forEach((pkg, pIdx) => {
-            msg += `*${pIdx + 1}. ${pkg.name}*\\n`;
+            msg += `${pIdx + 1}. ${pkg.name}\n`;
 
             if (Object.keys(pkg.items).length > 0) {
-              msg += `🛒 Rincian Barang:\\n`;
+              msg += `Rincian Barang:\n`;
               let pkgTotalSetoran = 0;
               let pkgTotalAsli = 0;
 
@@ -2255,7 +2255,7 @@
                 let qty = pkg.items[key];
                 let b = masterBarang.find((item) => item.nama === key);
                 if (b) {
-                  msg += `   - ${qty}x ${key}\\n`;
+                  msg += ` - ${qty}x ${key}\n`;
                   pkgTotalAsli += b.harga * qty;
                   if (pkg.mode === "mingguan")
                     pkgTotalSetoran += Math.ceil(b.harga / 40) * qty;
@@ -2272,13 +2272,13 @@
                 txtTarget = `Rp ${pkgTotalSetoran.toLocaleString("id-ID")} /hari`;
               else txtTarget = `Sesuai Aturan Dasar`;
 
-              msg += `Total Nilai Barang: Rp ${pkgTotalAsli.toLocaleString("id-ID")}\\n`;
-              msg += `🎯 *Target Setoran:* ${txtTarget}\\n\\n`;
+              msg += `Total Nilai Barang: Rp ${pkgTotalAsli.toLocaleString("id-ID")}\n`;
+              msg += `🎯 Target Setoran: ${txtTarget}\n\n`;
             } else {
-              msg += `🎯 *Target Setoran:* Mengikuti Aturan Dasar Paket\\n\\n`;
+              msg += `🎯 Target Setoran: Mengikuti Aturan Dasar Paket\n\n`;
             }
           });
-          msg += `---------------------------\\n\\n`;
+          msg += `---------------------------\n\n`;
         }
 
         if (validCount === 0) {
