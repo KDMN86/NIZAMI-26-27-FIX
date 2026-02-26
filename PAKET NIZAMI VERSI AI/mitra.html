@@ -181,7 +181,6 @@
         border: 1px dashed #ffd700;
         background: rgba(255, 215, 0, 0.1);
         color: #ffd700;
-        margin-bottom: 15px;
         font-weight: bold;
         font-size: 0.9rem;
         cursor: pointer;
@@ -1204,8 +1203,11 @@
 
       let currentEditingRowIdMitra = null;
       let currentEditingPkgIdMitra = null;
-
       let rowDataMitra = {};
+
+      // VARIABEL GLOBAL UNTUK AUTO-FILL
+      let globalMitraHp = localStorage.getItem("mitra_hp_cache") || "";
+      let globalMitraAlamat = localStorage.getItem("mitra_alamat_cache") || "";
 
       window.onload = async () => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -1263,14 +1265,47 @@
           }
         }
         try {
-          const [resPeserta, resPaket, resBarang] = await Promise.all([
-            fetchData("cekStatusDetail", { id: userId }),
-            fetchData("getPaket"),
-            fetchData("getBarang"),
-          ]);
+          // KITA PANGGIL 'getMitra' JUGA UNTUK MENDAPATKAN WA & ALAMAT MITRA
+          const [resPeserta, resPaket, resBarang, resMitra] = await Promise.all(
+            [
+              fetchData("cekStatusDetail", { id: userId }),
+              fetchData("getPaket"),
+              fetchData("getBarang"),
+              fetchData("getMitra"),
+            ],
+          );
+
           if (resPaket) masterPaket = Array.isArray(resPaket) ? resPaket : [];
           if (resBarang)
             masterBarang = Array.isArray(resBarang) ? resBarang : [];
+
+          // EKSTRAKSI AUTO-FILL DATA MITRA DARI DATABASE
+          if (resMitra && Array.isArray(resMitra)) {
+            let mData = resMitra.find(
+              (m) =>
+                m.id === userId ||
+                (m.nama &&
+                  m.nama.trim().toLowerCase() ===
+                    user.nama.trim().toLowerCase()),
+            );
+            if (mData) {
+              for (let key in mData) {
+                let k = key.toLowerCase().replace(/[^a-z0-9]/g, "");
+                if (
+                  ["nohp", "hp", "nowa", "wa", "nomorhp"].includes(k) &&
+                  mData[key]
+                )
+                  globalMitraHp = mData[key];
+                if (k.includes("alamat") && mData[key])
+                  globalMitraAlamat = mData[key];
+              }
+            }
+          }
+          // SIMPAN HASIL EKSTRAKSI KE CACHE LOKAL
+          if (globalMitraHp)
+            localStorage.setItem("mitra_hp_cache", globalMitraHp);
+          if (globalMitraAlamat)
+            localStorage.setItem("mitra_alamat_cache", globalMitraAlamat);
 
           if (resPeserta && resPeserta.data && resPeserta.data.length > 0) {
             rawPesertaData = resPeserta.data.map((item) => {
@@ -1712,7 +1747,7 @@
       }
 
       // ==========================================
-      // LOGIKA PENDAFTARAN PESERTA (MANDIRI BATCH)
+      // LOGIKA PENDAFTARAN PESERTA (MANDIRI MULTI-PAKET & AUTO-FILL)
       // ==========================================
       function bukaModalDaftarBaru() {
         document.getElementById("formsContainerMitra").innerHTML = "";
@@ -1729,7 +1764,7 @@
       function addParticipantRowMitra() {
         formCountMitra++;
         const id = formCountMitra;
-        rowDataMitra[`row_${id}`] = { packages: [] }; // Sekarang 1 peserta = banyak paket
+        rowDataMitra[`row_${id}`] = { packages: [] };
 
         let optHtml =
           '<option value="" disabled selected>-- Pilih Jenis Paket --</option>';
@@ -1737,9 +1772,11 @@
           optHtml += `<option value="${p.nama}">${p.nama}</option>`;
         });
 
-        // AUTO FILL: Mengambil dari cache pendaftaran sebelumnya / data mitra
-        const defaultHp = localStorage.getItem("mitra_hp_cache") || "";
-        const defaultAlamat = localStorage.getItem("mitra_alamat_cache") || "";
+        // AUTO FILL LANGSUNG DARI VARIABLE GLOBAL YANG DITARIK DARI DATABASE
+        let defHp =
+          globalMitraHp || localStorage.getItem("mitra_hp_cache") || "";
+        let defAlamat =
+          globalMitraAlamat || localStorage.getItem("mitra_alamat_cache") || "";
 
         const html = `
         <div class="peserta-card" id="rowMitra_${id}" style="margin-bottom:20px; border:1px solid #333;">
@@ -1749,8 +1786,8 @@
             </div>
             
             <input type="text" id="regNama_${id}" class="input-dark" style="margin-bottom:8px;" placeholder="Nama Lengkap" required />
-            <input type="tel" id="regHP_${id}" class="input-dark" style="margin-bottom:8px;" placeholder="No. WhatsApp" value="${defaultHp}" required />
-            <textarea id="regAlamat_${id}" class="input-dark" style="margin-bottom:12px;" placeholder="Alamat Lengkap" rows="2" required>${defaultAlamat}</textarea>
+            <input type="tel" id="regHP_${id}" class="input-dark" style="margin-bottom:8px;" placeholder="No. WhatsApp" value="${defHp}" required />
+            <textarea id="regAlamat_${id}" class="input-dark" style="margin-bottom:12px;" placeholder="Alamat Lengkap" rows="2" required>${defAlamat}</textarea>
 
             <div style="background: #1a1a1a; padding: 10px; border-radius: 8px; border: 1px dashed #444; margin-bottom: 10px;">
                 <label class="cs-label" style="color: #ffd700; font-weight: bold; margin-bottom:5px;">Tambahkan Paket:</label>
@@ -1791,7 +1828,8 @@
 
         let mode = "normal";
         if (valLower.includes("mingguan")) mode = "mingguan";
-        else if (valLower.includes("cookies")) mode = "cookies";
+        else if (valLower.includes("cookies") || valLower.includes("kue"))
+          mode = "cookies";
 
         const pkgId = "pkg_" + Date.now() + Math.floor(Math.random() * 1000);
 
@@ -1867,23 +1905,28 @@
           grandTotalDisplay += totalSetoranPkg;
 
           if (pkg.mode === "mingguan") {
-            btnBarangHtml = `<button type="button" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')" style="background:rgba(255,215,0,0.1); color:#ffd700; border:1px solid #ffd700; padding:6px 10px; border-radius:6px; font-size:0.75rem; font-weight:bold; cursor:pointer;"><i class="fas fa-shopping-basket"></i> Pilih Sembako</button>`;
+            btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:10px; margin-bottom:0;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-shopping-basket"></i> Pilih Sembako</button>`;
           } else if (pkg.mode === "cookies") {
-            btnBarangHtml = `<button type="button" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')" style="background:rgba(255,215,0,0.1); color:#ffd700; border:1px solid #ffd700; padding:6px 10px; border-radius:6px; font-size:0.75rem; font-weight:bold; cursor:pointer;"><i class="fas fa-cookie-bite"></i> Pilih Kue</button>`;
+            btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:10px; margin-bottom:0;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-cookie-bite"></i> Pilih Kue</button>`;
           } else {
-            btnBarangHtml = `<button type="button" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')" style="background:transparent; color:#888; border:1px solid #444; padding:6px 10px; border-radius:6px; font-size:0.75rem; font-weight:bold; cursor:pointer;"><i class="fas fa-edit"></i> Request Brg</button>`;
+            btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:10px; margin-bottom:0; background:transparent; color:#aaa; border-color:#444;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-edit"></i> Request Brg (Opsional)</button>`;
           }
 
           html += `
-              <div style="background:#111; border:1px solid #333; padding:12px; border-radius:8px; margin-bottom:8px; position:relative;">
-                  <i class="fas fa-times" onclick="removePaketFromRow(${rowId}, '${pkg.id}')" style="position:absolute; top:12px; right:15px; color:#ff6b6b; cursor:pointer; font-size:1.2rem;"></i>
-                  <div style="font-weight:bold; color:#fff; font-size:0.9rem; padding-right:30px; margin-bottom:10px;">${pkg.name}</div>
+              <div style="background:#1a1a1a; border:1px solid #333; padding:15px; border-radius:12px; margin-bottom:15px; position:relative;">
+                  <i class="fas fa-trash-alt" onclick="removePaketFromRow(${rowId}, '${pkg.id}')" style="position:absolute; top:15px; right:15px; color:#ff4d4d; cursor:pointer; font-size:1.1rem; padding:5px;"></i>
                   
-                  <div style="display:flex; justify-content:space-between; align-items:center;">
-                      ${btnBarangHtml}
-                      <div style="font-size:0.8rem; color:#4ade80; font-weight:bold;">${txtSetoran}</div>
+                  <div style="font-weight:bold; color:#ffd700; font-size:1rem; margin-bottom:10px; padding-right:30px;">
+                      <i class="fas fa-box"></i> ${pkg.name}
                   </div>
+                  
                   ${rincianHtml}
+                  ${btnBarangHtml}
+                  
+                  <div style="text-align:right; margin-top:10px; border-top:1px dashed #444; padding-top:10px;">
+                      <span style="font-size:0.8rem; color:#aaa;">Target Setoran:</span><br>
+                      <span style="font-size:1.1rem; color:#4ade80; font-weight:bold;">${txtSetoran}</span>
+                  </div>
               </div>`;
         });
 
@@ -1926,7 +1969,7 @@
         </div>`;
 
         masterBarang.forEach((b) => {
-          if (b.kategori && b.kategori.toLowerCase() === "cookies") {
+          if (b.kategori && b.kategori.toLowerCase().trim() === "cookies") {
             const qty = pkg.items[b.nama] || 0;
             let displayPrice = Math.ceil(b.harga / 330);
             html += generateItemRowHTML(b, displayPrice, "hari", qty);
@@ -2181,12 +2224,6 @@
             return;
           }
 
-          // SIMPAN WA DAN ALAMAT SEBAGAI CACHE DEFAULT MITRA
-          if (validCount === 0) {
-            localStorage.setItem("mitra_hp_cache", h);
-            localStorage.setItem("mitra_alamat_cache", a);
-          }
-
           // Validasi Lapis ke-2
           for (let pkg of pkgs) {
             if (pkg.mode === "cookies") {
@@ -2202,14 +2239,15 @@
           }
 
           validCount++;
-          msg += `*👤 PESERTA ${validCount}*\\n`;
-          msg += `Nama: ${n}\\nWA: ${h}\\nAlamat: ${a}\\n`;
-          msg += `📦 *PAKET YANG DIAMBIL (${pkgs.length}):*\\n`;
+          msg += `*👤 DATA PESERTA ${validCount}*\\n`;
+          msg += `Nama: ${n}\\nWA: ${h}\\nAlamat: ${a}\\n\\n`;
+          msg += `*📦 PAKET YANG DIAMBIL:*\\n\\n`;
 
           pkgs.forEach((pkg, pIdx) => {
-            msg += `\\n${pIdx + 1}. *${pkg.name}*\\n`;
+            msg += `*${pIdx + 1}. ${pkg.name}*\\n`;
 
             if (Object.keys(pkg.items).length > 0) {
+              msg += `🛒 Rincian Barang:\\n`;
               let pkgTotalSetoran = 0;
               let pkgTotalAsli = 0;
 
@@ -2234,9 +2272,10 @@
                 txtTarget = `Rp ${pkgTotalSetoran.toLocaleString("id-ID")} /hari`;
               else txtTarget = `Sesuai Aturan Dasar`;
 
-              msg += `   (Target: ${txtTarget})\\n`;
+              msg += `Total Nilai Barang: Rp ${pkgTotalAsli.toLocaleString("id-ID")}\\n`;
+              msg += `🎯 *Target Setoran:* ${txtTarget}\\n\\n`;
             } else {
-              msg += `   (Target: Sesuai Aturan Dasar)\\n`;
+              msg += `🎯 *Target Setoran:* Mengikuti Aturan Dasar Paket\\n\\n`;
             }
           });
           msg += `---------------------------\\n\\n`;
