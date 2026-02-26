@@ -685,13 +685,26 @@
         const bannerHTML = container.innerHTML.split('<div class="loader">')[0];
         container.innerHTML = bannerHTML;
 
-        const kategoriYangDihapus = ["Snack Kids", "Wadah", "Cookies"];
+        // DAFTAR KATEGORI YANG DIHAPUS (DIPERBARUI)
+        const kategoriYangDihapus = [
+          "Snack Kids",
+          "Wadah",
+          "Cookies",
+          "Sembako 2",
+          "Bumbu",
+          "Kerupuk",
+          "Mie 2",
+        ];
+
         const groupedProducts = {};
 
         products.forEach((item) => {
           if (!item.nama) return;
           const kat = item.kategori ? item.kategori : "Lainnya";
+
+          // Filter kategori yang tidak diinginkan
           if (kategoriYangDihapus.includes(kat)) return;
+
           if (!groupedProducts[kat]) groupedProducts[kat] = [];
           groupedProducts[kat].push(item);
         });
