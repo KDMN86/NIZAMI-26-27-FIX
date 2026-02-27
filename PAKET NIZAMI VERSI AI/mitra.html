@@ -1265,7 +1265,6 @@
           }
         }
         try {
-          // KITA PANGGIL 'getMitra' JUGA UNTUK MENDAPATKAN WA & ALAMAT MITRA
           const [resPeserta, resPaket, resBarang, resMitra] = await Promise.all(
             [
               fetchData("cekStatusDetail", { id: userId }),
@@ -1301,7 +1300,6 @@
               }
             }
           }
-          // SIMPAN HASIL EKSTRAKSI KE CACHE LOKAL
           if (globalMitraHp)
             localStorage.setItem("mitra_hp_cache", globalMitraHp);
           if (globalMitraAlamat)
@@ -1772,7 +1770,6 @@
           optHtml += `<option value="${p.nama}">${p.nama}</option>`;
         });
 
-        // AUTO FILL LANGSUNG DARI VARIABLE GLOBAL YANG DITARIK DARI DATABASE
         let defHp =
           globalMitraHp || localStorage.getItem("mitra_hp_cache") || "";
         let defAlamat =
@@ -1801,11 +1798,6 @@
 
             <div id="paketListContainer_${id}" style="margin-bottom:10px;">
                 <div style="text-align: center; color: #555; font-size: 0.8rem; padding: 10px; border: 1px dashed #333; border-radius:8px;">Belum ada paket ditambahkan. Pilih lalu tekan <i class="fas fa-plus"></i></div>
-            </div>
-            
-            <div style="text-align: right; font-weight: bold; color: #fff; margin-bottom: 5px; border-top: 1px dashed #333; padding-top: 10px;">
-                Total Setoran Awal:
-                <div id="regTotal_${id}" style="color: #ffd700; font-size: 1.1rem">Rp 0</div>
             </div>
         </div>`;
         document
@@ -1859,23 +1851,21 @@
 
         if (pkgs.length === 0) {
           container.innerHTML = `<div style="text-align: center; color: #555; font-size: 0.8rem; padding: 10px; border: 1px dashed #333; border-radius:8px;">Belum ada paket ditambahkan. Pilih lalu tekan <i class="fas fa-plus"></i></div>`;
-          document.getElementById(`regTotal_${rowId}`).innerHTML = "Rp 0";
           return;
         }
 
         let html = "";
-        let grandTotalDisplay = 0;
 
         pkgs.forEach((pkg) => {
           let btnBarangHtml = "";
           let rincianHtml = "";
 
-          let totalSetoranPkg = 0;
           let txtSetoran = "";
 
           let itemKeys = Object.keys(pkg.items);
           if (itemKeys.length > 0) {
             let rincianArr = [];
+            let totalSetoranPkg = 0;
             itemKeys.forEach((k) => {
               let qty = pkg.items[k];
               let b = masterBarang.find((mb) => mb.nama === k);
@@ -1896,13 +1886,22 @@
               txtSetoran = `Rp ${totalSetoranPkg.toLocaleString("id-ID")} /mgg`;
             else if (pkg.mode === "cookies")
               txtSetoran = `Rp ${totalSetoranPkg.toLocaleString("id-ID")} /hari`;
-            else txtSetoran = `(Aturan Dasar Paket)`;
+            else {
+              let ext = pkg.name.replace(/\./g, "").match(/\d+/);
+              if (ext)
+                txtSetoran = `Rp ${parseInt(ext[0]).toLocaleString("id-ID")} /hari`;
+              else txtSetoran = `(Sesuai Data)`;
+            }
           } else {
-            txtSetoran = `Rp 0`;
-            if (pkg.mode === "normal") txtSetoran = `(Aturan Dasar Paket)`;
+            if (pkg.mode === "normal") {
+              let ext = pkg.name.replace(/\./g, "").match(/\d+/);
+              if (ext)
+                txtSetoran = `Rp ${parseInt(ext[0]).toLocaleString("id-ID")} /hari`;
+              else txtSetoran = `(Sesuai Data)`;
+            } else {
+              txtSetoran = `Rp 0`;
+            }
           }
-
-          grandTotalDisplay += totalSetoranPkg;
 
           if (pkg.mode === "mingguan") {
             btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:10px; margin-bottom:0;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-shopping-basket"></i> Pilih Sembako</button>`;
@@ -1931,8 +1930,6 @@
         });
 
         container.innerHTML = html;
-        document.getElementById(`regTotal_${rowId}`).innerHTML =
-          `Rp ${grandTotalDisplay.toLocaleString("id-ID")}`;
       }
 
       // ==== FUNGSI PENGATUR MODAL ====
@@ -1999,7 +1996,12 @@
           if (!cat) return;
           let cLow = cat.toLowerCase();
 
-          if (cLow.includes("wadah")) return;
+          if (
+            cLow.includes("wadah") ||
+            cLow === "minuman 2" ||
+            cLow === "lainnya"
+          )
+            return;
 
           if (mode === "mingguan") {
             if (
@@ -2224,7 +2226,11 @@
             return;
           }
 
-          // Validasi Lapis ke-2
+          if (validCount === 0) {
+            localStorage.setItem("mitra_hp_cache", h);
+            localStorage.setItem("mitra_alamat_cache", a);
+          }
+
           for (let pkg of pkgs) {
             if (pkg.mode === "cookies") {
               let checkQty = 0;
@@ -2244,7 +2250,7 @@
           msg += `*📦 PAKET YANG DIAMBIL:*\n\n`;
 
           pkgs.forEach((pkg, pIdx) => {
-            msg += `${pIdx + 1}. ${pkg.name}\n`;
+            msg += `*${pIdx + 1}. ${pkg.name}*\n`;
 
             if (Object.keys(pkg.items).length > 0) {
               msg += `Rincian Barang:\n`;
@@ -2270,12 +2276,20 @@
                 txtTarget = `Rp ${pkgTotalSetoran.toLocaleString("id-ID")} /minggu`;
               else if (pkg.mode === "cookies")
                 txtTarget = `Rp ${pkgTotalSetoran.toLocaleString("id-ID")} /hari`;
-              else txtTarget = `Sesuai Aturan Dasar`;
+              else {
+                let ext = pkg.name.replace(/\./g, "").match(/\d+/);
+                if (ext)
+                  txtTarget = `Rp ${parseInt(ext[0]).toLocaleString("id-ID")} /hari`;
+                else txtTarget = `Sesuai Aturan Dasar`;
+              }
 
               msg += `Total Nilai Barang: Rp ${pkgTotalAsli.toLocaleString("id-ID")}\n`;
               msg += `🎯 Target Setoran: ${txtTarget}\n\n`;
             } else {
-              msg += `🎯 Target Setoran: Mengikuti Aturan Dasar Paket\n\n`;
+              let ext = pkg.name.replace(/\./g, "").match(/\d+/);
+              if (ext)
+                msg += `🎯 Target Setoran: Rp ${parseInt(ext[0]).toLocaleString("id-ID")} /hari\n\n`;
+              else msg += `🎯 Target Setoran: Mengikuti Aturan Dasar Paket\n\n`;
             }
           });
           msg += `---------------------------\n\n`;
