@@ -1196,16 +1196,15 @@
       let base64StrukImg = "";
       let userId = "";
 
-      // VARIABEL DAFTAR MASAL MULTI-PAKET
       let masterPaket = [];
       let masterBarang = [];
+      let masterIsiPaket = []; // Array untuk menampung data MASTER_ISI_PAKET jika ada
       let formCountMitra = 0;
 
       let currentEditingRowIdMitra = null;
       let currentEditingPkgIdMitra = null;
       let rowDataMitra = {};
 
-      // VARIABEL GLOBAL UNTUK AUTO-FILL
       let globalMitraHp = localStorage.getItem("mitra_hp_cache") || "";
       let globalMitraAlamat = localStorage.getItem("mitra_alamat_cache") || "";
 
@@ -1265,20 +1264,21 @@
           }
         }
         try {
-          const [resPeserta, resPaket, resBarang, resMitra] = await Promise.all(
-            [
+          // Menambahkan fetch opsional untuk MASTER_ISI_PAKET jika ada di backend
+          const [resPeserta, resPaket, resBarang, resMitra, resIsi] =
+            await Promise.all([
               fetchData("cekStatusDetail", { id: userId }),
               fetchData("getPaket"),
               fetchData("getBarang"),
               fetchData("getMitra"),
-            ],
-          );
+              fetchData("getIsiPaket").catch(() => null),
+            ]);
 
           if (resPaket) masterPaket = Array.isArray(resPaket) ? resPaket : [];
           if (resBarang)
             masterBarang = Array.isArray(resBarang) ? resBarang : [];
+          if (resIsi && Array.isArray(resIsi)) masterIsiPaket = resIsi;
 
-          // EKSTRAKSI AUTO-FILL DATA MITRA DARI DATABASE
           if (resMitra && Array.isArray(resMitra)) {
             let mData = resMitra.find(
               (m) =>
@@ -1519,9 +1519,6 @@
         }
       }
 
-      // ==========================================
-      // FUNGSI MODAL SETOR MASAL
-      // ==========================================
       function bukaModalSetorMasal() {
         renderSetorMasal();
         document.getElementById("modalSetorMasal").classList.add("show");
@@ -1745,7 +1742,7 @@
       }
 
       // ==========================================
-      // LOGIKA PENDAFTARAN PESERTA (MANDIRI MULTI-PAKET & AUTO-FILL)
+      // LOGIKA PENDAFTARAN PESERTA
       // ==========================================
       function bukaModalDaftarBaru() {
         document.getElementById("formsContainerMitra").innerHTML = "";
@@ -1757,6 +1754,71 @@
 
       function tutupModalDaftarBaru() {
         document.getElementById("modalDaftarBaru").classList.remove("show");
+      }
+
+      // AUTO FILL BARANG JIKA PAKET STANDAR
+      function getPaketItems(pktName) {
+        let items = {};
+
+        if (masterIsiPaket && masterIsiPaket.length > 0) {
+          let found = false;
+          masterIsiPaket.forEach((isi) => {
+            let pName = isi.paket || isi.nama_paket || isi.jenis_paket || "";
+            if (
+              pName.trim().toLowerCase() === pktName.trim().toLowerCase() &&
+              isi.barang
+            ) {
+              let bName = isi.barang || isi.nama_barang;
+              let b = masterBarang.find(
+                (mb) => mb.nama.toLowerCase() === bName.toLowerCase(),
+              );
+              if (b) {
+                items[b.nama] = parseInt(isi.qty || isi.jumlah || 1);
+                found = true;
+              } else {
+                items[bName] = parseInt(isi.qty || isi.jumlah || 1);
+                found = true;
+              }
+            }
+          });
+          if (found) return items;
+        }
+
+        let pkt = masterPaket.find((p) => p.nama === pktName);
+        if (!pkt) return items;
+
+        let rawText =
+          pkt.rincian ||
+          pkt.isi_paket ||
+          pkt.isi ||
+          pkt.deskripsi ||
+          pkt.barang;
+        if (typeof rawText === "string" && rawText.trim() !== "") {
+          const parts = rawText.split(/[\n,;]+/);
+          parts.forEach((part) => {
+            const lowerPart = part.toLowerCase();
+            for (let b of masterBarang) {
+              const bNameLower = b.nama.toLowerCase();
+              if (lowerPart.includes(bNameLower)) {
+                let qty = 1;
+                const xMatch = part.match(/(?:x|X)\s*(\d+)/);
+                const xBeforeMatch = part.match(/(\d+)\s*(?:x|X)/);
+                const parenMatch = part.match(/\(\s*(\d+)\s*[a-zA-Z]*\s*\)/);
+                const startMatch = part.match(/^(?:-|\*|\•|\d+\.)?\s*(\d+)/);
+
+                if (xMatch) qty = parseInt(xMatch[1]);
+                else if (xBeforeMatch) qty = parseInt(xBeforeMatch[1]);
+                else if (parenMatch) qty = parseInt(parenMatch[1]);
+                else if (startMatch) qty = parseInt(startMatch[1]);
+
+                if (items[b.nama]) items[b.nama] += qty;
+                else items[b.nama] = qty;
+                break;
+              }
+            }
+          });
+        }
+        return items;
       }
 
       function addParticipantRowMitra() {
@@ -1823,13 +1885,18 @@
         else if (valLower.includes("cookies") || valLower.includes("kue"))
           mode = "cookies";
 
+        let defaultItems = {};
+        if (mode === "normal") {
+          defaultItems = getPaketItems(pktName);
+        }
+
         const pkgId = "pkg_" + Date.now() + Math.floor(Math.random() * 1000);
 
         rowDataMitra[`row_${rowId}`].packages.push({
           id: pkgId,
           name: pktName,
           mode: mode,
-          items: {},
+          items: defaultItems,
         });
 
         renderPaketList(rowId);
@@ -1877,6 +1944,8 @@
                   sub = Math.ceil(b.harga / 330) * qty;
                 totalSetoranPkg += sub;
                 rincianArr.push(`${qty}x ${k}`);
+              } else {
+                rincianArr.push(`${qty}x ${k}`);
               }
             });
 
@@ -1890,14 +1959,22 @@
               let ext = pkg.name.replace(/\./g, "").match(/\d+/);
               if (ext)
                 txtSetoran = `Rp ${parseInt(ext[0]).toLocaleString("id-ID")} /hari`;
-              else txtSetoran = `(Sesuai Data)`;
+              else {
+                let pMaster = masterPaket.find((p) => p.nama === pkg.name);
+                if (pMaster && pMaster.harga > 0)
+                  txtSetoran = `Rp ${pMaster.harga.toLocaleString("id-ID")} /hari`;
+              }
             }
           } else {
             if (pkg.mode === "normal") {
               let ext = pkg.name.replace(/\./g, "").match(/\d+/);
               if (ext)
                 txtSetoran = `Rp ${parseInt(ext[0]).toLocaleString("id-ID")} /hari`;
-              else txtSetoran = `(Sesuai Data)`;
+              else {
+                let pMaster = masterPaket.find((p) => p.nama === pkg.name);
+                if (pMaster && pMaster.harga > 0)
+                  txtSetoran = `Rp ${pMaster.harga.toLocaleString("id-ID")} /hari`;
+              }
             } else {
               txtSetoran = `Rp 0`;
             }
@@ -1908,7 +1985,7 @@
           } else if (pkg.mode === "cookies") {
             btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:10px; margin-bottom:0;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-cookie-bite"></i> Pilih Kue</button>`;
           } else {
-            btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:10px; margin-bottom:0; background:transparent; color:#aaa; border-color:#444;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-edit"></i> Request Brg (Opsional)</button>`;
+            btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:10px; margin-bottom:0; background:transparent; color:#ffd700; border-color:#ffd700;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-edit"></i> Request Brg (Opsional)</button>`;
           }
 
           html += `
@@ -1922,17 +1999,22 @@
                   ${rincianHtml}
                   ${btnBarangHtml}
                   
+                  ${
+                    txtSetoran
+                      ? `
                   <div style="text-align:right; margin-top:10px; border-top:1px dashed #444; padding-top:10px;">
                       <span style="font-size:0.8rem; color:#aaa;">Target Setoran:</span><br>
                       <span style="font-size:1.1rem; color:#4ade80; font-weight:bold;">${txtSetoran}</span>
                   </div>
+                  `
+                      : ""
+                  }
               </div>`;
         });
 
         container.innerHTML = html;
       }
 
-      // ==== FUNGSI PENGATUR MODAL ====
       function bukaPilihBarangMitra(rowId, pkgId) {
         currentEditingRowIdMitra = rowId;
         currentEditingPkgIdMitra = pkgId;
@@ -1952,7 +2034,6 @@
         document.getElementById("modalPilihBarang").classList.remove("show");
       }
 
-      // ==== FUNGSI RENDER SPESIFIK UNTUK COOKIES ====
       function renderCookiesOnly() {
         const body = document.getElementById("pbBody");
         document.getElementById("pbTitle").innerHTML =
@@ -1976,7 +2057,6 @@
         updatePilihBarangTotalMitra();
       }
 
-      // ==== FUNGSI RENDER ACCORDION UNTUK MINGGUAN & NORMAL ====
       function renderCatMitraAccordion() {
         const body = document.getElementById("pbBody");
         document.getElementById("pbTitle").innerHTML =
@@ -2246,7 +2326,7 @@
 
           validCount++;
           msg += `*👤 DATA PESERTA ${validCount}*\n`;
-          msg += `Nama: ${n}\nWA: ${h}\nAlamat: ${a}\nMitra: ${mitra}\n\n`;
+          msg += `Nama: ${n}\nWA: ${h}\nAlamat: ${a}\n\n`;
           msg += `*📦 PAKET YANG DIAMBIL:*\n\n`;
 
           pkgs.forEach((pkg, pIdx) => {
@@ -2255,19 +2335,18 @@
             if (Object.keys(pkg.items).length > 0) {
               msg += `Rincian Barang:\n`;
               let pkgTotalSetoran = 0;
-              let pkgTotalAsli = 0;
 
               for (let key in pkg.items) {
                 let qty = pkg.items[key];
                 let b = masterBarang.find((item) => item.nama === key);
                 if (b) {
                   msg += ` - ${qty}x ${key}\n`;
-                  pkgTotalAsli += b.harga * qty;
                   if (pkg.mode === "mingguan")
                     pkgTotalSetoran += Math.ceil(b.harga / 40) * qty;
                   else if (pkg.mode === "cookies")
                     pkgTotalSetoran += Math.ceil(b.harga / 330) * qty;
-                  else pkgTotalSetoran += b.harga * qty;
+                } else {
+                  msg += ` - ${qty}x ${key}\n`;
                 }
               }
 
@@ -2280,16 +2359,25 @@
                 let ext = pkg.name.replace(/\./g, "").match(/\d+/);
                 if (ext)
                   txtTarget = `Rp ${parseInt(ext[0]).toLocaleString("id-ID")} /hari`;
-                else txtTarget = `Sesuai Aturan Dasar`;
+                else {
+                  let pMaster = masterPaket.find((p) => p.nama === pkg.name);
+                  if (pMaster && pMaster.harga > 0)
+                    txtTarget = `Rp ${pMaster.harga.toLocaleString("id-ID")} /hari`;
+                }
               }
 
-              msg += `Total Nilai Barang: Rp ${pkgTotalAsli.toLocaleString("id-ID")}\n`;
-              msg += `🎯 Target Setoran: ${txtTarget}\n\n`;
+              if (txtTarget) msg += `🎯 Target Setoran: ${txtTarget}\n\n`;
+              else msg += `\n`;
             } else {
               let ext = pkg.name.replace(/\./g, "").match(/\d+/);
               if (ext)
                 msg += `🎯 Target Setoran: Rp ${parseInt(ext[0]).toLocaleString("id-ID")} /hari\n\n`;
-              else msg += `🎯 Target Setoran: Mengikuti Aturan Dasar Paket\n\n`;
+              else {
+                let pMaster = masterPaket.find((p) => p.nama === pkg.name);
+                if (pMaster && pMaster.harga > 0)
+                  msg += `🎯 Target Setoran: Rp ${pMaster.harga.toLocaleString("id-ID")} /hari\n\n`;
+                else msg += `\n`;
+              }
             }
           });
           msg += `---------------------------\n\n`;
