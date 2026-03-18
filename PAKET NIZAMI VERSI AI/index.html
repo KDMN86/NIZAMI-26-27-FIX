@@ -16,7 +16,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
       /* === GLOBAL SETTINGS === */
@@ -403,6 +402,7 @@
         border-bottom-right-radius: 15px;
       }
 
+      /* === CART UI === */
       .cart-item-row {
         background: #111;
         border: 1px solid #222;
@@ -453,9 +453,6 @@
         text-align: center;
       }
 
-      .catalog-selector {
-        margin-bottom: 15px;
-      }
       .cs-label {
         font-size: 0.75rem;
         color: #aaa;
@@ -463,53 +460,6 @@
         display: block;
         font-weight: bold;
         color: #ffd700;
-      }
-      .cs-select {
-        width: 100%;
-        padding: 12px;
-        background: #222;
-        color: #fff;
-        border: 1px solid #444;
-        border-radius: 8px;
-        font-size: 0.9rem;
-        outline: none;
-        font-family: "Poppins", sans-serif;
-      }
-      .cs-select:focus {
-        border-color: #ffd700;
-      }
-      .cs-options-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        margin-top: 10px;
-        max-height: 200px;
-        overflow-y: auto;
-        padding: 5px;
-      }
-      .cs-option-btn {
-        background: #111;
-        border: 1px solid #333;
-        padding: 10px;
-        border-radius: 8px;
-        color: #ddd;
-        font-size: 0.8rem;
-        cursor: pointer;
-        text-align: left;
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        transition: 0.2s;
-      }
-      .cs-option-btn:hover,
-      .cs-option-btn:active {
-        border-color: #4ade80;
-        background: rgba(74, 222, 128, 0.1);
-      }
-      .cs-opt-price {
-        font-size: 0.7rem;
-        color: #4ade80;
-        font-weight: bold;
       }
       .reg-cart-list {
         background: #000;
@@ -526,11 +476,6 @@
         border-bottom: 1px solid #222;
         padding: 8px 0;
         font-size: 0.85rem;
-      }
-      .rc-del {
-        color: #ff6b6b;
-        cursor: pointer;
-        padding: 5px;
       }
 
       #toast {
@@ -665,20 +610,6 @@
         </div>
         <div class="v-info">
           <h4>Cara Memilih Paket, Daftar & Save Aplikasi</h4>
-          <span><i class="fas fa-clock"></i> Tonton Video</span>
-        </div>
-      </div>
-
-      <div class="video-compact-item" onclick="playVideo('oO25rE0LDA8')">
-        <div class="v-thumb-box">
-          <img
-            src="https://img.youtube.com/vi/oO25rE0LDA8/mqdefault.jpg"
-            class="v-thumb-img"
-          />
-          <div class="v-play-mini"><i class="fas fa-play"></i></div>
-        </div>
-        <div class="v-info">
-          <h4>Penjelasan Menu & Fitur</h4>
           <span><i class="fas fa-clock"></i> Tonton Video</span>
         </div>
       </div>
@@ -867,34 +798,24 @@
                 rows="2"
                 style="margin-bottom: 10px"
               ></textarea>
-              <input
-                type="text"
-                id="regMitra"
-                class="input-dark"
-                placeholder="Nama Mitra (Jika ada/Kosongkan)"
-                style="margin-bottom: 0"
-              />
-            </div>
 
-            <div style="margin-bottom: 20px">
-              <label class="cs-label">2. Pilih Paket Pendaftaran</label>
-              <div class="catalog-selector">
-                <select
-                  id="catSelect"
-                  class="cs-select"
-                  onchange="renderOptions(this.value)"
-                >
-                  <option value="" disabled selected>
-                    -- Sedang Memuat Data... --
-                  </option>
-                </select>
-              </div>
-              <div id="optionsArea" class="cs-options-grid"></div>
+              <label
+                style="
+                  color: #aaa;
+                  font-size: 0.75rem;
+                  margin-bottom: 5px;
+                  display: block;
+                "
+                >Pilih Mitra Pendaftaran:</label
+              >
+              <select id="regMitra" class="input-dark" style="margin-bottom: 0">
+                <option value="-" selected>-- Sedang Memuat Mitra... --</option>
+              </select>
             </div>
 
             <div style="margin-bottom: 20px">
               <label class="cs-label" style="color: #4ade80"
-                >Ringkasan Pilihan:</label
+                >2. Ringkasan Pilihan Paket:</label
               >
               <div id="regCartList" class="reg-cart-list">
                 <div
@@ -942,8 +863,9 @@
           style="
             color: #ffd700;
             margin: 0 0 10px 0;
-            font-size: clamp(1.5rem, 8vw, 2.2rem);
-            word-break: break-word;
+            font-size: 1.8rem;
+            word-wrap: break-word;
+            hyphens: auto;
             line-height: 1.2;
           "
         >
@@ -970,67 +892,44 @@
     <script src="script.js"></script>
 
     <script>
-      let DB_PAKET = [];
       let regCart = [];
-      let PACKAGE_DATA = {};
 
-      async function fetchKatalogPaket() {
+      // MENGAMBIL DATA MITRA LANGSUNG DARI SPREADSHEET
+      async function fetchDaftarMitra() {
         try {
-          const data = await fetchData("getBarang");
+          // Jika Anda sudah membuat endpoint 'getMitra' di Google Apps Script (Backend)
+          const data = await fetchData("getMitra");
+          const select = document.getElementById("regMitra");
+
           if (data && data.length > 0) {
-            PACKAGE_DATA = {};
+            select.innerHTML =
+              '<option value="-">-- Pilih Mitra (Atau Daftar Mandiri) --</option>';
             data.forEach((item) => {
-              if (!item.nama) return;
-              let kat = (item.kategori || "LAINNYA").toUpperCase().trim();
-              if (!PACKAGE_DATA[kat]) PACKAGE_DATA[kat] = [];
-              let isMingguan = kat.includes("MINGGUAN");
-              let isCookies = kat.includes("COOKIES") || kat.includes("KUE");
-              let label = isMingguan
-                ? "/mgg"
-                : isCookies
-                  ? "/hari (per toples)"
-                  : "/hari";
-              let rawPrice =
-                item.nilai_setoran ||
-                item.nilai ||
-                item.harga ||
-                item.harga_jual ||
-                item["Harga jual (HPP)"] ||
-                0;
-              let prc = parseInt(String(rawPrice).replace(/[^0-9]/g, "")) || 0;
-              if (isCookies && prc > 10000) {
-                prc = 1000;
+              // Mengambil nama mitra dari kolom B "Nama Mitra" atau "nama"
+              let namaMitra =
+                item["Nama Mitra"] || item.nama_mitra || item.nama || item.Nama;
+              if (namaMitra) {
+                select.innerHTML += `<option value="${namaMitra}">${namaMitra}</option>`;
               }
-              PACKAGE_DATA[kat].push({
-                name: item.nama,
-                price: prc,
-                label: label,
-              });
             });
-            updateDropdownKategori();
           } else {
-            document.getElementById("catSelect").innerHTML =
-              '<option value="" disabled selected>-- Katalog Kosong --</option>';
+            select.innerHTML =
+              '<option value="-">-- Daftar Mandiri (Tanpa Mitra) --</option>';
           }
         } catch (e) {
-          document.getElementById("catSelect").innerHTML =
-            '<option value="" disabled selected>-- Gagal Memuat Data --</option>';
+          console.log(
+            "Belum ada script getMitra di backend, fallback ke Mandiri",
+          );
+          document.getElementById("regMitra").innerHTML =
+            '<option value="-">-- Daftar Mandiri (Tanpa Mitra) --</option>';
         }
       }
 
-      function updateDropdownKategori() {
-        const select = document.getElementById("catSelect");
-        if (!select) return;
-        select.innerHTML =
-          '<option value="" disabled selected>-- Pilih Kategori Paket --</option>';
-        Object.keys(PACKAGE_DATA).forEach((kat) => {
-          select.innerHTML += `<option value="${kat}">Kategori: ${kat}</option>`;
-        });
-      }
-
       window.onload = async () => {
-        fetchKatalogPaket();
+        // Ambil data mitra ke dalam dropdown saat halaman dibuka
+        fetchDaftarMitra();
 
+        // CEK MAGIC LOGIN / AUTO LOGIN
         const urlParams = new URLSearchParams(window.location.search);
         const magicLogin = urlParams.get("login");
         const forceView = urlParams.get("view");
@@ -1040,7 +939,6 @@
           return;
         }
 
-        // Jika tombol home dipencet (bawa parameter view=katalog), lewati auto-redirect
         if (forceView === "katalog") {
           sessionStorage.setItem("activeTab", "katalog");
         } else {
@@ -1341,10 +1239,12 @@
         document.getElementById("regNama").value = "";
         document.getElementById("regHP").value = "";
         document.getElementById("regAlamat").value = "";
-        document.getElementById("catSelect").value = "";
-        document.getElementById("optionsArea").innerHTML = "";
-        updateRegCartUI();
 
+        // Reset dropdown mitra ke default (Memuat/Mandiri)
+        const selectMitra = document.getElementById("regMitra");
+        if (selectMitra) selectMitra.selectedIndex = 0;
+
+        updateRegCartUI();
         document.getElementById("modalDaftarBaru").classList.add("show");
       }
 
@@ -1352,51 +1252,10 @@
         document.getElementById("modalDaftarBaru").classList.remove("show");
       }
 
-      function renderOptions(cat) {
-        const area = document.getElementById("optionsArea");
-        area.innerHTML = "";
-        const items = PACKAGE_DATA[cat];
-
-        if (items && items.length > 0) {
-          items.forEach((item) => {
-            area.innerHTML += `
-                  <div class="cs-option-btn" onclick="addToRegCart('${item.name}', ${item.price}, '${item.label}')">
-                      <span style="font-weight:bold; color:#fff;">${item.name}</span>
-                      <span class="cs-opt-price">Rp ${item.price.toLocaleString("id-ID")} ${item.label}</span>
-                  </div>`;
-          });
-        } else {
-          area.innerHTML = `<div style="grid-column: span 2; text-align:center; color:#888; font-size:0.8rem; padding:10px;">Belum ada paket di kategori ini.</div>`;
-        }
-      }
-
-      function addToRegCart(name, price, label) {
-        let exist = regCart.find((i) => i.name === name);
-        if (exist) exist.qty++;
-        else regCart.push({ name: name, price: price, label: label, qty: 1 });
-        updateRegCartUI();
-
-        let toast = document.getElementById("toast");
-        if (toast) {
-          document.getElementById("toastMsg").innerText = "Paket ditambahkan!";
-          toast.style.display = "flex";
-          setTimeout(() => (toast.style.opacity = "1"), 10);
-          setTimeout(() => {
-            toast.style.opacity = "0";
-            setTimeout(() => (toast.style.display = "none"), 300);
-          }, 2000);
-        }
-      }
-
-      function removeFromRegCart(idx) {
-        regCart.splice(idx, 1);
-        updateRegCartUI();
-      }
-
       function updateRegCartUI() {
         const list = document.getElementById("regCartList");
         if (regCart.length === 0) {
-          list.innerHTML = `<div style="text-align:center; color:#444; font-size:0.8rem; padding:10px;">Belum ada paket dipilih.</div>`;
+          list.innerHTML = `<div style="text-align:center; color:#444; font-size:0.8rem; padding:10px;">Keranjang kosong.</div>`;
           document.getElementById("regTotal").innerText = "Rp 0";
           return;
         }
@@ -1419,7 +1278,6 @@
                       <div style="font-size:0.7rem; color:#888;">Rp ${item.price.toLocaleString()} ${item.label}</div>
                   </div>
                   <div style="font-weight:bold; color:#ffd700; margin:0 10px;">x${item.qty}</div>
-                  <i class="fas fa-trash rc-del" onclick="removeFromRegCart(${idx})"></i>
               </div>`;
         });
         list.innerHTML = html;
@@ -1431,11 +1289,13 @@
         const n = document.getElementById("regNama").value;
         const h = document.getElementById("regHP").value;
         const a = document.getElementById("regAlamat").value;
-        const m = document.getElementById("regMitra").value || "-";
+
+        let m = document.getElementById("regMitra").value;
+        if (!m || m === "-") m = "Mandiri (Tanpa Mitra)";
 
         if (!n || !h || regCart.length === 0) {
           alert(
-            "Harap lengkapi Identitas dan pastikan ada paket yang dipilih!",
+            "Harap lengkapi Identitas dan pastikan ada paket yang dipilih (dari Katalog)!",
           );
           return;
         }
