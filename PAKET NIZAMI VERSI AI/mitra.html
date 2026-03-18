@@ -1198,7 +1198,7 @@
 
       let masterPaket = [];
       let masterBarang = [];
-      let masterIsiPaket = []; // Array untuk menampung data MASTER_ISI_PAKET jika ada
+      let masterIsiPaket = [];
       let formCountMitra = 0;
 
       let currentEditingRowIdMitra = null;
@@ -1264,7 +1264,6 @@
           }
         }
         try {
-          // Menambahkan fetch opsional untuk MASTER_ISI_PAKET jika ada di backend
           const [resPeserta, resPaket, resBarang, resMitra, resIsi] =
             await Promise.all([
               fetchData("cekStatusDetail", { id: userId }),
@@ -1727,7 +1726,7 @@
         for (let k in batchCart) {
           t += batchCart[k].qty * batchCart[k].harga;
         }
-        let msg = `*LAPORAN SETORAN HARIAN*\nMitra: ${u ? u.nama : "-"}\nTotal Setor: Rp ${t.toLocaleString("id-ID")}\n\nStruk rincian terlampir (Silakan kirim gambar struk secara manual).`;
+        let msg = `*LAPORAN SETORAN HARIAN*\\nMitra: ${u ? u.nama : "-"}\\nTotal Setor: Rp ${t.toLocaleString("id-ID")}\\n\\nStruk rincian terlampir (Silakan kirim gambar struk secara manual).`;
         window.open(
           `https://wa.me/628122261036?text=${encodeURIComponent(msg)}`,
         );
@@ -1885,18 +1884,14 @@
         else if (valLower.includes("cookies") || valLower.includes("kue"))
           mode = "cookies";
 
-        let defaultItems = {};
-        if (mode === "normal") {
-          defaultItems = getPaketItems(pktName);
-        }
-
         const pkgId = "pkg_" + Date.now() + Math.floor(Math.random() * 1000);
 
         rowDataMitra[`row_${rowId}`].packages.push({
           id: pkgId,
           name: pktName,
           mode: mode,
-          items: defaultItems,
+          isRequested: false, // Penanda apakah user sudah menekan tombol Edit Request
+          items: {},
         });
 
         renderPaketList(rowId);
@@ -1985,7 +1980,11 @@
           } else if (pkg.mode === "cookies") {
             btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:10px; margin-bottom:0;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-cookie-bite"></i> Pilih Kue</button>`;
           } else {
-            btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:10px; margin-bottom:0; background:transparent; color:#ffd700; border-color:#ffd700;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-edit"></i> Request Brg (Opsional)</button>`;
+            let btnText =
+              pkg.isRequested && Object.keys(pkg.items).length > 0
+                ? "Edit Request Brg"
+                : "Request Brg (Opsional)";
+            btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:10px; margin-bottom:0; background:transparent; color:#ffd700; border-color:#ffd700;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-edit"></i> ${btnText}</button>`;
           }
 
           html += `
@@ -1993,7 +1992,7 @@
                   <i class="fas fa-trash-alt" onclick="removePaketFromRow(${rowId}, '${pkg.id}')" style="position:absolute; top:15px; right:15px; color:#ff4d4d; cursor:pointer; font-size:1.1rem; padding:5px;"></i>
                   
                   <div style="font-weight:bold; color:#ffd700; font-size:1rem; margin-bottom:10px; padding-right:30px;">
-                      <i class="fas fa-box"></i> ${pkg.name}
+                      <i class="fas fa-box"></i> ${pkg.name} ${pkg.isRequested && Object.keys(pkg.items).length > 0 ? "<span style='font-size:0.7rem; color:#aaa;'>(Request)</span>" : ""}
                   </div>
                   
                   ${rincianHtml}
@@ -2023,6 +2022,12 @@
           (p) => p.id === pkgId,
         );
         const mode = pkg.mode;
+
+        // AUTO LOAD BARANG JIKA PAKET NORMAL DAN BELUM PERNAH DI-REQUEST
+        if (mode === "normal" && !pkg.isRequested) {
+          pkg.items = getPaketItems(pkg.name);
+          pkg.isRequested = true;
+        }
 
         document.getElementById("modalPilihBarang").classList.add("show");
 
@@ -2224,6 +2229,8 @@
               displayPrice = perHari;
             } else {
               total += item.harga * qty;
+              lblTxt = "Total Nilai Barang Request";
+              displayPrice = item.harga;
             }
 
             let subtotal = displayPrice * qty;
@@ -2330,7 +2337,18 @@
           msg += `*📦 PAKET YANG DIAMBIL:*\n\n`;
 
           pkgs.forEach((pkg, pIdx) => {
-            msg += `*${pIdx + 1}. ${pkg.name}*\n`;
+            let displayPkgName = pkg.name;
+
+            // Menambahkan label (Request) jika ada modifikasi
+            if (
+              pkg.mode === "normal" &&
+              pkg.isRequested &&
+              Object.keys(pkg.items).length > 0
+            ) {
+              displayPkgName += " (Request)";
+            }
+
+            msg += `*${pIdx + 1}. ${displayPkgName}*\n`;
 
             if (Object.keys(pkg.items).length > 0) {
               msg += `Rincian Barang:\n`;
