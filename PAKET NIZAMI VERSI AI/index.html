@@ -8,7 +8,6 @@
     />
     <title>Nizami Super App</title>
     <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
-
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Pacifico&display=swap"
       rel="stylesheet"
@@ -212,7 +211,6 @@
         padding-left: 10px;
       }
 
-      /* === VIDEO KOTAK KECIL DI MENU === */
       .video-compact-item {
         display: flex;
         align-items: center;
@@ -268,11 +266,10 @@
         margin-top: 3px;
       }
 
-      /* === VIDEO PLAYER FULLSCREEN (MEMENUHI LAYAR) === */
       .video-modal-overlay {
         position: fixed;
         inset: 0;
-        background: #000; /* Latar hitam pekat ala bioskop */
+        background: #000;
         z-index: 99999;
         display: none;
         flex-direction: column;
@@ -285,7 +282,7 @@
       }
       .video-frame-container {
         width: 100%;
-        height: 85vh; /* Menggunakan 85% dari total tinggi layar HP */
+        height: 85vh;
         max-width: 500px;
         background: #000;
         margin-bottom: 20px;
@@ -327,6 +324,11 @@
         color: #fff;
         border-radius: 8px;
         margin-bottom: 15px;
+        font-family: "Poppins", sans-serif;
+      }
+      .input-dark:focus {
+        border-color: #ffd700;
+        outline: none;
       }
       .btn-gold {
         width: 100%;
@@ -401,7 +403,6 @@
         border-bottom-right-radius: 15px;
       }
 
-      /* === CART UI === */
       .cart-item-row {
         background: #111;
         border: 1px solid #222;
@@ -452,7 +453,86 @@
         text-align: center;
       }
 
-      /* === TOAST === */
+      .catalog-selector {
+        margin-bottom: 15px;
+      }
+      .cs-label {
+        font-size: 0.75rem;
+        color: #aaa;
+        margin-bottom: 5px;
+        display: block;
+        font-weight: bold;
+        color: #ffd700;
+      }
+      .cs-select {
+        width: 100%;
+        padding: 12px;
+        background: #222;
+        color: #fff;
+        border: 1px solid #444;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        outline: none;
+        font-family: "Poppins", sans-serif;
+      }
+      .cs-select:focus {
+        border-color: #ffd700;
+      }
+      .cs-options-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 10px;
+        max-height: 200px;
+        overflow-y: auto;
+        padding: 5px;
+      }
+      .cs-option-btn {
+        background: #111;
+        border: 1px solid #333;
+        padding: 10px;
+        border-radius: 8px;
+        color: #ddd;
+        font-size: 0.8rem;
+        cursor: pointer;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        transition: 0.2s;
+      }
+      .cs-option-btn:hover,
+      .cs-option-btn:active {
+        border-color: #4ade80;
+        background: rgba(74, 222, 128, 0.1);
+      }
+      .cs-opt-price {
+        font-size: 0.7rem;
+        color: #4ade80;
+        font-weight: bold;
+      }
+      .reg-cart-list {
+        background: #000;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px dashed #333;
+        min-height: 50px;
+        margin-bottom: 15px;
+      }
+      .rc-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #222;
+        padding: 8px 0;
+        font-size: 0.85rem;
+      }
+      .rc-del {
+        color: #ff6b6b;
+        cursor: pointer;
+        padding: 5px;
+      }
+
       #toast {
         position: fixed;
         top: 80px;
@@ -470,550 +550,6 @@
         align-items: center;
         gap: 8px;
         transition: opacity 0.3s;
-      }
-
-      /* === PROFILE HEADER === */
-      .profile-header-card {
-        background: linear-gradient(90deg, #111, #0d0d0d);
-        border: 1px solid #333;
-        border-left: 4px solid #ffd700;
-        border-radius: 12px;
-        padding: 15px;
-        margin-bottom: 15px;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-      }
-      .profile-avatar-box {
-        width: 50px;
-        height: 50px;
-        font-size: 1.5rem;
-        margin: 0;
-        border-width: 2px;
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #222;
-        border-radius: 50%;
-      }
-      .profile-info-box {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        flex-grow: 1;
-      }
-      .profile-name {
-        font-size: 1.1rem;
-        margin: 0;
-        line-height: 1.2;
-        text-align: left;
-        text-transform: uppercase;
-        font-weight: bold;
-      }
-      .badge-id {
-        font-size: 0.65rem;
-        color: #888;
-        margin-left: 8px;
-      }
-      .profile-menu-list {
-        background: #151515;
-        border-radius: 12px;
-        border: 1px solid #333;
-        overflow: hidden;
-        margin-bottom: 25px;
-        margin-top: 20px;
-      }
-      .menu-row {
-        padding: 14px;
-        border-bottom: 1px solid #222;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        color: #ddd;
-        cursor: pointer;
-        font-size: 0.85rem;
-      }
-      .btn-logout-fancy {
-        width: 100%;
-        padding: 14px;
-        background: #1a1a1a;
-        color: #ff4d4d;
-        border: 1px solid #ff4d4d;
-        border-radius: 12px;
-        font-weight: bold;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        margin-bottom: 20px;
-      }
-
-      /* === MITRA DASHBOARD === */
-      .mitra-summary-card {
-        background: linear-gradient(145deg, #1a1a1a, #111);
-        border: 1px solid #333;
-        border-radius: 15px;
-        padding: 20px;
-        margin-bottom: 20px;
-      }
-
-      .ms-stats-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-bottom: 20px;
-      }
-      .ms-stat-box {
-        background: #222;
-        border: 1px solid #444;
-        border-radius: 12px;
-        padding: 15px 10px;
-        text-align: center;
-        cursor: pointer;
-        transition: 0.2s;
-      }
-      .ms-stat-box:active {
-        transform: scale(0.95);
-        background: #333;
-      }
-      .ms-num {
-        display: block;
-        font-size: 1.8rem;
-        font-weight: bold;
-        color: #ffd700;
-        line-height: 1.2;
-      }
-      .ms-label {
-        font-size: 0.7rem;
-        color: #aaa;
-        margin-top: 5px;
-        display: block;
-        line-height: 1.2;
-      }
-
-      #paket-detail-wrapper {
-        display: none;
-        background: #0a0a0a;
-        border: 1px solid #4ade80;
-        border-radius: 8px;
-        padding: 10px;
-        margin-bottom: 20px;
-        text-align: left;
-      }
-      .paket-detail-item {
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.8rem;
-        color: #ddd;
-        border-bottom: 1px dashed #333;
-        padding: 5px 0;
-      }
-      .paket-detail-item:last-child {
-        border-bottom: none;
-      }
-      .pdi-name {
-        font-weight: 500;
-        color: #fff;
-      }
-      .pdi-qty {
-        color: #4ade80;
-        font-weight: bold;
-      }
-
-      .ms-actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-      }
-      .btn-ms {
-        padding: 12px;
-        border-radius: 10px;
-        border: none;
-        font-weight: bold;
-        font-size: 0.8rem;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        width: 100%;
-      }
-      .btn-ms.gold {
-        background: #ffd700;
-        color: #000;
-      }
-      .btn-ms.green {
-        background: #4ade80;
-        color: #000;
-      }
-
-      .mitra-card-pro {
-        background: #1a1a1a;
-        border: 1px solid #333;
-        border-left: 4px solid #444;
-        border-radius: 12px;
-        padding: 15px;
-        margin-bottom: 15px;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-      }
-      .mc-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-      }
-      .mc-identity {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        max-width: 70%;
-      }
-      .mc-name {
-        font-size: 1rem;
-        font-weight: bold;
-        color: #fff;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .mc-badge {
-        background: #252525;
-        color: #aaa;
-        font-size: 0.65rem;
-        padding: 3px 8px;
-        border-radius: 4px;
-        border: 1px solid #333;
-        display: inline-block;
-        width: fit-content;
-      }
-      .mc-counter-box {
-        text-align: right;
-      }
-      .mc-big-number {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: #fff;
-        line-height: 1;
-      }
-      .mc-prog-track {
-        height: 6px;
-        background: #2a2a2a;
-        border-radius: 3px;
-        overflow: hidden;
-        margin-bottom: 5px;
-      }
-      .mc-prog-fill {
-        height: 100%;
-        background: #444;
-        border-radius: 3px;
-      }
-      .mc-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-top: 1px dashed #333;
-        padding-top: 10px;
-      }
-
-      .btn-mini-pro {
-        padding: 6px 12px;
-        border-radius: 8px;
-        border: none;
-        font-size: 0.75rem;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        background: #222;
-        color: #4ade80;
-        border: 1px solid #333;
-        font-weight: bold;
-      }
-      .btn-mini-pro:active {
-        background: #4ade80;
-        color: #000;
-      }
-
-      .status-green {
-        border-left-color: #4ade80 !important;
-      }
-      .status-gold {
-        border-left-color: #ffd700 !important;
-      }
-      .status-red {
-        border-left-color: #ff6b6b !important;
-      }
-      .fill-green {
-        background: #4ade80 !important;
-      }
-      .fill-gold {
-        background: #ffd700 !important;
-      }
-      .fill-orange {
-        background: #ffa502 !important;
-      }
-      .text-red {
-        color: #ff6b6b;
-      }
-      .text-gold {
-        color: #ffd700;
-      }
-      .text-green {
-        color: #4ade80;
-      }
-
-      /* === PESERTA DASHBOARD (DOMPET) === */
-      .dash-wallet-card {
-        background: linear-gradient(145deg, #1a1a1a, #111);
-        border: 1px solid #333;
-        border-radius: 20px;
-        padding: 0;
-        margin-bottom: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        overflow: hidden;
-        position: relative;
-      }
-      .wallet-ribbon-inline {
-        background: rgba(255, 215, 0, 0.15);
-        color: #ffd700;
-        font-size: 0.7rem;
-        font-weight: bold;
-        padding: 4px 12px;
-        border-radius: 8px;
-        border: 1px solid rgba(255, 215, 0, 0.3);
-        height: fit-content;
-      }
-      .wallet-main {
-        padding: 20px 20px 15px 20px;
-      }
-      .wallet-label {
-        font-size: 0.75rem;
-        color: #888;
-        margin-bottom: 2px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-      .wallet-balance {
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: #fff;
-        letter-spacing: -0.5px;
-        margin-bottom: 5px;
-      }
-      .wallet-balance span {
-        color: #ffd700;
-      }
-      .status-box {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: #0a0a0a;
-        border: 1px solid #222;
-        border-radius: 10px;
-        padding: 10px 15px;
-        margin-top: 15px;
-      }
-      .sb-left {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-      }
-      .sb-right {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 4px;
-      }
-      .wallet-sub {
-        display: flex;
-        gap: 15px;
-        margin-top: 15px;
-      }
-      .w-stat-item {
-        flex: 1;
-        background: #000;
-        padding: 10px;
-        border-radius: 10px;
-        border: 1px solid #252525;
-      }
-      .w-stat-label {
-        font-size: 0.65rem;
-        color: #aaa;
-        display: block;
-        margin-bottom: 2px;
-      }
-      .w-stat-val {
-        font-size: 0.9rem;
-        font-weight: bold;
-        color: #fff;
-      }
-      .w-stat-val.alert {
-        color: #ff6b6b;
-      }
-      .wallet-prog-container {
-        padding: 0 20px 20px 20px;
-      }
-      .w-prog-track {
-        height: 8px;
-        background: #2a2a2a;
-        border-radius: 4px;
-        overflow: hidden;
-        margin-bottom: 5px;
-      }
-      .w-prog-fill {
-        height: 100%;
-        background: linear-gradient(90deg, #ffd700, #f1c40f);
-        border-radius: 4px;
-        transition: width 1s ease;
-      }
-      .w-prog-text {
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.7rem;
-        color: #666;
-      }
-      .wallet-actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        border-top: 1px solid #333;
-      }
-      .btn-wallet {
-        background: #151515;
-        color: #aaa;
-        border: none;
-        padding: 15px;
-        font-size: 0.85rem;
-        cursor: pointer;
-        transition: 0.2s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-      }
-
-      /* === MODAL BATCH (SETORAN MASAL) === */
-      .batch-header-grid {
-        display: grid;
-        grid-template-columns: 1fr 45px 60px 80px;
-        gap: 8px;
-        padding: 0 10px 10px 10px;
-        font-size: 0.65rem;
-        color: #aaa;
-        font-weight: bold;
-        border-bottom: 1px solid #333;
-      }
-      .batch-row {
-        display: grid;
-        grid-template-columns: 1fr 45px 60px 80px;
-        gap: 8px;
-        padding: 12px 10px;
-        border-bottom: 1px solid #222;
-        align-items: center;
-      }
-      .batch-info h4 {
-        margin: 0;
-        font-size: 0.8rem;
-        color: #fff;
-        line-height: 1.2;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .batch-info span {
-        font-size: 0.65rem;
-        color: #888;
-        display: block;
-        margin-top: 2px;
-      }
-      .batch-info .price-tag {
-        color: #4ade80;
-        font-family: monospace;
-      }
-      .batch-input-box {
-        background: #000;
-        border: 1px solid #444;
-        color: #fff;
-        padding: 6px;
-        border-radius: 6px;
-        text-align: center;
-        font-weight: bold;
-        font-size: 0.9rem;
-        width: 100%;
-        transition: 0.2s;
-      }
-      .batch-input-box:focus {
-        border-color: #ffd700;
-        outline: none;
-      }
-      .batch-subtotal {
-        text-align: right;
-        font-size: 0.75rem;
-        color: #ffd700;
-        font-weight: bold;
-      }
-      .batch-prev {
-        text-align: center;
-        background: #222;
-        border-radius: 4px;
-        color: #888;
-        font-size: 0.7rem;
-        padding: 3px 0;
-      }
-      .calc-footer {
-        background: #111;
-        padding: 15px;
-        border-top: 1px solid #333;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom-left-radius: 15px;
-        border-bottom-right-radius: 15px;
-      }
-
-      #preview-img-container {
-        text-align: center;
-        background: #111;
-        padding: 10px;
-        border-radius: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #333;
-      }
-      #preview-img-container img {
-        max-width: 100%;
-        max-height: 45vh;
-        object-fit: contain;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      }
-      #struk-area {
-        position: absolute;
-        top: 0;
-        left: -9999px;
-        width: 360px;
-        background: #fff;
-        color: #000;
-        padding: 20px;
-        font-family: "Courier New", Courier, monospace;
-      }
-
-      .akad-btn-alert {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #8b0000 0%, #c0392b 100%);
-        color: #fff !important;
-        padding: 15px;
-        border-radius: 12px;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 0.9rem;
-        box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
-        border: 1px solid #ff6b6b;
-        animation: pulse-glow 2s infinite;
       }
 
       .welcome-modal {
@@ -1132,6 +668,20 @@
           <span><i class="fas fa-clock"></i> Tonton Video</span>
         </div>
       </div>
+
+      <div class="video-compact-item" onclick="playVideo('oO25rE0LDA8')">
+        <div class="v-thumb-box">
+          <img
+            src="https://img.youtube.com/vi/oO25rE0LDA8/mqdefault.jpg"
+            class="v-thumb-img"
+          />
+          <div class="v-play-mini"><i class="fas fa-play"></i></div>
+        </div>
+        <div class="v-info">
+          <h4>Penjelasan Menu & Fitur</h4>
+          <span><i class="fas fa-clock"></i> Tonton Video</span>
+        </div>
+      </div>
     </div>
 
     <div id="view-akun" class="tab-content">
@@ -1158,192 +708,6 @@
         />
         <button onclick="prosesLogin()" class="btn-gold">
           <i class="fas fa-sign-in-alt"></i> MASUK
-        </button>
-
-        <div
-          style="
-            margin-top: 30px;
-            border-top: 1px dashed #333;
-            padding-top: 20px;
-          "
-        >
-          <div
-            style="
-              text-align: center;
-              color: #fff;
-              font-weight: bold;
-              margin-bottom: 15px;
-            "
-          >
-            Belum punya akun?
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px">
-            <div
-              onclick="bukaDaftarPesertaViaCart()"
-              style="
-                background: #222;
-                padding: 20px 10px;
-                border-radius: 12px;
-                border: 1px solid #444;
-                cursor: pointer;
-                text-align: center;
-              "
-            >
-              <i
-                class="fas fa-user-plus"
-                style="color: #4ade80; font-size: 2rem; margin-bottom: 10px"
-              ></i>
-              <div style="font-size: 0.85rem; font-weight: bold; color: #fff">
-                Daftar Peserta
-              </div>
-            </div>
-            <div
-              onclick="openModalMitra()"
-              style="
-                background: #222;
-                padding: 20px 10px;
-                border-radius: 12px;
-                border: 1px solid #444;
-                cursor: pointer;
-                text-align: center;
-              "
-            >
-              <i
-                class="fas fa-handshake"
-                style="color: #ffd700; font-size: 2rem; margin-bottom: 10px"
-              ></i>
-              <div style="font-size: 0.85rem; font-weight: bold; color: #fff">
-                Daftar Mitra
-              </div>
-            </div>
-          </div>
-          <a href="akad.html" class="akad-btn-alert" style="margin-top: 20px"
-            ><i class="fas fa-exclamation-circle"></i> BACA AKAD & PERJANJIAN</a
-          >
-        </div>
-      </div>
-
-      <div id="user-profile" style="display: none">
-        <div class="profile-header-card">
-          <div class="profile-avatar-box">
-            <i class="fas fa-user-circle"></i>
-          </div>
-          <div class="profile-info-box">
-            <h2 class="profile-name" id="prof-nama">Memuat...</h2>
-            <div class="profile-badges">
-              <span
-                class="badge-role"
-                id="prof-role"
-                style="
-                  background: #222;
-                  padding: 2px 8px;
-                  font-size: 0.7rem;
-                  border-radius: 4px;
-                "
-                >...</span
-              ><span class="badge-id" id="prof-id">ID: ...</span>
-            </div>
-          </div>
-        </div>
-
-        <div id="dashboard-area">
-          <div id="state-peserta-dash" style="display: none">
-            <div id="peserta-container"></div>
-          </div>
-
-          <div id="state-mitra-dash" style="display: none">
-            <div class="mitra-summary-card">
-              <div class="ms-stats-grid">
-                <div class="ms-stat-box" onclick="togglePesertaList()">
-                  <span class="ms-num" id="mitra-total-peserta">0</span>
-                  <span class="ms-label"
-                    >Total Peserta <br /><i
-                      class="fas fa-chevron-down"
-                      style="margin-top: 5px"
-                    ></i
-                  ></span>
-                </div>
-                <div class="ms-stat-box" onclick="togglePaketDetail()">
-                  <span
-                    class="ms-num"
-                    id="mitra-total-paket"
-                    style="color: #4ade80"
-                    >0</span
-                  >
-                  <span class="ms-label"
-                    >Total Paket<br /><i
-                      class="fas fa-box"
-                      style="margin-top: 5px"
-                    ></i>
-                    Cek Detail</span
-                  >
-                </div>
-              </div>
-
-              <div id="paket-detail-wrapper">
-                <div
-                  style="
-                    font-size: 0.8rem;
-                    color: #ffd700;
-                    margin-bottom: 8px;
-                    font-weight: bold;
-                  "
-                >
-                  <i class="fas fa-clipboard-list"></i> Rincian Paket Peserta:
-                </div>
-                <div id="paket-detail-list"></div>
-              </div>
-
-              <div class="ms-actions">
-                <button onclick="bukaModalBatch()" class="btn-ms gold">
-                  <i class="fas fa-file-invoice-dollar"></i> Setoran Masal
-                </button>
-                <button
-                  onclick="openModalTambahPesertaMitra()"
-                  class="btn-ms green"
-                >
-                  <i class="fas fa-user-plus"></i> Tambah Peserta
-                </button>
-              </div>
-            </div>
-
-            <div id="mitra-peserta-wrapper">
-              <h3
-                style="
-                  color: #ffd700;
-                  border-bottom: 1px solid #333;
-                  padding-bottom: 10px;
-                  font-size: 1.1rem;
-                  margin-top: 0;
-                "
-              >
-                Daftar Peserta Saya
-              </h3>
-              <input
-                type="text"
-                id="cariAnakBuah"
-                placeholder="Cari nama peserta..."
-                class="input-dark"
-                onkeyup="filterMitra()"
-              />
-              <div id="mitra-container" class="mitra-panel"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="profile-menu-list">
-          <div
-            class="menu-row"
-            onclick="window.open('https://wa.me/628122261036', '_blank')"
-          >
-            <div class="menu-left">
-              <i class="fas fa-headset"></i> Bantuan Admin
-            </div>
-            <i class="fas fa-chevron-right" style="font-size: 0.8rem"></i>
-          </div>
-        </div>
-        <button onclick="prosesLogout()" class="btn-logout-fancy">
-          <i class="fas fa-power-off"></i> KELUAR / LOGOUT
         </button>
       </div>
     </div>
@@ -1387,7 +751,7 @@
         ></div>
         <div class="modal-footer-fixed">
           <button
-            onclick="checkoutGlobalCart()"
+            onclick="checkoutAtauDaftar()"
             class="btn-gold"
             style="font-size: 1rem; width: 100%"
           >
@@ -1398,19 +762,39 @@
       </div>
     </div>
 
-    <div id="modalDaftar" class="modal-overlay">
-      <div class="modal-card" style="padding: 0; overflow: hidden">
-        <div class="modal-header-fixed">
-          <h3 style="margin: 0; color: #4ade80">Formulir Pendaftaran</h3>
+    <div id="modalDaftarBaru" class="modal-overlay">
+      <div
+        class="modal-card"
+        style="padding: 0; overflow: hidden; max-height: 95vh"
+      >
+        <div
+          style="
+            padding: 15px 20px;
+            border-bottom: 1px solid #333;
+            background: #111;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <h3 style="margin: 0; color: #4ade80; font-size: 1.1rem">
+            <i class="fas fa-user-plus"></i> Daftar Peserta Baru
+          </h3>
           <button
-            class="close-x"
-            style="top: 18px"
-            onclick="closeModalDaftar()"
+            style="
+              background: none;
+              border: none;
+              color: #aaa;
+              font-size: 1.5rem;
+              cursor: pointer;
+            "
+            onclick="tutupModalDaftarBaru()"
           >
             &times;
           </button>
         </div>
-        <div class="modal-body-scroll">
+
+        <div style="padding: 20px; overflow-y: auto; max-height: 75vh">
           <div
             style="
               background: rgba(40, 167, 69, 0.1);
@@ -1426,7 +810,13 @@
             <input
               type="checkbox"
               id="checkAkad"
-              onchange="toggleFormPendaftaran(this)"
+              onchange="
+                document.getElementById('formPendaftaranDiri').style.opacity =
+                  this.checked ? '1' : '0.3';
+                document.getElementById(
+                  'formPendaftaranDiri',
+                ).style.pointerEvents = this.checked ? 'auto' : 'none';
+              "
               style="transform: scale(1.5)"
             />
             <label
@@ -1443,276 +833,103 @@
               >.</label
             >
           </div>
-          <form
-            id="formPendaftaran"
-            style="opacity: 0.3; pointer-events: none"
-            onsubmit="submitDaftarWA(event)"
-          >
-            <input
-              type="text"
-              id="regNama"
-              class="input-dark"
-              placeholder="Nama Lengkap"
-              required
-            />
-            <input
-              type="tel"
-              id="regHP"
-              class="input-dark"
-              placeholder="No. WhatsApp"
-              required
-            />
-            <textarea
-              id="regAlamat"
-              class="input-dark"
-              placeholder="Alamat Lengkap"
-              rows="2"
-              required
-            ></textarea>
-            <label
-              style="
-                color: #aaa;
-                font-size: 0.8rem;
-                display: block;
-                margin-bottom: 5px;
-              "
-              >Paket yang Didaftarkan:</label
-            >
 
-            <div id="regCartSummary" style="margin-bottom: 15px"></div>
-
-            <input
-              type="text"
-              id="regMitra"
-              class="input-dark"
-              placeholder="Nama Mitra (Jika ada/Kosongkan)"
-            />
-            <button
-              type="submit"
-              class="btn-gold"
-              style="background: #4ade80; margin-top: 10px; width: 100%"
-            >
-              <i class="fas fa-paper-plane"></i> Kirim Pendaftaran
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <div id="modalMitraReg" class="modal-overlay">
-      <div class="modal-card">
-        <button class="close-x" onclick="closeModalMitra()">&times;</button>
-        <h2 style="color: #ffd700; text-align: center; margin-bottom: 15px">
-          Daftar Jadi Mitra
-        </h2>
-        <div
-          style="
-            background: rgba(0, 123, 255, 0.1);
-            border: 1px solid #007bff;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-          "
-        >
-          <h4 style="margin: 0 0 10px 0; color: #4ade80; font-size: 0.95rem">
-            Syarat Mitra:
-          </h4>
-          <ul
-            style="
-              margin: 0;
-              padding-left: 20px;
-              color: #ddd;
-              font-size: 0.85rem;
-            "
-          >
-            <li>Jujur & Amanah.</li>
-            <li>Target min. 10 Peserta.</li>
-          </ul>
           <div
-            style="
-              margin-top: 10px;
-              border-top: 1px solid #444;
-              padding-top: 10px;
-              display: flex;
-              gap: 10px;
-            "
+            id="formPendaftaranDiri"
+            style="opacity: 0.3; pointer-events: none"
           >
-            <input
-              type="checkbox"
-              id="checkSyaratMitra"
-              onchange="toggleFormMitra(this)"
-              style="transform: scale(1.3)"
-            />
-            <label for="checkSyaratMitra" style="font-size: 0.85rem"
-              >Saya setuju.</label
-            >
-          </div>
-        </div>
-        <form
-          id="formMitra"
-          style="opacity: 0.3; pointer-events: none"
-          onsubmit="submitMitraWA(event)"
-        >
-          <input
-            type="text"
-            id="mitraNama"
-            class="input-dark"
-            placeholder="Nama Lengkap"
-            required
-          />
-          <input
-            type="tel"
-            id="mitraHP"
-            class="input-dark"
-            placeholder="No. WhatsApp"
-            required
-          />
-          <textarea
-            id="mitraAlamat"
-            class="input-dark"
-            placeholder="Alamat Lengkap"
-            rows="2"
-            required
-          ></textarea>
-          <button type="submit" class="btn-gold" style="width: 100%">
-            Ajukan via WA
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <div id="modalBatchInput" class="modal-overlay">
-      <div
-        class="modal-card"
-        style="max-width: 600px; padding: 0; overflow: hidden"
-      >
-        <div
-          style="
-            padding: 15px 20px;
-            background: #111;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #333;
-          "
-        >
-          <h3 style="color: #ffd700; margin: 0">Input Setoran Masal</h3>
-          <button
-            class="close-x"
-            style="position: static"
-            onclick="tutupModalBatch()"
-          >
-            &times;
-          </button>
-        </div>
-        <div class="batch-header-grid">
-          <div>PESERTA / PAKET</div>
-          <div style="text-align: center">KE-</div>
-          <div style="text-align: center">JML</div>
-          <div style="text-align: right">SUBTOTAL</div>
-        </div>
-        <div
-          id="batch-list"
-          class="modal-body-scroll"
-          style="padding: 0 10px; background: #050505"
-        ></div>
-        <div class="calc-footer">
-          <div>
-            <div style="font-size: 0.7rem; color: #aaa">Total Setor Uang</div>
             <div
-              class="total-value"
-              id="batchGrandTotal"
-              style="font-size: 1.2rem; color: #4ade80; font-weight: bold"
+              style="
+                margin-bottom: 20px;
+                border-bottom: 1px dashed #333;
+                padding-bottom: 15px;
+              "
             >
-              Rp 0
+              <label class="cs-label">1. Data Diri Anda</label>
+              <input
+                type="text"
+                id="regNama"
+                class="input-dark"
+                placeholder="Nama Lengkap"
+                style="margin-bottom: 10px"
+              />
+              <input
+                type="tel"
+                id="regHP"
+                class="input-dark"
+                placeholder="Nomor WhatsApp"
+                style="margin-bottom: 10px"
+              />
+              <textarea
+                id="regAlamat"
+                class="input-dark"
+                placeholder="Alamat Lengkap"
+                rows="2"
+                style="margin-bottom: 10px"
+              ></textarea>
+              <input
+                type="text"
+                id="regMitra"
+                class="input-dark"
+                placeholder="Nama Mitra (Jika ada/Kosongkan)"
+                style="margin-bottom: 0"
+              />
             </div>
+
+            <div style="margin-bottom: 20px">
+              <label class="cs-label">2. Pilih Paket Pendaftaran</label>
+              <div class="catalog-selector">
+                <select
+                  id="catSelect"
+                  class="cs-select"
+                  onchange="renderOptions(this.value)"
+                >
+                  <option value="" disabled selected>
+                    -- Sedang Memuat Data... --
+                  </option>
+                </select>
+              </div>
+              <div id="optionsArea" class="cs-options-grid"></div>
+            </div>
+
+            <div style="margin-bottom: 20px">
+              <label class="cs-label" style="color: #4ade80"
+                >Ringkasan Pilihan:</label
+              >
+              <div id="regCartList" class="reg-cart-list">
+                <div
+                  style="
+                    text-align: center;
+                    color: #444;
+                    font-size: 0.8rem;
+                    padding: 10px;
+                  "
+                >
+                  Keranjang kosong.
+                </div>
+              </div>
+              <div style="text-align: right; font-weight: bold; color: #fff">
+                Total Setoran Awal:
+                <span id="regTotal" style="color: #ffd700">Rp 0</span>
+              </div>
+            </div>
+
+            <button
+              onclick="submitDaftarPesertaWA()"
+              class="btn-gold"
+              style="
+                width: 100%;
+                background: #4ade80;
+                color: #000;
+                justify-content: center;
+                padding: 15px;
+              "
+            >
+              <i class="fab fa-whatsapp" style="font-size: 1.2rem"></i> Kirim
+              Pendaftaran via WA
+            </button>
           </div>
-          <button
-            onclick="prosesBatchKeGambar()"
-            class="btn-gold"
-            style="width: auto; padding: 8px 20px"
-          >
-            <i class="fas fa-camera"></i> BUAT STRUK
-          </button>
         </div>
-      </div>
-    </div>
-
-    <div id="modalPreviewImg" class="modal-overlay">
-      <div class="modal-card">
-        <button class="close-x" onclick="tutupPreviewImg()">&times;</button>
-        <h3 style="text-align: center; color: #4ade80; margin-top: 0">
-          Struk Berhasil Dibuat!
-        </h3>
-        <p
-          style="
-            text-align: center;
-            color: #888;
-            font-size: 0.75rem;
-            margin-bottom: 15px;
-          "
-        >
-          Simpan struk ini sebagai bukti riwayat setoran.
-        </p>
-        <div id="preview-img-container"></div>
-        <div style="display: flex; gap: 10px">
-          <button
-            onclick="downloadStruk()"
-            class="btn-gold"
-            style="flex: 1; background: #333; color: #fff"
-          >
-            <i class="fas fa-download"></i> Unduh
-          </button>
-          <button onclick="kirimWaBatch()" class="btn-gold" style="flex: 2">
-            <i class="fab fa-whatsapp"></i> Kirim ke Admin
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div id="struk-area">
-      <div
-        style="
-          text-align: center;
-          border-bottom: 2px dashed #000;
-          padding-bottom: 10px;
-          margin-bottom: 10px;
-        "
-      >
-        <h2 style="margin: 0; letter-spacing: 1px">PAKET NIZAMI</h2>
-        <div style="font-size: 10px; color: #444">Riwayat Setoran Mitra</div>
-        <div id="struk-date" style="font-size: 11px; margin-top: 5px"></div>
-        <div
-          id="struk-mitra"
-          style="font-size: 13px; font-weight: bold; margin-top: 8px"
-        ></div>
-      </div>
-      <div id="struk-items"></div>
-      <div
-        style="
-          border-top: 2px dashed #000;
-          padding-top: 10px;
-          margin-top: 10px;
-          font-weight: bold;
-          display: flex;
-          justify-content: space-between;
-          font-size: 14px;
-        "
-      >
-        <span>TOTAL SETOR:</span><span id="struk-total-val">Rp 0</span>
-      </div>
-      <div
-        style="
-          text-align: center;
-          font-size: 9px;
-          color: #666;
-          margin-top: 15px;
-          border-top: 1px solid #eee;
-          padding-top: 10px;
-        "
-      >
-        Terima kasih atas kepercayaannya.<br />Harap simpan struk ini sebagai
-        bukti.
       </div>
     </div>
 
@@ -1721,7 +938,15 @@
         <div style="font-size: 3.5rem; color: #ffd700; margin-bottom: 15px">
           <i class="fas fa-kaaba"></i>
         </div>
-        <h2 style="color: #ffd700; margin: 0 0 10px 0; font-size: 2rem">
+        <h2
+          style="
+            color: #ffd700;
+            margin: 0 0 10px 0;
+            font-size: clamp(1.5rem, 8vw, 2.2rem);
+            word-break: break-word;
+            line-height: 1.2;
+          "
+        >
           Assalamu'alaikum
         </h2>
         <p style="color: #ddd; font-size: 0.95rem; margin-bottom: 25px">
@@ -1730,7 +955,12 @@
         <button
           onclick="closeWelcome()"
           class="btn-gold"
-          style="font-size: 1.1rem; padding: 15px"
+          style="
+            font-size: 1.1rem;
+            padding: 15px;
+            width: 100%;
+            justify-content: center;
+          "
         >
           BUKA APLIKASI <i class="fas fa-arrow-right"></i>
         </button>
@@ -1741,11 +971,92 @@
 
     <script>
       let DB_PAKET = [];
-      let cachedDashboardData = null;
-      let batchTotalUang = 0;
-      let base64StrukImg = "";
+      let regCart = [];
+      let PACKAGE_DATA = {};
 
-      window.onload = () => {
+      async function fetchKatalogPaket() {
+        try {
+          const data = await fetchData("getBarang");
+          if (data && data.length > 0) {
+            PACKAGE_DATA = {};
+            data.forEach((item) => {
+              if (!item.nama) return;
+              let kat = (item.kategori || "LAINNYA").toUpperCase().trim();
+              if (!PACKAGE_DATA[kat]) PACKAGE_DATA[kat] = [];
+              let isMingguan = kat.includes("MINGGUAN");
+              let isCookies = kat.includes("COOKIES") || kat.includes("KUE");
+              let label = isMingguan
+                ? "/mgg"
+                : isCookies
+                  ? "/hari (per toples)"
+                  : "/hari";
+              let rawPrice =
+                item.nilai_setoran ||
+                item.nilai ||
+                item.harga ||
+                item.harga_jual ||
+                item["Harga jual (HPP)"] ||
+                0;
+              let prc = parseInt(String(rawPrice).replace(/[^0-9]/g, "")) || 0;
+              if (isCookies && prc > 10000) {
+                prc = 1000;
+              }
+              PACKAGE_DATA[kat].push({
+                name: item.nama,
+                price: prc,
+                label: label,
+              });
+            });
+            updateDropdownKategori();
+          } else {
+            document.getElementById("catSelect").innerHTML =
+              '<option value="" disabled selected>-- Katalog Kosong --</option>';
+          }
+        } catch (e) {
+          document.getElementById("catSelect").innerHTML =
+            '<option value="" disabled selected>-- Gagal Memuat Data --</option>';
+        }
+      }
+
+      function updateDropdownKategori() {
+        const select = document.getElementById("catSelect");
+        if (!select) return;
+        select.innerHTML =
+          '<option value="" disabled selected>-- Pilih Kategori Paket --</option>';
+        Object.keys(PACKAGE_DATA).forEach((kat) => {
+          select.innerHTML += `<option value="${kat}">Kategori: ${kat}</option>`;
+        });
+      }
+
+      window.onload = async () => {
+        fetchKatalogPaket();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const magicLogin = urlParams.get("login");
+        const forceView = urlParams.get("view");
+
+        if (magicLogin) {
+          await prosesMagicLogin(magicLogin);
+          return;
+        }
+
+        // Jika tombol home dipencet (bawa parameter view=katalog), lewati auto-redirect
+        if (forceView === "katalog") {
+          sessionStorage.setItem("activeTab", "katalog");
+        } else {
+          const userStr = localStorage.getItem("nizami_user");
+          if (userStr) {
+            const user = JSON.parse(userStr);
+            if (user.type === "MITRA") {
+              window.location.href = "mitra.html";
+              return;
+            } else {
+              window.location.href = `kartu-digital.html?id=${user.id}`;
+              return;
+            }
+          }
+        }
+
         if (!sessionStorage.getItem("sudah_menyapa")) {
           document.getElementById("welcomeScreen").style.display = "flex";
         }
@@ -1759,15 +1070,38 @@
             openGlobalCart();
           }, 500);
         }
-
-        if (sessionStorage.getItem("autoOpenReg") === "true") {
-          sessionStorage.removeItem("autoOpenReg");
-          setTimeout(() => {
-            if (!localStorage.getItem("nizami_user")) openModalDaftar();
-            else openGlobalCart();
-          }, 500);
-        }
       };
+
+      async function prosesMagicLogin(id) {
+        try {
+          const data = await fetchData("cekStatusDetail", { id: id });
+          if (data && !data.error) {
+            let fixNama = data.nama || "Member";
+            if (!data.nama && data.data && data.data.length > 0)
+              fixNama = data.data[0].nama;
+            const userType = data.type || (data.data ? "MITRA" : "PESERTA");
+            const userData = {
+              id: id,
+              type: userType,
+              nama: fixNama,
+              paket: userType === "PESERTA" ? data.paket : "MITRA",
+            };
+            localStorage.setItem("nizami_user", JSON.stringify(userData));
+            window.history.replaceState({}, document.title, "index.html");
+
+            if (userType === "MITRA") {
+              window.location.href = "mitra.html";
+            } else {
+              window.location.href = `kartu-digital.html?id=${id}`;
+            }
+          } else {
+            alert("Link tidak valid.");
+            window.location.href = "index.html";
+          }
+        } catch (e) {
+          window.location.href = "index.html";
+        }
+      }
 
       function closeWelcome() {
         sessionStorage.setItem("sudah_menyapa", "true");
@@ -1797,30 +1131,17 @@
         }
       }
 
-      // === LOGIKA LOGIN & REDIRECT CERDAS ===
       function checkLoginStatus() {
         const userStr = localStorage.getItem("nizami_user");
-        if (!userStr) {
-          document.getElementById("login-form").style.display = "block";
-          document.getElementById("user-profile").style.display = "none";
-        } else {
+        if (userStr) {
           const user = JSON.parse(userStr);
-          // Jika yang login adalah MITRA, langsung lempar ke halaman Portal Mitra
           if (user.type === "MITRA") {
             window.location.href = "mitra.html";
-            return;
+          } else {
+            window.location.href = `kartu-digital.html?id=${user.id}`;
           }
-
-          // Jika Peserta biasa, jalankan dashboard peserta
-          document.getElementById("login-form").style.display = "none";
-          document.getElementById("user-profile").style.display = "block";
-          document.getElementById("prof-nama").innerText = user.nama;
-          document.getElementById("prof-id").innerText = user.id;
-          document.getElementById("prof-role").innerText = user.type;
-
-          document.getElementById("state-peserta-dash").style.display = "block";
-          document.getElementById("state-mitra-dash").style.display = "none";
-          loadPesertaDashboard(user.id);
+        } else {
+          document.getElementById("login-form").style.display = "block";
         }
       }
 
@@ -1853,285 +1174,17 @@
             };
             localStorage.setItem("nizami_user", JSON.stringify(userData));
 
-            // Redirect otomatis sesuai peran
             if (userType === "MITRA") {
               window.location.href = "mitra.html";
             } else {
-              sessionStorage.setItem("activeTab", "akun");
-              location.reload();
+              window.location.href = `kartu-digital.html?id=${id}`;
             }
           }
         });
       }
 
-      function prosesLogout() {
-        if (confirm("Yakin ingin keluar dari akun?")) {
-          const u = JSON.parse(localStorage.getItem("nizami_user"));
-          if (u) sessionStorage.removeItem("dash_data_" + u.id);
-          localStorage.removeItem("nizami_user");
-          sessionStorage.removeItem("activeTab");
-          window.location.reload();
-        }
-      }
-
-      function getTabunganBersih(paketName, done) {
-        let name = String(paketName).toLowerCase();
-        if (!name.includes("uang")) return null;
-        let netPerHari = 0;
-        let cleanName = name.replace(/\./g, "");
-        if (cleanName.includes("5000")) netPerHari = 4700;
-        else if (cleanName.includes("10000")) netPerHari = 9600;
-        else if (cleanName.includes("15000")) netPerHari = 14500;
-        else if (cleanName.includes("20000")) netPerHari = 19400;
-        else if (cleanName.includes("25000")) netPerHari = 24250;
-        else if (cleanName.includes("30000")) netPerHari = 29250;
-        if (netPerHari > 0) return netPerHari * done;
-        return null;
-      }
-
-      function getSetoranStatus(paketName, done, target) {
-        let isMingguan = paketName.toLowerCase().includes("mingguan");
-        let startDate = new Date(2026, 3, 1);
-        startDate.setHours(0, 0, 0, 0);
-        let today = new Date();
-        today.setHours(0, 0, 0, 0);
-        let expected = 0;
-        if (today >= startDate) {
-          let diffTime = today.getTime() - startDate.getTime();
-          let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-          expected = isMingguan ? Math.floor(diffDays / 7) + 1 : diffDays + 1;
-        }
-        if (expected > target) expected = target;
-        let selisih = done - expected;
-        return { expected, selisih };
-      }
-
-      function bukaKalenderIndividu(id, n, p, j) {
-        window.location.href = `kalender.html?id=${id}&nama=${n}&paket=${p}&jumlah=${j}`;
-      }
-
-      // LOAD DATA DASHBOARD PESERTA
-      async function loadPesertaDashboard(id) {
-        const container = document.getElementById("peserta-container");
-        container.innerHTML =
-          '<div style="text-align:center; padding:20px; color:#888;"><i class="fas fa-spinner fa-spin"></i> Memuat data...</div>';
-        const data = await fetchData("cekStatusDetail", { id: id });
-        if (data && !data.error) {
-          let rawList =
-            data.data && Array.isArray(data.data) ? data.data : [data];
-          const mappedData = rawList.map((item) => ({
-            idPeserta: item.id,
-            nama: item.nama,
-            jenisPaket: item.paket,
-            nilaiSetoran: item.saldo,
-            setoranDilakukan: item.tercapai,
-            totalSetoran: item.target,
-            sisaSetoran: item.sisa_angsuran,
-          }));
-          renderPesertaCards(mappedData, container);
-        } else {
-          container.innerHTML =
-            '<div style="text-align:center; padding:20px; color:#888;">Data tidak ditemukan.</div>';
-        }
-      }
-
-      function renderPesertaCards(dataList, container) {
-        let html = "";
-        dataList.forEach((p) => {
-          let done = parseInt(p.setoranDilakukan) || 0;
-          let target = parseInt(p.totalSetoran) || 330;
-          let sisa = parseInt(p.sisaSetoran);
-          if (isNaN(sisa)) sisa = target - done;
-          let percent =
-            target > 0 ? Math.min(100, (done / target) * 100).toFixed(0) : 0;
-          let totalUang = parseInt(p.nilaiSetoran) || 0;
-          let progColor = percent > 80 ? "#4ade80" : "#ffd700";
-          let stat = getSetoranStatus(p.jenisPaket, done, target);
-          let statusText = "",
-            statusColor = "",
-            statusIcon = "";
-          if (stat.expected === 0) {
-            statusText = "Belum Mulai";
-            statusColor = "#aaa";
-            statusIcon = "fa-clock";
-          } else if (stat.selisih < 0) {
-            statusText = "Telat " + Math.abs(stat.selisih) + "x Setor";
-            statusColor = "#ff4d4d";
-            statusIcon = "fa-exclamation-triangle";
-          } else if (stat.selisih > 0) {
-            statusText = "Lebih " + stat.selisih + "x Setor";
-            statusColor = "#4ade80";
-            statusIcon = "fa-arrow-up";
-          } else {
-            statusText = "Sesuai Target";
-            statusColor = "#ffd700";
-            statusIcon = "fa-check-circle";
-          }
-          let tabunganBersih = getTabunganBersih(p.jenisPaket, done);
-          let tabunganHtml = "";
-          if (tabunganBersih !== null && done > 0) {
-            tabunganHtml = `<div style="margin-top:10px; text-align:right; background:rgba(74, 222, 128, 0.1); padding:6px 10px; border-radius:8px; border:1px solid rgba(74, 222, 128, 0.3);"><div style="font-size:0.65rem; color:#4ade80; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:2px;"><i class="fas fa-piggy-bank"></i> Tabungan Bersih</div><div style="font-size:1.1rem; font-weight:bold; color:#4ade80; line-height:1;">Rp ${tabunganBersih.toLocaleString("id-ID")}</div></div>`;
-          }
-          html += `<div class="dash-wallet-card"><div class="wallet-main"><div style="display:flex; justify-content:space-between; align-items:flex-start;"><div><div class="wallet-label"><i class="fas fa-money-bill-wave"></i> Nilai Setor</div><div class="wallet-balance"><span>Rp</span> ${totalUang.toLocaleString("id-ID")}</div></div><div style="display:flex; flex-direction:column; align-items:flex-end;"><div class="wallet-ribbon-inline">${p.jenisPaket}</div>${tabunganHtml}</div></div><div class="status-box"><div class="sb-left"><span style="font-size:0.65rem; color:#888;">Status Hari Ini</span><span style="font-size:0.85rem; font-weight:bold; color:${statusColor};"><i class="fas ${statusIcon}"></i> ${statusText}</span></div><div class="sb-right"><span style="font-size:0.65rem; color:#888;">Target Tgl Ini</span><span style="font-size:0.85rem; font-weight:bold; color:#fff;">${stat.expected}x Setor</span></div></div><div class="wallet-sub"><div class="w-stat-item"><span class="w-stat-label">Sudah Masuk</span><div class="w-stat-val">${done} <span style="font-size:0.7rem;">x Setor</span></div></div><div class="w-stat-item"><span class="w-stat-label">Kekurangan</span><div class="w-stat-val alert">${sisa} <span style="font-size:0.7rem;">x Lagi</span></div></div></div></div><div class="wallet-prog-container"><div class="w-prog-text"><span>Progress: <b>${percent}%</b></span><span>Total Target: ${target}x</span></div><div class="w-prog-track"><div class="w-prog-fill" style="width:${percent}%; background:${progColor};"></div></div></div><div class="wallet-actions"><button class="btn-wallet" onclick="alert('Hubungi Mitra Anda untuk melakukan setoran tunai.')"><i class="fas fa-plus-circle"></i> Setor Tunai</button><button class="btn-wallet gold" onclick="bukaKalenderIndividu('${p.idPeserta}', '${encodeURIComponent(p.nama)}', '${encodeURIComponent(p.jenisPaket)}', ${done})"><i class="far fa-calendar-alt"></i> Kalender</button></div></div>`;
-        });
-        container.innerHTML = html;
-      }
-
-      // LOAD DATA DASHBOARD MITRA
-      async function loadMitraDashboard(id) {
-        const container = document.getElementById("mitra-container");
-        container.innerHTML =
-          '<div style="text-align:center; padding:20px; color:#888;"><i class="fas fa-spinner fa-spin"></i> Mengambil data...</div>';
-        const data = await fetchData("cekStatusDetail", { id: id });
-        if (data && data.data && data.data.length > 0) {
-          const mappedData = data.data.map((item) => ({
-            idPeserta: item.id,
-            nama: item.nama,
-            jenisPaket: item.paket,
-            setoranDilakukan: item.tercapai || 0,
-            totalSetoran: item.target || 0,
-            nilaiPerSetor: item.nilai || 0,
-          }));
-          cachedDashboardData = mappedData;
-          renderMitraCards(mappedData, container);
-        } else {
-          container.innerHTML =
-            '<div style="text-align:center; color:#888; padding:20px;">Belum ada peserta.</div>';
-          document.getElementById("mitra-total-peserta").innerText = "0";
-          document.getElementById("mitra-total-paket").innerText = "0";
-        }
-      }
-
-      function renderMitraCards(dataList, container) {
-        let html = "";
-        let paketSummary = {}; // Untuk menghitung jumlah tiap jenis paket
-        let totalPaket = 0;
-
-        document.getElementById("mitra-total-peserta").innerText =
-          dataList.length;
-
-        dataList.forEach((p) => {
-          // Kumpulkan data jenis paket
-          if (!paketSummary[p.jenisPaket]) paketSummary[p.jenisPaket] = 0;
-          paketSummary[p.jenisPaket]++;
-          totalPaket++;
-
-          let done = parseInt(p.setoranDilakukan) || 0;
-          let target = parseInt(p.totalSetoran) || 0;
-          let sisa = target - done;
-          let percent =
-            target > 0 ? Math.min(100, (done / target) * 100).toFixed(0) : 0;
-          let nilaiPerSetor = parseInt(p.nilaiPerSetor) || 0;
-          let textNilai =
-            nilaiPerSetor > 0
-              ? `Rp ${nilaiPerSetor.toLocaleString("id-ID")}`
-              : "Cek Admin";
-
-          let cardClass = "status-red",
-            barClass = "fill-orange",
-            textClass = "text-red";
-          if (done >= target) {
-            cardClass = "status-green";
-            barClass = "fill-green";
-            textClass = "text-green";
-          } else if (p.jenisPaket.toLowerCase().includes("mingguan")) {
-            cardClass = "status-gold";
-            barClass = "fill-gold";
-            textClass = "text-gold";
-          }
-
-          let stat = getSetoranStatus(p.jenisPaket, done, target);
-          let arrearsHtml = "";
-          if (stat.expected === 0)
-            arrearsHtml = `<span style="color:#aaa"><i class="fas fa-clock"></i> Sesuai</span>`;
-          else if (stat.selisih < 0)
-            arrearsHtml = `<span style="color:#ff6b6b"><i class="fas fa-exclamation-triangle"></i> Telat ${Math.abs(stat.selisih)}x</span>`;
-          else if (stat.selisih > 0)
-            arrearsHtml = `<span style="color:#4ade80"><i class="fas fa-arrow-up"></i> Lebih ${stat.selisih}x</span>`;
-          else
-            arrearsHtml = `<span style="color:#ffd700"><i class="fas fa-check"></i> Sesuai</span>`;
-
-          let tabunganBersih = getTabunganBersih(p.jenisPaket, done);
-          let tabunganHtml = "";
-          if (tabunganBersih !== null && done > 0) {
-            tabunganHtml = `<div style="font-size:0.65rem; color:#4ade80; background:rgba(74, 222, 128, 0.1); padding:2px 5px; border-radius:4px;">Net: Rp ${tabunganBersih.toLocaleString("id-ID")}</div>`;
-          }
-
-          html += `
-          <div class="mitra-card-pro ${cardClass}">
-              <div class="mc-header">
-                  <div class="mc-identity">
-                      <div class="mc-name">${p.nama}</div>
-                      <div style="display:flex; gap:5px; align-items:center; flex-wrap:wrap;">
-                          <div class="mc-badge">${p.jenisPaket}</div>
-                          <div style="font-size:0.65rem; color:#ffd700; background:rgba(255,215,0,0.1); padding:2px 5px; border-radius:4px;">${textNilai} / setor</div>
-                          ${tabunganHtml}
-                      </div>
-                  </div>
-                  <div class="mc-counter-box"><div class="mc-big-number">${done}<span>/${target}</span></div></div>
-              </div>
-              <div class="mc-prog-area"><div class="mc-prog-track"><div class="mc-prog-fill ${barClass}" style="width:${percent}%"></div></div></div>
-              <div class="mc-footer">
-                  <div class="mc-status-text">
-                      <span class="${textClass}">Sisa ${sisa}x</span> 
-                      <span style="color:#555; margin:0 5px;">|</span>
-                      ${arrearsHtml}
-                  </div>
-                  <button class="btn-mini-pro" onclick="bukaKalenderIndividu('${p.idPeserta}', '${encodeURIComponent(p.nama)}', '${encodeURIComponent(p.jenisPaket)}', ${done})">
-                      <i class="far fa-calendar-alt"></i> Kalender
-                  </button>
-              </div>
-          </div>`;
-        });
-
-        // RENDER INFO TOTAL PAKET
-        document.getElementById("mitra-total-paket").innerText = totalPaket;
-
-        // RENDER LIST DETAIL PAKET
-        let paketHtml = "";
-        for (let nama in paketSummary) {
-          paketHtml += `
-            <div class="paket-detail-item">
-                <span class="pdi-name">${nama}</span>
-                <span class="pdi-qty">${paketSummary[nama]} Paket</span>
-            </div>`;
-        }
-        document.getElementById("paket-detail-list").innerHTML = paketHtml;
-
-        container.innerHTML = html;
-      }
-
-      function filterMitra() {
-        const v = document.getElementById("cariAnakBuah").value.toLowerCase();
-        document.querySelectorAll(".mitra-card-pro").forEach((c) => {
-          c.style.display = c
-            .querySelector(".mc-name")
-            .innerText.toLowerCase()
-            .includes(v)
-            ? "flex"
-            : "none";
-        });
-      }
-      function togglePesertaList() {
-        const wrapper = document.getElementById("mitra-peserta-wrapper");
-        const icon = document.querySelector(".ms-stat-box i");
-        if (wrapper.classList.contains("show")) {
-          wrapper.classList.remove("show");
-          icon.className = "fas fa-chevron-down";
-        } else {
-          wrapper.classList.add("show");
-          icon.className = "fas fa-chevron-up";
-        }
-      }
-
-      function togglePaketDetail() {
-        const w = document.getElementById("paket-detail-wrapper");
-        if (w.style.display === "block") w.style.display = "none";
-        else w.style.display = "block";
-      }
-
       // ==========================================
-      // FUNGSI KERANJANG GLOBAL (TAMPILAN RAPI)
+      // FUNGSI KERANJANG GLOBAL
       // ==========================================
       function openGlobalCart() {
         if (typeof renderCartUI === "function") renderCartUI();
@@ -2199,21 +1252,28 @@
         container.innerHTML = html;
       }
 
-      // ==========================================
-      // FUNGSI CHECKOUT WHATSAPP (FORMAT SUPER RAPI)
-      // ==========================================
-      function checkoutGlobalCart() {
-        if (globalCart.length === 0) return alert("Keranjang kosong!");
+      function checkoutAtauDaftar() {
         const userStr = localStorage.getItem("nizami_user");
+
         if (!userStr) {
           closeGlobalCart();
-          switchTab("akun");
-          alert("Daftar akun dulu ya.");
-          openModalDaftar();
+          bukaDaftarPesertaMulus();
           return;
         }
 
         const user = JSON.parse(userStr);
+
+        if (user.type === "MITRA") {
+          closeGlobalCart();
+          alert(
+            "Halo Mitra! Untuk mendaftarkan peserta, silakan gunakan tombol 'Daftarkan Peserta Baru' di Portal Mitra.",
+          );
+          window.location.href = "mitra.html";
+          return;
+        }
+
+        if (globalCart.length === 0) return alert("Keranjang kosong!");
+
         let msg = `Halo Admin, saya ingin *TAMBAH PESANAN PAKET*.\n\n*👤 DATA PESERTA*\nNama: ${user.nama}\nID: ${user.id}\n\n*🛒 PESANAN BARU:*\n`;
 
         globalCart.forEach((item) => {
@@ -2226,26 +1286,24 @@
             let mainName = parts[0].trim();
             let rincianArray = parts[1].replace(")", "").trim().split(", ");
 
-            msg += `\n📦 *${item.qty}x ${mainName}*\n`;
-
+            msg += `\n- *${item.qty}x ${mainName}*\n`;
             if (isCookies) {
-              msg += ` ↳ Harga: Rp 1.000 ${labelSetoran} (per toples)\n`;
-              msg += ` ↳ Total Setor: *Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}*\n`;
+              msg += `  > Harga: Rp 1.000 ${labelSetoran} (per toples)\n`;
+              msg += `  > Total Setor: *Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}*\n`;
             } else if (item.price > 0) {
-              msg += ` ↳ Total Setor: *Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}*\n`;
+              msg += `  > Total Setor: *Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}*\n`;
             }
-
-            msg += ` ↳ Rincian Isi:\n`;
-            rincianArray.forEach((r) => (msg += `    - ${r}\n`));
+            msg += `  > Rincian Isi:\n`;
+            rincianArray.forEach((r) => (msg += `    ~ ${r}\n`));
           } else {
-            msg += `\n📦 *${item.qty}x ${item.name}*\n`;
+            msg += `\n- *${item.qty}x ${item.name}*\n`;
             if (item.price > 0) {
-              msg += ` ↳ Setor: *Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}*\n`;
+              msg += `  > Setor: *Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}*\n`;
             }
           }
         });
 
-        msg += `\nMohon diproses. Terima kasih! 🙏`;
+        msg += `\nMohon diproses. Terima kasih!`;
         localStorage.removeItem("nizami_global_cart");
         globalCart = [];
         updateGlobalCartBadge();
@@ -2256,166 +1314,174 @@
         );
       }
 
-      function submitDaftarWA(e) {
-        e.preventDefault();
-        if (globalCart.length === 0) {
-          alert("Keranjang kosong!");
-          closeModalDaftar();
-          switchTab("katalog");
+      // ==========================================
+      // FUNGSI PENDAFTARAN ALL-IN-ONE
+      // ==========================================
+      function bukaDaftarPesertaMulus() {
+        regCart = [];
+
+        if (globalCart.length > 0) {
+          globalCart.forEach((item) => {
+            let isMingguan = item.name.toLowerCase().includes("mingguan");
+            let isCookies = item.name.toLowerCase().includes("cookies");
+            let label = isMingguan
+              ? "/mgg"
+              : isCookies
+                ? "/hari (per toples)"
+                : "/hari";
+            regCart.push({
+              name: item.name,
+              price: item.price,
+              label: label,
+              qty: item.qty,
+            });
+          });
+        }
+
+        document.getElementById("regNama").value = "";
+        document.getElementById("regHP").value = "";
+        document.getElementById("regAlamat").value = "";
+        document.getElementById("catSelect").value = "";
+        document.getElementById("optionsArea").innerHTML = "";
+        updateRegCartUI();
+
+        document.getElementById("modalDaftarBaru").classList.add("show");
+      }
+
+      function tutupModalDaftarBaru() {
+        document.getElementById("modalDaftarBaru").classList.remove("show");
+      }
+
+      function renderOptions(cat) {
+        const area = document.getElementById("optionsArea");
+        area.innerHTML = "";
+        const items = PACKAGE_DATA[cat];
+
+        if (items && items.length > 0) {
+          items.forEach((item) => {
+            area.innerHTML += `
+                  <div class="cs-option-btn" onclick="addToRegCart('${item.name}', ${item.price}, '${item.label}')">
+                      <span style="font-weight:bold; color:#fff;">${item.name}</span>
+                      <span class="cs-opt-price">Rp ${item.price.toLocaleString("id-ID")} ${item.label}</span>
+                  </div>`;
+          });
+        } else {
+          area.innerHTML = `<div style="grid-column: span 2; text-align:center; color:#888; font-size:0.8rem; padding:10px;">Belum ada paket di kategori ini.</div>`;
+        }
+      }
+
+      function addToRegCart(name, price, label) {
+        let exist = regCart.find((i) => i.name === name);
+        if (exist) exist.qty++;
+        else regCart.push({ name: name, price: price, label: label, qty: 1 });
+        updateRegCartUI();
+
+        let toast = document.getElementById("toast");
+        if (toast) {
+          document.getElementById("toastMsg").innerText = "Paket ditambahkan!";
+          toast.style.display = "flex";
+          setTimeout(() => (toast.style.opacity = "1"), 10);
+          setTimeout(() => {
+            toast.style.opacity = "0";
+            setTimeout(() => (toast.style.display = "none"), 300);
+          }, 2000);
+        }
+      }
+
+      function removeFromRegCart(idx) {
+        regCart.splice(idx, 1);
+        updateRegCartUI();
+      }
+
+      function updateRegCartUI() {
+        const list = document.getElementById("regCartList");
+        if (regCart.length === 0) {
+          list.innerHTML = `<div style="text-align:center; color:#444; font-size:0.8rem; padding:10px;">Belum ada paket dipilih.</div>`;
+          document.getElementById("regTotal").innerText = "Rp 0";
           return;
         }
+
+        let html = "";
+        let total = 0;
+        regCart.forEach((item, idx) => {
+          let sub = item.qty * item.price;
+          total += sub;
+
+          let dispName = item.name;
+          if (dispName.includes("(Isi:")) {
+            dispName = dispName.split("(Isi:")[0].trim();
+          }
+
+          html += `
+              <div class="rc-item">
+                  <div style="flex:1;">
+                      <div style="font-weight:bold; color:#ddd;">${dispName}</div>
+                      <div style="font-size:0.7rem; color:#888;">Rp ${item.price.toLocaleString()} ${item.label}</div>
+                  </div>
+                  <div style="font-weight:bold; color:#ffd700; margin:0 10px;">x${item.qty}</div>
+                  <i class="fas fa-trash rc-del" onclick="removeFromRegCart(${idx})"></i>
+              </div>`;
+        });
+        list.innerHTML = html;
+        document.getElementById("regTotal").innerText =
+          `Rp ${total.toLocaleString("id-ID")}`;
+      }
+
+      function submitDaftarPesertaWA() {
         const n = document.getElementById("regNama").value;
         const h = document.getElementById("regHP").value;
         const a = document.getElementById("regAlamat").value;
         const m = document.getElementById("regMitra").value || "-";
 
+        if (!n || !h || regCart.length === 0) {
+          alert(
+            "Harap lengkapi Identitas dan pastikan ada paket yang dipilih!",
+          );
+          return;
+        }
+
         let msg = `Halo Admin, saya mau *DAFTAR PESERTA BARU*.\n\n*👤 DATA DIRI*\nNama: ${n}\nWA: ${h}\nAlamat: ${a}\nMitra: ${m}\n\n*🛒 PAKET DIPILIH:*\n`;
 
-        globalCart.forEach((item) => {
-          let isMingguan = item.name.toLowerCase().includes("mingguan");
-          let isCookies = item.name.toLowerCase().includes("cookies");
-          let labelSetoran = isMingguan ? "/mgg" : "/hari";
-
+        regCart.forEach((item) => {
           if (item.name.includes("(Isi:")) {
             let parts = item.name.split("(Isi:");
             let mainName = parts[0].trim();
             let rincianArray = parts[1].replace(")", "").trim().split(", ");
 
-            msg += `\n📦 *${item.qty}x ${mainName}*\n`;
-
-            if (isCookies) {
-              msg += ` ↳ Harga: Rp 1.000 ${labelSetoran} (per toples)\n`;
-              msg += ` ↳ Total Setor: *Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}*\n`;
+            msg += `\n- *${item.qty}x ${mainName}*\n`;
+            if (item.name.toLowerCase().includes("cookies")) {
+              msg += `  > Harga: Rp 1.000 ${item.label}\n`;
+              msg += `  > Total Setor: *Rp ${item.price.toLocaleString("id-ID")} ${item.label}*\n`;
             } else if (item.price > 0) {
-              msg += ` ↳ Total Setor: *Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}*\n`;
+              msg += `  > Total Setor: *Rp ${item.price.toLocaleString("id-ID")} ${item.label}*\n`;
             }
-
-            msg += ` ↳ Rincian Isi:\n`;
-            rincianArray.forEach((r) => (msg += `    - ${r}\n`));
+            msg += `  > Rincian Isi:\n`;
+            rincianArray.forEach((r) => (msg += `    ~ ${r}\n`));
           } else {
-            msg += `\n📦 *${item.qty}x ${item.name}*\n`;
-            if (item.price > 0) {
-              msg += ` ↳ Setor: *Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}*\n`;
+            msg += `\n- *${item.qty}x ${item.name}*\n`;
+            if (item.name.toLowerCase().includes("cookies")) {
+              msg += `  > Harga: Rp 1.000 ${item.label}\n`;
+              msg += `  > Total Setor: *Rp ${item.price.toLocaleString("id-ID")} ${item.label}*\n`;
+            } else {
+              msg += `  > Setor: *Rp ${item.price.toLocaleString("id-ID")} ${item.label}*\n`;
             }
           }
         });
 
         msg += `\nMohon dibantu pembuatan akunnya. Terima kasih! 🙏`;
+
         localStorage.removeItem("nizami_global_cart");
         globalCart = [];
         updateGlobalCartBadge();
+
         window.open(
           `https://wa.me/628122261036?text=${encodeURIComponent(msg)}`,
           "_blank",
         );
-        closeModalDaftar();
+        tutupModalDaftarBaru();
       }
 
-      // ==========================================
-      // FUNGSI LAINNYA
-      // ==========================================
-      function openModalTambahPesertaMitra() {
-        openModalDaftar();
-        const u = JSON.parse(localStorage.getItem("nizami_user"));
-        if (u && u.type === "MITRA") {
-          const regM = document.getElementById("regMitra");
-          regM.value = u.nama;
-          regM.readOnly = true;
-          regM.style.background = "#222";
-        }
-      }
-      function bukaDaftarPesertaViaCart() {
-        if (globalCart.length === 0) {
-          alert("Pilih paket di Katalog dulu ya.");
-          switchTab("katalog");
-        } else {
-          openModalDaftar();
-        }
-      }
-      function openModalDaftar() {
-        document.getElementById("modalDaftar").classList.add("show");
-        renderRegCartSummary();
-      }
-      function closeModalDaftar() {
-        document.getElementById("modalDaftar").classList.remove("show");
-      }
-      function openModalMitra() {
-        document.getElementById("modalMitraReg").classList.add("show");
-      }
-      function closeModalMitra() {
-        document.getElementById("modalMitraReg").classList.remove("show");
-      }
-      function toggleFormPendaftaran(cb) {
-        const f = document.getElementById("formPendaftaran");
-        f.style.opacity = cb.checked ? "1" : "0.3";
-        f.style.pointerEvents = cb.checked ? "auto" : "none";
-      }
-      function toggleFormMitra(cb) {
-        const f = document.getElementById("formMitra");
-        f.style.opacity = cb.checked ? "1" : "0.3";
-        f.style.pointerEvents = cb.checked ? "auto" : "none";
-      }
-
-      function renderRegCartSummary() {
-        const container = document.getElementById("regCartSummary");
-        if (!container) return;
-        if (globalCart.length === 0) {
-          container.innerHTML = `<div style="padding: 10px; background: rgba(255,77,77,0.1); border: 1px dashed #ff4d4d; border-radius: 8px; color: #ffcccc; font-size: 0.8rem; text-align: center;">Keranjang kosong!</div>`;
-          return;
-        }
-
-        let html =
-          '<div style="background: #0a0a0a; border: 1px solid #333; border-radius: 8px; padding: 10px;">';
-        globalCart.forEach((item) => {
-          let isMingguan = item.name.toLowerCase().includes("mingguan");
-          let isCookies = item.name.toLowerCase().includes("cookies");
-          let labelSetoran = isMingguan ? "/mgg" : "/hari";
-
-          let priceHtml = "";
-          if (item.price > 0) {
-            if (isCookies) priceHtml = ` - Rp 1.000/toples`;
-            else
-              priceHtml = ` - Rp ${item.price.toLocaleString("id-ID")} ${labelSetoran}`;
-          }
-
-          let displayName = item.name;
-          let rincianHtml = "";
-          if (item.name.includes("(Isi:")) {
-            let parts = item.name.split("(Isi:");
-            displayName = parts[0].trim();
-            let rincianList = parts[1]
-              .replace(")", "")
-              .trim()
-              .split(", ")
-              .map((r) => `<div style="padding-left:5px;">- ${r}</div>`)
-              .join("");
-            rincianHtml = `<div style="font-size: 0.65rem; color: #888; margin-top: 4px; line-height: 1.4;">${rincianList}</div>`;
-          }
-
-          html += `<div style="font-size: 0.85rem; color: #ddd; border-bottom: 1px dashed #222; padding: 8px 0;">
-                        <div style="display: flex; justify-content: space-between; align-items:flex-start;">
-                            <div style="width: 80%;">
-                                <b>${displayName}</b> <span style="color:#4ade80; font-size:0.75rem;">${priceHtml}</span>
-                                ${rincianHtml}
-                            </div>
-                            <span style="color: #ffd700; font-weight: bold; padding-left:10px;">${item.qty}x</span>
-                        </div>
-                    </div>`;
-        });
-        html += `<div style="text-align:center; margin-top:10px;"><button type="button" onclick="closeModalDaftar(); openGlobalCart();" style="background:transparent; border:1px solid #4ade80; color:#4ade80; padding:6px 12px; border-radius:50px; font-size:0.75rem; cursor:pointer;"><i class="fas fa-edit"></i> Edit Keranjang</button></div></div>`;
-        container.innerHTML = html;
-      }
-
-      function submitMitraWA(e) {
-        e.preventDefault();
-        window.open(
-          `https://wa.me/628122261036?text=${encodeURIComponent(`Halo Admin, Daftar Mitra.\nNama: ${document.getElementById("mitraNama").value}\nWA: ${document.getElementById("mitraHP").value}\nAlamat: ${document.getElementById("mitraAlamat").value}`)}`,
-        );
-      }
-
-      // === FUNGSI VIDEO PLAYER (FULLSCREEN EFFECT) ===
       function playVideo(vid) {
-        // Menggunakan playsinline dan rel=0 agar video lebih bersih
         document.getElementById("youtubeFrame").src =
           `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0&playsinline=1`;
         document.getElementById("videoOverlay").classList.add("show");
@@ -2423,147 +1489,6 @@
       function closeVideo() {
         document.getElementById("youtubeFrame").src = "";
         document.getElementById("videoOverlay").classList.remove("show");
-      }
-
-      // ==========================================
-      // FUNGSI INPUT BATCH (SETORAN MASAL)
-      // ==========================================
-      function bukaModalBatch() {
-        if (!cachedDashboardData)
-          return alert("Data anak buah belum termuat. Tunggu sebentar.");
-        const c = document.getElementById("batch-list");
-        c.innerHTML = "";
-
-        cachedDashboardData.forEach((p, i) => {
-          let ns = parseInt(p.nilaiPerSetor) || 0;
-          let sk = parseInt(p.setoranDilakukan) || 0;
-
-          c.insertAdjacentHTML(
-            "beforeend",
-            `
-            <div class="batch-row">
-                <div class="batch-info">
-                    <h4>${p.nama}</h4>
-                    <span>${p.jenisPaket} <span class="price-tag">(@${ns > 0 ? ns.toLocaleString() : "?"})</span></span>
-                </div>
-                <div class="batch-prev">${sk}x</div>
-                <div>
-                    <input type="number" class="batch-input-box inp-batch-qty" id="batch-qty-${i}" placeholder="0" data-price="${ns}" data-name="${p.nama}" data-paket="${p.jenisPaket}" data-prev="${sk}" oninput="hitungTotalBatch(this, ${i})">
-                </div>
-                <div class="batch-subtotal" id="sub-row-${i}">Rp 0</div>
-            </div>`,
-          );
-        });
-
-        document.getElementById("batchGrandTotal").innerText = "Rp 0";
-        batchTotalUang = 0;
-        document.getElementById("modalBatchInput").classList.add("show");
-      }
-
-      function hitungTotalBatch(el, i) {
-        if (el) {
-          let q = parseInt(el.value) || 0,
-            p = parseInt(el.getAttribute("data-price")) || 0;
-          document.getElementById(`sub-row-${i}`).innerText =
-            "Rp " + (q * p).toLocaleString("id-ID");
-          el.style.borderColor = q > 0 ? "#ffd700" : "#444";
-        }
-        let t = 0;
-        document.querySelectorAll(".inp-batch-qty").forEach((inEl) => {
-          t +=
-            (parseInt(inEl.value) || 0) *
-            (parseInt(inEl.getAttribute("data-price")) || 0);
-        });
-        batchTotalUang = t;
-        document.getElementById("batchGrandTotal").innerText =
-          "Rp " + t.toLocaleString("id-ID");
-      }
-
-      function tutupModalBatch() {
-        document.getElementById("modalBatchInput").classList.remove("show");
-      }
-
-      function prosesBatchKeGambar() {
-        if (batchTotalUang <= 0)
-          return alert("Belum ada angka setoran (angka harus lebih dari 0).");
-        const btn = document.querySelector(".calc-footer .btn-gold");
-        const oldHtml = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-
-        const u = JSON.parse(localStorage.getItem("nizami_user"));
-        document.getElementById("struk-mitra").innerText =
-          "Mitra: " + (u ? u.nama : "-");
-        document.getElementById("struk-date").innerText =
-          new Date().toLocaleString("id-ID");
-
-        const ic = document.getElementById("struk-items");
-        ic.innerHTML = "";
-
-        document.querySelectorAll(".inp-batch-qty").forEach((inp) => {
-          let q = parseInt(inp.value);
-          if (q > 0) {
-            let p = parseInt(inp.getAttribute("data-price")) || 0;
-            let sub = q * p;
-            let n = inp.getAttribute("data-name");
-            let pkt = inp.getAttribute("data-paket");
-            let prev = parseInt(inp.getAttribute("data-prev"));
-            let curr = prev + q;
-
-            ic.insertAdjacentHTML(
-              "beforeend",
-              `
-                <div style="font-size: 11px; border-bottom: 1px dashed #ccc; padding-bottom: 5px; margin-bottom: 5px;">
-                    <div style="font-weight:bold; font-size:12px;">${n}</div>
-                    <div style="display:flex; justify-content:space-between; margin-top:3px; color:#333;">
-                        <div style="width:40%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${pkt}</div>
-                        <div style="width:30%; text-align:center;">(${prev} ➔ ${curr})</div>
-                        <div style="width:10%; text-align:center;">+${q}</div>
-                        <div style="width:20%; text-align:right; font-weight:bold;">${sub.toLocaleString("id-ID")}</div>
-                    </div>
-                </div>`,
-            );
-          }
-        });
-
-        document.getElementById("struk-total-val").innerText =
-          "Rp " + batchTotalUang.toLocaleString("id-ID");
-        const wrapper = document.getElementById("struk-area");
-        wrapper.style.left = "0px";
-        wrapper.style.zIndex = "-1";
-
-        setTimeout(() => {
-          html2canvas(wrapper, { scale: 2 }).then((c) => {
-            base64StrukImg = c.toDataURL("image/jpeg", 0.9);
-            document.getElementById("preview-img-container").innerHTML =
-              `<img src="${base64StrukImg}">`;
-            wrapper.style.left = "-9999px";
-            tutupModalBatch();
-            document.getElementById("modalPreviewImg").classList.add("show");
-            btn.innerHTML = oldHtml;
-          });
-        }, 100);
-      }
-
-      function tutupPreviewImg() {
-        document.getElementById("modalPreviewImg").classList.remove("show");
-      }
-
-      function downloadStruk() {
-        if (!base64StrukImg) return;
-        const a = document.createElement("a");
-        a.href = base64StrukImg;
-        a.download = `Struk_Nizami_${new Date().getTime()}.jpg`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      }
-
-      function kirimWaBatch() {
-        const u = JSON.parse(localStorage.getItem("nizami_user"));
-        let msg = `*LAPORAN SETORAN*\nMitra: ${u ? u.nama : "-"}\nTotal Setor: Rp ${batchTotalUang.toLocaleString("id-ID")}\n\nStruk rincian terlampir (Silakan kirimkan gambar struk yang sudah Anda unduh).`;
-        window.open(
-          `https://wa.me/628122261036?text=${encodeURIComponent(msg)}`,
-        );
       }
     </script>
   </body>
