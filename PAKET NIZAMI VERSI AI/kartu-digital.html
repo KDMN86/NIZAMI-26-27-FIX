@@ -24,10 +24,10 @@
         color: #fff;
         font-family: "Poppins", sans-serif;
         margin: 0;
-        padding-bottom: 30px;
+        padding-bottom: 90px;
       }
 
-      /* HEADER & CATALOG LOGO */
+      /* HEADER */
       header {
         padding: 15px 20px;
         position: sticky;
@@ -70,7 +70,11 @@
         text-decoration: none;
         font-size: 1.3rem;
         border: 1px solid rgba(255, 215, 0, 0.3);
-        animation: pulseLogo 2s infinite;
+      }
+      .btn-keluar {
+        background: rgba(255, 77, 77, 0.1);
+        color: #ff4d4d;
+        border-color: rgba(255, 77, 77, 0.3);
       }
 
       .container {
@@ -215,7 +219,7 @@
         border-radius: 6px;
       }
 
-      /* INFO KHUSUS DALAM KARTU (Target & Saldo) */
+      /* INFO KHUSUS DALAM KARTU */
       .info-hybrid {
         margin-top: 15px;
         background: rgba(0, 0, 0, 0.1);
@@ -244,7 +248,6 @@
         font-size: 0.85rem;
         margin-bottom: 5px;
       }
-
       .info-saldo-only {
         margin-top: 15px;
         background: rgba(0, 0, 0, 0.15);
@@ -265,7 +268,6 @@
         letter-spacing: -1px;
       }
 
-      /* TOMBOL RINCIAN BARANG */
       .btn-rincian {
         width: 100%;
         background: #1a1a1a;
@@ -286,7 +288,6 @@
         background: #333;
       }
 
-      /* STATS SINGKAT */
       .stats-box {
         background: #111;
         border: 1px solid #222;
@@ -313,62 +314,49 @@
         margin-top: 4px;
       }
 
-      /* KOTAK INFO PEMBAYARAN TRANSFER */
-      .payment-box {
+      /* KOTAK INFO PEMBAYARAN MINI */
+      .payment-box-mini {
         background: #111;
-        border: 1px dashed #4ade80;
-        border-radius: 15px;
-        padding: 15px;
-        margin-bottom: 25px;
-        position: relative;
-      }
-      .pb-title {
-        font-size: 0.85rem;
-        color: #4ade80;
-        font-weight: bold;
-        margin-bottom: 10px;
+        border: 1px solid #222;
+        border-radius: 10px;
+        padding: 12px 15px;
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 8px;
+        margin-bottom: 25px;
       }
-      .pb-bank {
+      .pbm-left {
+        display: flex;
+        flex-direction: column;
+      }
+      .pbm-bank {
+        font-size: 0.7rem;
+        color: #aaa;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+      .pbm-rek {
         font-size: 1.1rem;
-        font-weight: 800;
-        color: #fff;
-        margin: 0;
-      }
-      .pb-rek {
-        font-size: 1.5rem;
         font-weight: 900;
         color: #ffd700;
-        letter-spacing: 2px;
-        margin: 5px 0;
+        letter-spacing: 1px;
         font-family: monospace;
       }
-      .pb-name {
-        font-size: 0.85rem;
-        color: #aaa;
-      }
-      .btn-copy-rek {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
+      .btn-copy-mini {
         background: #222;
         color: #fff;
         border: 1px solid #444;
-        padding: 8px 15px;
+        padding: 6px 12px;
         border-radius: 8px;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         font-weight: bold;
         cursor: pointer;
         transition: 0.2s;
         display: flex;
-        flex-direction: column;
         align-items: center;
-        gap: 3px;
+        gap: 5px;
       }
-      .btn-copy-rek:active {
+      .btn-copy-mini:active {
         background: #4ade80;
         color: #000;
         border-color: #4ade80;
@@ -498,17 +486,21 @@
         background: #1f1a00;
       }
 
-      /* MODAL RINCIAN BARANG */
-      #modalBarang {
+      /* MODAL UMUM */
+      .modal-overlay {
         display: none;
         position: fixed;
         inset: 0;
         background: rgba(0, 0, 0, 0.9);
-        z-index: 100;
+        z-index: 9999;
         align-items: center;
         justify-content: center;
         padding: 20px;
         backdrop-filter: blur(5px);
+      }
+      .modal-overlay.show {
+        display: flex;
+        animation: fadeIn 0.3s;
       }
       .modal-card {
         background: #1e1e1e;
@@ -584,6 +576,90 @@
         color: #ffd700;
       }
 
+      /* === TOMBOL FLOATING SETOR === */
+      .fab-setor {
+        position: fixed;
+        bottom: 25px;
+        right: 20px;
+        background: #4ade80;
+        color: #000;
+        border: none;
+        border-radius: 50px;
+        padding: 15px 25px;
+        font-size: 0.95rem;
+        font-weight: bold;
+        box-shadow: 0 5px 20px rgba(74, 222, 128, 0.4);
+        cursor: pointer;
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        gap: 10px;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+        font-family: "Poppins", sans-serif;
+      }
+      .fab-setor:active {
+        transform: scale(0.95);
+        box-shadow: 0 2px 10px rgba(74, 222, 128, 0.3);
+      }
+      .fab-setor i {
+        font-size: 1.4rem;
+      }
+
+      /* === KALKULATOR SETORAN === */
+      .cart-qty-ctrl {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #000;
+        padding: 4px;
+        border-radius: 50px;
+        border: 1px solid #333;
+        width: fit-content;
+      }
+      .cq-btn {
+        width: 28px;
+        height: 28px;
+        background: #222;
+        border: none;
+        color: #fff;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .cq-btn:active {
+        background: #ffd700;
+        color: #000;
+      }
+      .cq-val {
+        font-size: 0.9rem;
+        font-weight: bold;
+        width: 25px;
+        text-align: center;
+      }
+      .btn-gold-full {
+        width: 100%;
+        background: #ffd700;
+        color: #000;
+        border: none;
+        padding: 15px;
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 1rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        font-family: "Poppins", sans-serif;
+      }
+
       @keyframes slideDown {
         from {
           opacity: 0;
@@ -594,15 +670,12 @@
           transform: translateY(0);
         }
       }
-      @keyframes pulseLogo {
-        0% {
-          box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4);
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
         }
-        70% {
-          box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
-        }
-        100% {
-          box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+        to {
+          opacity: 1;
         }
       }
     </style>
@@ -613,9 +686,26 @@
         <h1 class="title">Kartu Setoran</h1>
         <div class="subtitle">NIZAMI 2026-2027</div>
       </div>
-      <a href="index.html" class="katalog-btn" title="Lihat Katalog Promo">
-        <i class="fas fa-store"></i>
-      </a>
+
+      <div style="display: flex; gap: 10px">
+        <a
+          href="index.html?view=katalog"
+          class="katalog-btn"
+          title="Lihat Katalog Promo"
+        >
+          <i class="fas fa-store"></i>
+        </a>
+        <a
+          href="#"
+          onclick="logoutPeserta()"
+          class="katalog-btn btn-keluar"
+          id="btnLogout"
+          style="display: none"
+          title="Keluar Akun"
+        >
+          <i class="fas fa-sign-out-alt"></i>
+        </a>
+      </div>
     </header>
 
     <div class="container" id="main-content">
@@ -627,7 +717,11 @@
       </div>
     </div>
 
-    <div id="modalBarang">
+    <button class="fab-setor" id="fabSetor" onclick="bukaModalSetoran()">
+      <i class="fab fa-whatsapp"></i> Tambah Setoran
+    </button>
+
+    <div id="modalBarang" class="modal-overlay">
       <div class="modal-card">
         <div class="modal-header">
           <h3 style="margin: 0; color: #ffd700; font-size: 1.1rem">
@@ -636,7 +730,7 @@
           <button
             class="btn-close"
             onclick="
-              document.getElementById('modalBarang').style.display = 'none'
+              document.getElementById('modalBarang').classList.remove('show')
             "
           >
             &times;
@@ -646,8 +740,85 @@
       </div>
     </div>
 
+    <div id="modalSetoran" class="modal-overlay">
+      <div
+        class="modal-card"
+        style="padding: 0; overflow: hidden; max-height: 90vh"
+      >
+        <div
+          style="
+            padding: 15px 20px;
+            background: #111;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+          "
+        >
+          <h3 style="margin: 0; color: #4ade80; font-size: 1.1rem">
+            <i class="fas fa-calculator"></i> Kalkulator Setoran
+          </h3>
+          <button
+            style="
+              background: none;
+              border: none;
+              color: #aaa;
+              font-size: 1.5rem;
+              cursor: pointer;
+            "
+            onclick="tutupModalSetoran()"
+          >
+            &times;
+          </button>
+        </div>
+
+        <div style="padding: 15px 20px 5px 20px">
+          <p style="color: #aaa; font-size: 0.75rem; margin-top: 0">
+            Tentukan berapa kali Anda ingin menyetor hari ini untuk
+            masing-masing paket:
+          </p>
+        </div>
+
+        <div
+          style="padding: 0 20px 20px 20px; overflow-y: auto; max-height: 55vh"
+          id="setoranCartArea"
+        ></div>
+
+        <div
+          style="
+            background: #111;
+            padding: 15px 20px;
+            border-top: 1px solid #333;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 15px;
+            "
+          >
+            <span style="color: #aaa; font-size: 0.85rem">Total Transfer:</span>
+            <span
+              id="setoranGrandTotal"
+              style="color: #ffd700; font-size: 1.3rem; font-weight: bold"
+              >Rp 0</span
+            >
+          </div>
+          <button
+            onclick="kirimSetoranWA()"
+            class="btn-gold-full"
+            style="background: #4ade80"
+          >
+            <i class="fab fa-whatsapp" style="font-size: 1.2rem"></i> Kirim
+            Konfirmasi ke WA
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script>
-      // KONEKSI SERVER ADMIN
       const scriptURL =
         "https://script.google.com/macros/s/AKfycby0JjnOFjmI9oOmNQ3skhbPpxmHI_avxCAL_777ZD1zaWa1xlbqBAxdmYnIe83xm4s-sQ/exec";
 
@@ -675,20 +846,87 @@
       function copyRekening() {
         navigator.clipboard.writeText("1310011534676").then(() => {
           const btn = document.getElementById("btnCopyRek");
-          btn.innerHTML = `<i class="fas fa-check"></i><br>Tersalin`;
+          btn.innerHTML = `<i class="fas fa-check"></i> Tersalin`;
           btn.style.background = "#4ade80";
           btn.style.color = "#000";
+          btn.style.borderColor = "#4ade80";
           setTimeout(() => {
-            btn.innerHTML = `<i class="far fa-copy"></i><br>Salin`;
+            btn.innerHTML = `<i class="far fa-copy"></i> Salin`;
             btn.style.background = "#222";
             btn.style.color = "#fff";
+            btn.style.borderColor = "#444";
           }, 2000);
         });
+      }
+
+      function logoutPeserta() {
+        if (confirm("Yakin ingin keluar dari akun?")) {
+          localStorage.removeItem("nizami_user");
+          window.location.href = "index.html";
+        }
       }
 
       const urlParams = new URLSearchParams(window.location.search);
       const paramId = urlParams.get("id");
       let allUserPackages = [];
+      let setoranCart = [];
+
+      window.onload = () => {
+        const userStr = localStorage.getItem("nizami_user");
+        if (userStr) {
+          const user = JSON.parse(userStr);
+          if (user.id === paramId) {
+            document.getElementById("btnLogout").style.display = "flex";
+          }
+        }
+        initPage();
+      };
+
+      function getBaseId(fullId) {
+        const match = fullId.match(/^(.*?-\d{4})/);
+        return match ? match[1] : fullId;
+      }
+
+      // FUNGSI PENGAMBIL HARGA DARI DATABASE / FALLBACK
+      function getHargaPaket(p) {
+        // 1. Mengambil dari database (Prioritas: kolom Nilai Storan / Nilai Setoran)
+        let rawVal =
+          p.nilai_storan ||
+          p.nilai_setoran ||
+          p.nilai ||
+          p["Nilai Storan"] ||
+          p["Nilai Setoran"] ||
+          p.Nilai_Storan;
+
+        if (rawVal !== undefined && rawVal !== null && rawVal !== "") {
+          // Format ulang jika API mengembalikan teks "10.000" jadi angka 10000
+          let val = parseInt(String(rawVal).replace(/[^0-9]/g, ""));
+          if (!isNaN(val) && val > 0) {
+            // Fix jika cookies
+            if (
+              String(p.paket).toLowerCase().includes("cookies") &&
+              val > 10000
+            )
+              return 1000;
+            return val;
+          }
+        }
+
+        // 2. Fallback: Ekstraksi angka dari nama paket
+        let str = String(p.paket).replace(/\./g, "");
+        let match = str.match(/\d{3,}/g);
+        if (match) {
+          let parsed = parseInt(match[match.length - 1]);
+          if (
+            String(p.paket).toLowerCase().includes("cookies") &&
+            parsed > 10000
+          )
+            return 1000;
+          return parsed;
+        }
+
+        return 0; // Gagal
+      }
 
       async function initPage() {
         if (!paramId) {
@@ -706,7 +944,17 @@
           const dataUser = await fetchData("getInfoKartu", { id: paramId });
 
           if (dataUser && !dataUser.error && dataUser.list_paket.length > 0) {
-            allUserPackages = dataUser.list_paket;
+            const currentBaseId = getBaseId(paramId);
+
+            allUserPackages = dataUser.list_paket.filter((p) => {
+              const packageBaseId = getBaseId(p.id);
+              return packageBaseId === currentBaseId;
+            });
+
+            if (allUserPackages.length === 0) {
+              throw new Error("Kosong");
+            }
+
             let activePaket =
               allUserPackages.find((p) => p.id === paramId) ||
               allUserPackages[0];
@@ -771,22 +1019,20 @@
       }
 
       function renderCard(paketInfo) {
-        // Logika Pintar Klasifikasi Paket
+        document.getElementById("fabSetor").style.display = "flex";
+
         const paketNameLower = String(paketInfo.paket).toLowerCase();
         const isMingguan = paketNameLower.includes("mingguan");
+        const isCookies =
+          paketNameLower.includes("cookies") || paketNameLower.includes("kue");
 
         let tTotal = parseInt(paketInfo.targetTotal) || (isMingguan ? 40 : 330);
         let tBarang = parseInt(paketInfo.targetBarang);
 
-        // Fallback jika tBarang = 0 atau kosong
         if (isNaN(tBarang) || tBarang === 0) {
-          if (paketNameLower.includes("uang")) {
-            tBarang = 0;
-          } else if (isMingguan || paketNameLower.includes("cookies")) {
-            tBarang = tTotal;
-          } else {
-            tBarang = 130;
-          }
+          if (paketNameLower.includes("uang")) tBarang = 0;
+          else if (isMingguan || isCookies) tBarang = tTotal;
+          else tBarang = 130;
         }
 
         if (tBarang > tTotal) tBarang = tTotal;
@@ -796,7 +1042,25 @@
         const setoranMasuk = parseInt(paketInfo.tercapai) || 0;
         const saldoInfo = parseInt(paketInfo.saldo) || 0;
 
-        // Susun Informasi Khusus dalam Kartu Emas
+        // --- PENYEMPURNAAN POSISI DAN WARNA NILAI SETORAN ---
+        let nilaiSetoran = getHargaPaket(paketInfo);
+        let labelSetoran = isMingguan
+          ? "/mgg"
+          : isCookies
+            ? "/hari (per toples)"
+            : "/hari";
+
+        let textNilaiHtml = "";
+        if (nilaiSetoran > 0) {
+          // Warna gelap transparan agar lebih terbaca di atas background emas
+          textNilaiHtml = `
+          <div style="text-align: right;">
+            <span style="background: rgba(0, 0, 0, 0.4); color: #ffd700; padding: 5px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; border: 1px solid rgba(0, 0, 0, 0.5); box-shadow: 0 2px 5px rgba(0,0,0,0.3);">
+                <i class="fas fa-money-bill-wave"></i> Rp ${nilaiSetoran.toLocaleString("id-ID")} ${labelSetoran}
+            </span>
+          </div>`;
+        }
+
         let extraInfoHtml = "";
 
         if (isUangOnly) {
@@ -808,17 +1072,10 @@
         } else if (tUang <= 0) {
           let statusHtml = "";
           if (setoranMasuk >= tBarang) {
-            statusHtml = `
-                <div class="ih-status-done" style="margin-bottom:0;">
-                    <i class="fas fa-check-circle" style="color:#27ae60;"></i> Paket Barang Terpenuhi!
-                </div>`;
+            statusHtml = `<div class="ih-status-done" style="margin-bottom:0;"><i class="fas fa-check-circle" style="color:#27ae60;"></i> Paket Barang Terpenuhi!</div>`;
           } else {
-            statusHtml = `
-                <div class="ih-status-pend">
-                    <i class="fas fa-box-open"></i> Sedang melunasi setoran barang (${tBarang - setoranMasuk}x lagi)
-                </div>`;
+            statusHtml = `<div class="ih-status-pend"><i class="fas fa-box-open"></i> Sedang melunasi setoran barang (${tBarang - setoranMasuk}x lagi)</div>`;
           }
-
           extraInfoHtml = `
             <div class="info-hybrid">
                 <div class="ih-targets" style="justify-content:center; border-bottom:none; margin-bottom:5px; padding-bottom:0;">
@@ -829,20 +1086,12 @@
         } else {
           let statusHtml = "";
           if (setoranMasuk >= tBarang) {
-            statusHtml = `
-                <div class="ih-status-done">
-                    <i class="fas fa-check-circle" style="color:#27ae60;"></i> Paket Barang Terpenuhi!
-                </div>
-                <div class="iso-label" style="color:#444;">Nilai Tabungan Saat Ini</div>
-                <div class="iso-val" style="font-size:1.5rem;">${formatRupiah(saldoInfo)}</div>
-                `;
+            statusHtml = `<div class="ih-status-done"><i class="fas fa-check-circle" style="color:#27ae60;"></i> Paket Barang Terpenuhi!</div>
+                          <div class="iso-label" style="color:#444;">Nilai Tabungan Saat Ini</div>
+                          <div class="iso-val" style="font-size:1.5rem;">${formatRupiah(saldoInfo)}</div>`;
           } else {
-            statusHtml = `
-                <div class="ih-status-pend">
-                    <i class="fas fa-box-open"></i> Sedang melunasi setoran barang (${tBarang - setoranMasuk}x lagi)
-                </div>`;
+            statusHtml = `<div class="ih-status-pend"><i class="fas fa-box-open"></i> Sedang melunasi setoran barang (${tBarang - setoranMasuk}x lagi)</div>`;
           }
-
           extraInfoHtml = `
             <div class="info-hybrid">
                 <div class="ih-targets">
@@ -853,7 +1102,6 @@
             </div>`;
         }
 
-        // Render Kartu Full
         let htmlCard = `
             <div class="card-container">
                 <div class="member-card-box">
@@ -862,7 +1110,10 @@
                         <div class="mc-label">Nizami Digital Card</div>
                     </div>
                     
-                    <div class="mc-paket">${paketInfo.paket}</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <div class="mc-paket">${paketInfo.paket}</div>
+                        ${textNilaiHtml}
+                    </div>
                     
                     ${extraInfoHtml}
                     
@@ -878,10 +1129,7 @@
 
             ${
               !isUangOnly
-                ? `
-            <button class="btn-rincian" onclick="lihatRincian('${paketInfo.id}')">
-                <i class="fas fa-box-open"></i> Lihat Rincian Isi Paket
-            </button>`
+                ? `<button class="btn-rincian" onclick="lihatRincian('${paketInfo.id}')"><i class="fas fa-box-open"></i> Lihat Rincian Isi Paket</button>`
                 : ""
             }
 
@@ -902,13 +1150,13 @@
                 </div>
             </div>
 
-            <div class="payment-box">
-                <div class="pb-title"><i class="fas fa-money-bill-wave"></i> Bayar via Transfer</div>
-                <p class="pb-bank">MANDIRI</p>
-                <p class="pb-rek">1310011534676</p>
-                <span class="pb-name">a.n EVI FITRIAWATI</span>
-                <button class="btn-copy-rek" id="btnCopyRek" onclick="copyRekening()">
-                    <i class="far fa-copy"></i><br>Salin
+            <div class="payment-box-mini">
+                <div class="pbm-left">
+                    <div class="pbm-bank">MANDIRI <span style="color:#aaa;">a.n</span> Evi Fitriawati</div>
+                    <div class="pbm-rek">1310011534676</div>
+                </div>
+                <button class="btn-copy-mini" id="btnCopyRek" onclick="copyRekening()">
+                    <i class="far fa-copy"></i> Salin
                 </button>
             </div>
         `;
@@ -931,7 +1179,107 @@
         }
 
         document.getElementById("listBarangArea").innerHTML = listHtml;
-        document.getElementById("modalBarang").style.display = "flex";
+        document.getElementById("modalBarang").classList.add("show");
+      }
+
+      // ==========================================
+      // FUNGSI KALKULATOR SETORAN
+      // ==========================================
+      function bukaModalSetoran() {
+        setoranCart = allUserPackages.map((p) => {
+          let isMingguan = p.paket.toLowerCase().includes("mingguan");
+          let isCookies =
+            p.paket.toLowerCase().includes("cookies") ||
+            p.paket.toLowerCase().includes("kue");
+          let label = isMingguan
+            ? "/mgg"
+            : isCookies
+              ? "/hari (toples)"
+              : "/hari";
+
+          return {
+            id: p.id,
+            namaPaket: p.paket,
+            harga: getHargaPaket(p),
+            qty: 0,
+            label: label,
+          };
+        });
+
+        renderSetoranCart();
+        document.getElementById("modalSetoran").classList.add("show");
+      }
+
+      function tutupModalSetoran() {
+        document.getElementById("modalSetoran").classList.remove("show");
+      }
+
+      function updateSetoranQty(index, change) {
+        setoranCart[index].qty += change;
+        if (setoranCart[index].qty < 0) setoranCart[index].qty = 0;
+        renderSetoranCart();
+      }
+
+      function renderSetoranCart() {
+        let html = "";
+        let grandTotal = 0;
+
+        setoranCart.forEach((item, index) => {
+          let subtotal = item.qty * item.harga;
+          grandTotal += subtotal;
+          let hargaTeks =
+            item.harga > 0
+              ? `Rp ${item.harga.toLocaleString("id-ID")} ${item.label}`
+              : "Cek Admin";
+
+          html += `
+              <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 12px 15px; margin-bottom: 10px;">
+                  <div style="font-weight:bold; color:#fff; font-size:0.9rem; margin-bottom:4px;">${item.namaPaket}</div>
+                  <div style="font-size:0.7rem; color:#4ade80; margin-bottom:10px;">@ ${hargaTeks}</div>
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                      <div class="cart-qty-ctrl" style="border-color:#444;">
+                          <button onclick="updateSetoranQty(${index}, -1)" class="cq-btn">-</button>
+                          <div class="cq-val" style="color:#fff;">${item.qty}</div>
+                          <button onclick="updateSetoranQty(${index}, 1)" class="cq-btn" style="background:#ffd700; color:#000;">+</button>
+                      </div>
+                      <div style="font-weight:bold; color:#ffd700; font-size:0.95rem;">Rp ${subtotal.toLocaleString("id-ID")}</div>
+                  </div>
+              </div>`;
+        });
+
+        document.getElementById("setoranCartArea").innerHTML = html;
+        document.getElementById("setoranGrandTotal").innerText =
+          `Rp ${grandTotal.toLocaleString("id-ID")}`;
+      }
+
+      function kirimSetoranWA() {
+        let totalQty = setoranCart.reduce((sum, item) => sum + item.qty, 0);
+        if (totalQty === 0)
+          return alert(
+            "Tentukan jumlah setoran terlebih dahulu pada paket yang ingin dibayar!",
+          );
+
+        let grandTotal = 0;
+        let msg = `Halo Admin, saya ingin konfirmasi *SETORAN TABUNGAN*.%0A%0A`;
+        msg += `*👤 DATA PESERTA*%0A`;
+        msg += `Nama: ${window.namaPemilik}%0A`;
+        msg += `ID: ${getBaseId(allUserPackages[0].id)}%0A%0A`;
+        msg += `*📝 RINCIAN SETORAN:*%0A`;
+
+        setoranCart.forEach((item) => {
+          if (item.qty > 0) {
+            let sub = item.qty * item.harga;
+            grandTotal += sub;
+            msg += `📦 *${item.namaPaket}*%0A`;
+            msg += `   ↳ ${item.qty}x Setoran (Rp ${sub.toLocaleString("id-ID")})%0A`;
+          }
+        });
+
+        msg += `%0A*💰 TOTAL TRANSFER: Rp ${grandTotal.toLocaleString("id-ID")}*%0A%0A`;
+        msg += `Berikut saya lampirkan bukti transfer pembayarannya.`;
+
+        window.open(`https://wa.me/628122261036?text=${msg}`, "_blank");
+        tutupModalSetoran();
       }
 
       // --- LOGIKA KALENDER ---
@@ -1033,8 +1381,6 @@
         }
         document.getElementById("calendar-area").innerHTML = html;
       }
-
-      initPage();
     </script>
   </body>
 </html>
