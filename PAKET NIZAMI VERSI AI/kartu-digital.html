@@ -818,22 +818,9 @@
       </div>
     </div>
 
+    <script src="script.js"></script>
+
     <script>
-      const scriptURL =
-        "https://script.google.com/macros/s/AKfycby0JjnOFjmI9oOmNQ3skhbPpxmHI_avxCAL_777ZD1zaWa1xlbqBAxdmYnIe83xm4s-sQ/exec";
-
-      async function fetchData(action, data = {}) {
-        try {
-          const url = new URL(scriptURL);
-          url.searchParams.append("action", action);
-          for (let key in data) url.searchParams.append(key, data[key]);
-          const response = await fetch(url);
-          return await response.json();
-        } catch (error) {
-          return null;
-        }
-      }
-
       function formatRupiah(angka) {
         let value = parseInt(angka) || 0;
         return new Intl.NumberFormat("id-ID", {
@@ -887,22 +874,42 @@
         return match ? match[1] : fullId;
       }
 
-      // FUNGSI PENGAMBIL HARGA DARI DATABASE / FALLBACK
+      // =======================================================
+      // FUNGSI PENGAMBIL HARGA SUPER AGRESIF (FIX NILAI STORAN)
+      // =======================================================
       function getHargaPaket(p) {
-        // 1. Mengambil dari database (Prioritas: kolom Nilai Storan / Nilai Setoran)
-        let rawVal =
+        let rawVal = null;
+
+        // 1. Cek langsung key yang umum
+        rawVal =
+          p["Nilai Storan"] ||
           p.nilai_storan ||
           p.nilai_setoran ||
           p.nilai ||
-          p["Nilai Storan"] ||
-          p["Nilai Setoran"] ||
-          p.Nilai_Storan;
+          p.harga;
 
+        // 2. Pencarian ekstra agresif di semua property object (jika format Backend berbeda)
+        if (rawVal === undefined || rawVal === null || rawVal === "") {
+          for (let key in p) {
+            let k = key.toLowerCase().replace(/[^a-z0-9]/g, "");
+            // Memburu kata kunci: nilaistoran, nilaisetoran, nilai, harga
+            if (
+              k === "nilaistoran" ||
+              k === "nilaisetoran" ||
+              k === "nilai" ||
+              k === "harga"
+            ) {
+              rawVal = p[key];
+              break;
+            }
+          }
+        }
+
+        // Jika berhasil mendapatkan angka dari backend
         if (rawVal !== undefined && rawVal !== null && rawVal !== "") {
-          // Format ulang jika API mengembalikan teks "10.000" jadi angka 10000
           let val = parseInt(String(rawVal).replace(/[^0-9]/g, ""));
           if (!isNaN(val) && val > 0) {
-            // Fix jika cookies
+            // Aturan khusus: Cookies selalu 1000/hari cicilannya
             if (
               String(p.paket).toLowerCase().includes("cookies") &&
               val > 10000
@@ -912,7 +919,7 @@
           }
         }
 
-        // 2. Fallback: Ekstraksi angka dari nama paket
+        // 3. Fallback Terakhir: Ekstraksi angka dari nama paket (Misal "Munggah 5000" -> 5000)
         let str = String(p.paket).replace(/\./g, "");
         let match = str.match(/\d{3,}/g);
         if (match) {
@@ -925,7 +932,7 @@
           return parsed;
         }
 
-        return 0; // Gagal
+        return 0; // Jika benar-benar gagal
       }
 
       async function initPage() {
