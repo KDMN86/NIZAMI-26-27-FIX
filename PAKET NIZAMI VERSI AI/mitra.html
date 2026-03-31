@@ -216,7 +216,7 @@
         border-color: #ffd700;
       }
 
-      /* REVISI DESAIN KARTU (LEBIH BESAR & BACAABLE) */
+      /* KARTU PESERTA BERANDA */
       .peserta-card {
         background: #111;
         border: 1px solid #333;
@@ -623,41 +623,31 @@
         justify-content: space-between;
         align-items: center;
         border-bottom: 1px solid #222;
-        padding: 16px 0;
+        padding: 18px 0;
       }
       .sm-info {
         flex: 1;
         padding-right: 15px;
       }
-      .sm-name {
-        font-weight: 800;
-        font-size: 1.1rem;
-        color: #fff;
-        margin-bottom: 4px;
-      }
-      .sm-paket {
-        font-size: 0.8rem;
-        color: #aaa;
-        margin-bottom: 8px;
-      }
       .sm-calc {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
         color: #bbb;
         background: #222;
         display: inline-block;
         padding: 4px 10px;
         border-radius: 6px;
+        border: 1px solid #333;
       }
       .sm-right {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
-        gap: 8px;
+        gap: 10px;
       }
       .sm-subtotal {
         font-weight: bold;
         color: #ffd700;
-        font-size: 1rem;
+        font-size: 1.05rem;
       }
 
       @keyframes fadeIn {
@@ -771,8 +761,7 @@
     <div id="batchBar" class="batch-bar">
       <div class="bb-header" onclick="toggleBatchCart()">
         <div class="bb-header-title">
-          <i class="fas fa-book"></i> Draft Draft Setoran (<span
-            id="cartCountBadge"
+          <i class="fas fa-book"></i> Draft Setoran (<span id="cartCountBadge"
             >0</span
           >) <i class="fas fa-chevron-up bb-toggle-icon"></i>
         </div>
@@ -917,10 +906,24 @@
             &times;
           </button>
         </div>
+
         <div
           id="smBody"
           style="padding: 0 20px; overflow-y: auto; flex: 1"
         ></div>
+
+        <div
+          id="smPreviewArea"
+          style="
+            background: #1a1a1a;
+            border-top: 1px solid #333;
+            max-height: 180px;
+            overflow-y: auto;
+            display: none;
+            padding: 15px 20px;
+          "
+        ></div>
+
         <div
           style="
             padding: 18px 20px;
@@ -1470,6 +1473,7 @@
         saveDraftAndRender();
       }
 
+      // REVISI: UPDATE TAMPILAN SETOR MASAL
       function renderSetorMasal() {
         const body = document.getElementById("smBody");
         if (rawPesertaData.length === 0) {
@@ -1478,17 +1482,27 @@
         }
         let html = "";
         let totalRp = 0;
+
         rawPesertaData.forEach((p) => {
           let qty = batchCart[p.id] ? batchCart[p.id].qty : 0;
           let subtotal = qty * p.harga;
           totalRp += subtotal;
           let curr = p.done + qty;
+
+          let noAnggotaBadge = p.no_anggota
+            ? `<span style="background:rgba(255,215,0,0.15); color:#ffd700; border:1px solid rgba(255,215,0,0.3); padding:3px 8px; border-radius:6px; font-size:0.75rem;">#${p.no_anggota}</span>`
+            : "";
+          let paketBadge = `<span style="background:#222; color:#ccc; padding:3px 8px; border-radius:6px; font-size:0.75rem; border:1px solid #444;">${p.paket}</span>`;
+
           html += `
           <div class="sm-item" id="sm_row_${p.id}">
             <div class="sm-info">
-                <div class="sm-name">${p.nama}</div>
-                <div class="sm-paket">${p.paket}</div>
-                <div class="sm-calc" id="sm_calc_${p.id}"><i class="fas fa-history"></i> Masuk: ${p.done} ➔ <b style="color:#fff; font-size:0.9rem;">${curr}</b></div>
+                <div class="sm-name" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom: 10px;">
+                    <span style="font-weight:800; font-size:1.1rem; color:#fff;">${p.nama}</span>
+                    ${noAnggotaBadge}
+                    ${paketBadge}
+                </div>
+                <div class="sm-calc" id="sm_calc_${p.id}"><i class="fas fa-history"></i> Masuk: ${p.done} ➔ <b style="color:#fff; font-size:0.95rem;">${curr}</b></div>
             </div>
             <div class="sm-right">
                 <div class="sm-subtotal" id="sm_sub_${p.id}">Rp ${subtotal.toLocaleString("id-ID")}</div>
@@ -1500,9 +1514,11 @@
             </div>
           </div>`;
         });
+
         body.innerHTML = html;
         document.getElementById("smTotalRp").innerText =
           "Rp " + totalRp.toLocaleString("id-ID");
+        updatePreviewSM(); // Panggil fungsi preview
       }
 
       function updateQtySM(id, nama, paket, harga, done, change) {
@@ -1521,20 +1537,54 @@
         if (batchCart[id].qty <= 0) {
           delete batchCart[id];
         }
+
         let newQty = batchCart[id] ? batchCart[id].qty : 0;
         let newSub = newQty * harga;
         let newCurr = done + newQty;
+
         document.getElementById(`sm_qty_${id}`).value = newQty;
         document.getElementById(`sm_calc_${id}`).innerHTML =
-          `<i class="fas fa-history"></i> Masuk: ${done} ➔ <b style="color:#fff; font-size:0.9rem;">${newCurr}</b>`;
+          `<i class="fas fa-history"></i> Masuk: ${done} ➔ <b style="color:#fff; font-size:0.95rem;">${newCurr}</b>`;
         document.getElementById(`sm_sub_${id}`).innerText =
           "Rp " + newSub.toLocaleString("id-ID");
+
         let totalRp = 0;
         for (let k in batchCart) {
           totalRp += batchCart[k].qty * batchCart[k].harga;
         }
         document.getElementById("smTotalRp").innerText =
           "Rp " + totalRp.toLocaleString("id-ID");
+
+        updatePreviewSM(); // Update preview setiap ada perubahan angka
+      }
+
+      // FUNGSI BARU: PREVIEW SETORAN MASAL DI BAGIAN BAWAH MODAL
+      function updatePreviewSM() {
+        let html = "";
+        let count = 0;
+
+        for (let id in batchCart) {
+          let item = batchCart[id];
+          if (item.qty > 0) {
+            let sub = item.qty * item.harga;
+            html += `<div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px dotted #444; padding-bottom:6px; line-height: 1.4;">
+                    <span style="color:#ccc; font-size:0.85rem;"><b>${item.qty}x</b> ${item.nama} <br><small style="color:#888;">${item.paket}</small></span>
+                    <span style="color:#ffd700; font-size:0.95rem; font-weight:bold;">Rp ${sub.toLocaleString("id-ID")}</span>
+                </div>`;
+            count++;
+          }
+        }
+
+        const previewDiv = document.getElementById("smPreviewArea");
+        if (count > 0) {
+          previewDiv.innerHTML =
+            `<div style="font-size:0.9rem; color:#3498db; margin-bottom:10px; font-weight:bold;"><i class="fas fa-check-double"></i> Cek Ulang Rincian:</div>` +
+            html;
+          previewDiv.style.display = "block";
+        } else {
+          previewDiv.style.display = "none";
+          previewDiv.innerHTML = "";
+        }
       }
 
       function hapusDariBatch(id) {
