@@ -9,7 +9,7 @@
     <title>Portal Super Mitra - Nizami</title>
     <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link
@@ -31,8 +31,6 @@
         padding-bottom: 120px;
         overflow-x: hidden;
       }
-
-      /* HEADER MITRA */
       header {
         padding: 15px 20px;
         background: linear-gradient(180deg, #1f1500 0%, #050505 100%);
@@ -58,9 +56,9 @@
         align-items: center;
       }
       .btn-top {
-        padding: 6px 12px;
+        padding: 8px 14px;
         border-radius: 8px;
-        font-size: 0.8rem;
+        font-size: 0.85rem;
         font-weight: bold;
         cursor: pointer;
         transition: 0.2s;
@@ -82,42 +80,40 @@
         background: rgba(255, 77, 77, 0.1);
         color: #ff4d4d;
         border: 1px solid rgba(255, 77, 77, 0.3);
-        padding: 6px 10px;
+        padding: 8px 12px;
       }
       .btn-logout:active {
         background: #ff4d4d;
         color: #fff;
       }
-
       .container {
         padding: 15px;
         max-width: 600px;
         margin: 0 auto;
       }
-
-      /* STATISTIK DASHBOARD */
       .dashboard-hero {
         background: linear-gradient(145deg, #151515, #0a0a0a);
         border: 1px solid #333;
         border-radius: 16px;
-        padding: 20px;
+        padding: 25px 20px;
         margin-bottom: 15px;
         text-align: center;
       }
       .hero-name {
-        font-size: 1.3rem;
-        font-weight: bold;
+        font-size: 1.4rem;
+        font-weight: 800;
         color: #fff;
         margin-bottom: 5px;
         text-transform: uppercase;
+        letter-spacing: 1px;
       }
       .hero-badge {
         display: inline-block;
         background: #ffd700;
         color: #000;
-        font-size: 0.7rem;
+        font-size: 0.75rem;
         font-weight: bold;
-        padding: 3px 10px;
+        padding: 4px 12px;
         border-radius: 20px;
         margin-bottom: 15px;
       }
@@ -134,7 +130,7 @@
         align-items: center;
       }
       .stat-val {
-        font-size: 1.3rem;
+        font-size: 1.5rem;
         font-weight: bold;
         color: #fff;
       }
@@ -145,35 +141,31 @@
         color: #ff6b6b;
       }
       .stat-label {
-        font-size: 0.65rem;
+        font-size: 0.7rem;
         color: #888;
         text-transform: uppercase;
         margin-top: 2px;
       }
-
-      /* TOMBOL AKSI DASHBOARD */
       .btn-tambah-peserta {
-        padding: 12px;
+        padding: 14px;
         border-radius: 12px;
         border: 1px dashed #4ade80;
         background: rgba(74, 222, 128, 0.1);
         color: #4ade80;
         font-weight: bold;
-        font-size: 0.85rem;
+        font-size: 0.95rem;
         cursor: pointer;
         transition: 0.2s;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 6px;
+        gap: 8px;
       }
       .btn-tambah-peserta:active {
         background: #4ade80;
         color: #000;
         border-style: solid;
       }
-
-      /* TOMBOL PILIH BARANG (KUNING UNTUK FORM) */
       .btn-pilih-barang {
         width: 100%;
         padding: 12px;
@@ -195,13 +187,11 @@
         color: #000;
         border-style: solid;
       }
-
-      /* FILTER KAPSUL */
       .filter-wrapper {
         display: flex;
         gap: 8px;
         overflow-x: auto;
-        padding-bottom: 10px;
+        padding-bottom: 15px;
         margin-bottom: 10px;
         scrollbar-width: none;
       }
@@ -212,9 +202,9 @@
         background: #1a1a1a;
         color: #888;
         border: 1px solid #333;
-        padding: 8px 16px;
+        padding: 10px 18px;
         border-radius: 50px;
-        font-size: 0.8rem;
+        font-size: 0.85rem;
         font-weight: 600;
         white-space: nowrap;
         cursor: pointer;
@@ -226,26 +216,26 @@
         border-color: #ffd700;
       }
 
-      /* KARTU PESERTA COMPACT */
+      /* REVISI DESAIN KARTU (LEBIH BESAR & BACAABLE) */
       .peserta-card {
         background: #111;
-        border: 1px solid #222;
-        border-radius: 12px;
-        padding: 12px 15px;
-        margin-bottom: 10px;
+        border: 1px solid #333;
+        border-radius: 14px;
+        padding: 18px 20px;
+        margin-bottom: 15px;
         display: flex;
         flex-direction: column;
         transition: 0.2s;
       }
       .peserta-card.nunggak {
-        border-left: 4px solid #ff6b6b;
+        border-left: 5px solid #ff6b6b;
       }
       .peserta-card.lancar {
-        border-left: 4px solid #4ade80;
+        border-left: 5px solid #4ade80;
       }
       .peserta-card.lunas {
-        border-left: 4px solid #3498db;
-        opacity: 0.8;
+        border-left: 5px solid #3498db;
+        opacity: 0.85;
       }
       .pc-head {
         display: flex;
@@ -254,38 +244,38 @@
       }
       .pc-info {
         flex: 1;
-        padding-right: 10px;
+        padding-right: 15px;
       }
       .pc-right {
         flex-shrink: 0;
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
-        gap: 6px;
+        align-items: center;
+        justify-content: center;
+        background: #0a0a0a;
+        padding: 12px 20px;
+        border-radius: 12px;
+        border: 1px solid #222;
+        min-width: 90px;
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
       }
       .pc-name {
-        font-weight: bold;
-        font-size: 1rem;
+        font-weight: 800;
+        font-size: 1.25rem;
         color: #fff;
-        margin-bottom: 4px;
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 5px;
+        margin-bottom: 8px;
+        letter-spacing: 0.5px;
       }
-
       .badge-id,
-      .badge-cal,
-      .badge-wa {
-        font-size: 0.65rem;
-        padding: 2px 6px;
-        border-radius: 4px;
+      .badge-no {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+        border-radius: 6px;
         cursor: pointer;
         display: inline-flex;
         align-items: center;
-        gap: 4px;
-        transition: 0.2s;
-        font-weight: 600;
+        gap: 5px;
+        font-weight: 700;
       }
       .badge-id {
         background: rgba(52, 152, 219, 0.1);
@@ -296,68 +286,50 @@
         background: #3498db;
         color: #fff;
       }
-      .badge-cal {
-        background: rgba(74, 222, 128, 0.1);
-        color: #4ade80;
-        border: 1px solid rgba(74, 222, 128, 0.3);
+      .badge-no {
+        background: rgba(255, 215, 0, 0.15);
+        color: #ffd700;
+        border: 1px solid rgba(255, 215, 0, 0.4);
+        cursor: default;
       }
-      .badge-cal:active {
-        background: #4ade80;
-        color: #000;
-      }
-      .badge-wa {
-        background: rgba(37, 211, 102, 0.1);
-        color: #25d366;
-        border: 1px solid rgba(37, 211, 102, 0.3);
-      }
-      .badge-wa:active {
-        background: #25d366;
-        color: #000;
-      }
-
       .pc-paket {
-        font-size: 0.65rem;
-        color: #aaa;
+        font-size: 0.8rem;
+        color: #bbb;
         background: #222;
-        padding: 2px 6px;
-        border-radius: 4px;
+        padding: 4px 10px;
+        border-radius: 6px;
         display: inline-block;
+        margin-top: 10px;
+        border: 1px solid #333;
       }
       .pc-status {
-        font-size: 0.7rem;
+        font-size: 0.85rem;
         font-weight: bold;
         display: flex;
         align-items: center;
-        gap: 5px;
-        margin-top: 6px;
-      }
-      .pc-done {
-        font-size: 1.3rem;
-        font-weight: bold;
-        color: #fff;
-        line-height: 1;
+        gap: 6px;
+        margin-top: 10px;
       }
 
-      /* INPUT DENGAN + DAN - */
       .stepper-control {
         display: flex;
         align-items: center;
         background: #000;
-        border: 1px solid #333;
-        border-radius: 6px;
+        border: 1px solid #444;
+        border-radius: 8px;
         overflow: hidden;
-        width: 90px;
-        height: 28px;
+        width: 110px;
+        height: 36px;
         flex-shrink: 0;
       }
       .stepper-btn {
         background: #222;
         color: #4ade80;
         border: none;
-        width: 28px;
+        width: 35px;
         height: 100%;
         font-weight: bold;
-        font-size: 1rem;
+        font-size: 1.2rem;
         cursor: pointer;
         transition: 0.1s;
       }
@@ -373,37 +345,31 @@
         color: #fff;
         text-align: center;
         font-weight: bold;
-        font-size: 0.85rem;
-        -moz-appearance: textfield;
+        font-size: 1.1rem;
         outline: none;
         height: 100%;
         padding: 0;
       }
-      .stepper-input::-webkit-outer-spin-button,
-      .stepper-input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-      }
 
       .wa-action-box {
-        border-top: 1px dashed #333;
-        margin-top: 10px;
-        padding-top: 10px;
+        border-top: 1px dashed #444;
+        margin-top: 15px;
+        padding-top: 15px;
       }
       .btn-wa {
         width: 100%;
-        padding: 8px;
-        border-radius: 8px;
-        border: 1px solid rgba(255, 107, 107, 0.3);
-        background: rgba(255, 107, 107, 0.1);
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 107, 107, 0.4);
+        background: rgba(255, 107, 107, 0.15);
         color: #ff6b6b;
-        font-size: 0.8rem;
+        font-size: 0.95rem;
         font-weight: bold;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 6px;
+        gap: 8px;
         transition: 0.2s;
       }
       .btn-wa:active {
@@ -411,16 +377,15 @@
         color: #000;
       }
 
-      /* BATCH BAR */
       .batch-bar {
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
         background: rgba(15, 15, 15, 0.98);
-        border-top: 1px solid #ffd700;
+        border-top: 2px solid #ffd700;
         z-index: 1000;
-        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.9);
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.9);
         transform: translateY(100%);
         transition: transform 0.3s ease-out;
         display: flex;
@@ -431,21 +396,22 @@
         transform: translateY(0);
       }
       .bb-header {
-        padding: 12px 20px;
+        padding: 15px 20px;
         font-weight: bold;
         border-bottom: 1px solid #333;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: rgba(255, 215, 0, 0.05);
+        background: rgba(255, 215, 0, 0.08);
         border-radius: 20px 20px 0 0;
         cursor: pointer;
+        font-size: 1.05rem;
       }
       .bb-header-title {
         color: #ffd700;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
       }
       .bb-toggle-icon {
         transition: transform 0.3s ease;
@@ -471,25 +437,25 @@
         display: flex;
         justify-content: space-between;
         color: #ddd;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
         border-bottom: 1px dashed #333;
-        padding-bottom: 8px;
+        padding-bottom: 10px;
         align-items: center;
       }
       .batch-summary {
-        padding: 15px 20px;
+        padding: 18px 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         background: #050505;
       }
       .bs-label {
-        font-size: 0.75rem;
-        color: #888;
+        font-size: 0.8rem;
+        color: #aaa;
         margin-bottom: 2px;
       }
       .bs-val {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         font-weight: bold;
         color: #4ade80;
       }
@@ -497,7 +463,7 @@
         background: #ffd700;
         color: #000;
         border: none;
-        padding: 12px 20px;
+        padding: 14px 22px;
         border-radius: 50px;
         font-weight: bold;
         cursor: pointer;
@@ -505,10 +471,9 @@
         gap: 8px;
         align-items: center;
         box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-        font-size: 0.9rem;
+        font-size: 1rem;
       }
 
-      /* MODAL UMUM & INPUT FORM */
       .modal-overlay {
         position: fixed;
         inset: 0;
@@ -526,25 +491,23 @@
       }
       .modal-card {
         background: #1a1a1a;
-        border-radius: 15px;
-        width: 90%;
+        border-radius: 16px;
+        width: 95%;
         max-width: 450px;
-        border: 1px solid #333;
+        border: 1px solid #444;
         position: relative;
       }
       .input-dark {
         width: 100%;
-        padding: 12px;
+        padding: 14px;
         background: #000;
         border: 1px solid #444;
         color: #fff;
-        border-radius: 8px;
+        border-radius: 10px;
         font-family: "Poppins", sans-serif;
+        font-size: 1rem;
       }
-      .input-dark:focus {
-        border-color: #4ade80;
-        outline: none;
-      }
+
       #preview-img-container {
         text-align: center;
         background: #111;
@@ -576,53 +539,50 @@
         transform: translateX(-50%);
         background: #4ade80;
         color: #000;
-        padding: 10px 20px;
+        padding: 12px 25px;
         border-radius: 50px;
         font-weight: bold;
-        font-size: 0.85rem;
+        font-size: 0.95rem;
         box-shadow: 0 4px 15px rgba(74, 222, 128, 0.4);
         z-index: 99999;
         display: none;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
         transition: opacity 0.3s;
       }
       .loader {
         text-align: center;
         padding: 50px;
         color: #888;
-        font-size: 0.9rem;
+        font-size: 1rem;
       }
 
-      /* SELECTOR PAKET MASAL & ACCORDION */
       .cs-select {
         width: 100%;
-        padding: 12px;
+        padding: 14px;
         background: #222;
         color: #fff;
         border: 1px solid #444;
-        border-radius: 8px;
-        font-size: 0.9rem;
+        border-radius: 10px;
+        font-size: 1rem;
         outline: none;
-      }
-      .cs-select:focus {
-        border-color: #ffd700;
       }
       .btn-fab-add {
         width: 100%;
         background: #222;
         color: #fff;
-        border: 1px dashed #555;
-        padding: 15px;
+        border: 2px dashed #555;
+        padding: 18px;
         border-radius: 12px;
         font-weight: bold;
-        font-size: 0.95rem;
+        font-size: 1rem;
         cursor: pointer;
         margin-bottom: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
+        transition: 0.2s;
       }
       .btn-fab-add:active {
         background: #333;
@@ -631,13 +591,14 @@
       .accordion-header {
         background: #1a1a1a;
         border: 1px solid #333;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 5px;
+        padding: 16px 18px;
+        border-radius: 10px;
+        margin-bottom: 6px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         font-weight: bold;
+        font-size: 1.05rem;
         color: #ffd700;
         cursor: pointer;
         transition: background 0.2s;
@@ -645,62 +606,58 @@
         position: sticky;
         top: -1px;
         z-index: 10;
-        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.9);
-      }
-      .accordion-header:active {
-        background: #2a2a2a;
       }
       .accordion-body {
         background: #0a0a0a;
         border: 1px solid #222;
         border-top: none;
-        padding: 0 15px;
-        border-radius: 0 0 8px 8px;
-        margin-bottom: 15px;
-        margin-top: -5px;
+        padding: 0 18px;
+        border-radius: 0 0 10px 10px;
+        margin-bottom: 18px;
+        margin-top: -6px;
       }
 
-      /* ITEM SETOR MASAL COMPACT */
+      /* SETORAN MASAL UKURAN BESAR */
       .sm-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
         border-bottom: 1px solid #222;
-        padding: 12px 0;
+        padding: 16px 0;
       }
       .sm-info {
         flex: 1;
-        padding-right: 10px;
+        padding-right: 15px;
       }
       .sm-name {
-        font-weight: bold;
-        font-size: 0.95rem;
+        font-weight: 800;
+        font-size: 1.1rem;
         color: #fff;
-        margin-bottom: 2px;
-      }
-      .sm-paket {
-        font-size: 0.7rem;
-        color: #888;
         margin-bottom: 4px;
       }
-      .sm-calc {
-        font-size: 0.75rem;
+      .sm-paket {
+        font-size: 0.8rem;
         color: #aaa;
+        margin-bottom: 8px;
+      }
+      .sm-calc {
+        font-size: 0.8rem;
+        color: #bbb;
         background: #222;
         display: inline-block;
-        padding: 2px 8px;
-        border-radius: 4px;
+        padding: 4px 10px;
+        border-radius: 6px;
       }
       .sm-right {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
-        gap: 6px;
+        gap: 8px;
       }
       .sm-subtotal {
         font-weight: bold;
         color: #ffd700;
-        font-size: 0.9rem;
+        font-size: 1rem;
       }
 
       @keyframes fadeIn {
@@ -753,19 +710,17 @@
             ><span class="stat-label">Lancar/Lunas</span>
           </div>
         </div>
-
-        <div style="display: flex; gap: 10px; margin-top: 15px">
+        <div style="display: flex; gap: 12px; margin-top: 20px">
           <button
             class="btn-tambah-peserta"
-            style="margin-top: 0; flex: 1"
+            style="flex: 1"
             onclick="bukaModalDaftarBaru()"
           >
-            <i class="fas fa-user-plus"></i> Peserta Baru
+            <i class="fas fa-user-plus"></i> Daftar Baru
           </button>
           <button
             class="btn-tambah-peserta"
             style="
-              margin-top: 0;
               flex: 1;
               border-color: #3498db;
               color: #3498db;
@@ -816,18 +771,20 @@
     <div id="batchBar" class="batch-bar">
       <div class="bb-header" onclick="toggleBatchCart()">
         <div class="bb-header-title">
-          <i class="fas fa-book"></i> Draft (<span id="cartCountBadge">0</span>)
-          <i class="fas fa-chevron-up bb-toggle-icon"></i>
+          <i class="fas fa-book"></i> Draft Draft Setoran (<span
+            id="cartCountBadge"
+            >0</span
+          >) <i class="fas fa-chevron-up bb-toggle-icon"></i>
         </div>
         <span
           onclick="clearBatchCart(event)"
           style="
             color: #ff6b6b;
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             background: rgba(255, 107, 107, 0.1);
-            padding: 4px 8px;
-            border-radius: 6px;
-            border: 1px solid rgba(255, 107, 107, 0.3);
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 107, 107, 0.4);
           "
           ><i class="fas fa-trash"></i> Hapus</span
         >
@@ -851,8 +808,9 @@
             text-align: center;
             color: #4ade80;
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin-bottom: 5px;
+            padding-top: 20px;
           "
         >
           Struk Berhasil Dibuat!
@@ -860,26 +818,27 @@
         <p
           style="
             text-align: center;
-            color: #888;
-            font-size: 0.75rem;
-            margin-bottom: 15px;
+            color: #aaa;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
           "
         >
           Kirim struk ini ke Admin bersama bukti transfer.
         </p>
-        <div id="preview-img-container"></div>
-        <div style="display: flex; gap: 10px">
+        <div id="preview-img-container" style="margin: 0 20px 20px"></div>
+        <div style="display: flex; gap: 12px; padding: 0 20px">
           <button
             onclick="downloadStruk()"
             style="
               flex: 1;
-              padding: 12px;
-              border-radius: 8px;
+              padding: 14px;
+              border-radius: 10px;
               border: none;
               font-weight: bold;
               cursor: pointer;
               background: #333;
               color: #fff;
+              font-size: 1rem;
             "
           >
             <i class="fas fa-download"></i> Simpan
@@ -888,13 +847,14 @@
             onclick="kirimWaAdmin()"
             style="
               flex: 2;
-              padding: 12px;
-              border-radius: 8px;
+              padding: 14px;
+              border-radius: 10px;
               border: none;
               font-weight: bold;
               cursor: pointer;
               background: #ffd700;
               color: #000;
+              font-size: 1rem;
             "
           >
             <i class="fab fa-whatsapp"></i> WA Admin
@@ -903,14 +863,16 @@
         <button
           onclick="tutupPreviewImg()"
           style="
-            width: 100%;
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 8px;
+            width: calc(100% - 40px);
+            margin: 15px 20px 20px;
+            padding: 12px;
+            border-radius: 10px;
             border: 1px solid #444;
             background: transparent;
             color: #aaa;
             cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
           "
         >
           Tutup
@@ -931,7 +893,7 @@
       >
         <div
           style="
-            padding: 15px 20px;
+            padding: 18px 20px;
             border-bottom: 1px solid #333;
             background: #111;
             display: flex;
@@ -939,15 +901,15 @@
             align-items: center;
           "
         >
-          <h3 style="margin: 0; color: #3498db">
-            <i class="fas fa-list-check"></i> Setoran Masal
+          <h3 style="margin: 0; color: #3498db; font-size: 1.2rem">
+            <i class="fas fa-list-check"></i> Form Setoran Masal
           </h3>
           <button
             style="
               background: none;
               border: none;
               color: #aaa;
-              font-size: 1.5rem;
+              font-size: 1.8rem;
               cursor: pointer;
             "
             onclick="tutupModalSetorMasal()"
@@ -955,10 +917,13 @@
             &times;
           </button>
         </div>
-        <div id="smBody" style="padding: 15px; overflow-y: auto; flex: 1"></div>
+        <div
+          id="smBody"
+          style="padding: 0 20px; overflow-y: auto; flex: 1"
+        ></div>
         <div
           style="
-            padding: 15px;
+            padding: 18px 20px;
             background: #050505;
             border-top: 1px solid #333;
             display: flex;
@@ -967,12 +932,12 @@
           "
         >
           <div>
-            <div style="font-size: 0.7rem; color: #888">
+            <div style="font-size: 0.8rem; color: #888">
               Total Setoran Keseluruhan
             </div>
             <div
               id="smTotalRp"
-              style="color: #4ade80; font-weight: bold; font-size: 1.1rem"
+              style="color: #4ade80; font-weight: bold; font-size: 1.3rem"
             >
               Rp 0
             </div>
@@ -980,7 +945,7 @@
           <button
             onclick="tutupModalSetorMasal()"
             class="btn-checkout"
-            style="background: #3498db; padding: 10px 15px"
+            style="background: #3498db; padding: 12px 20px; font-size: 1rem"
           >
             <i class="fas fa-save"></i> Simpan Draft
           </button>
@@ -1001,7 +966,7 @@
       >
         <div
           style="
-            padding: 15px 20px;
+            padding: 18px 20px;
             border-bottom: 1px solid #333;
             background: #111;
             display: flex;
@@ -1009,7 +974,7 @@
             align-items: center;
           "
         >
-          <h3 style="margin: 0; color: #4ade80">
+          <h3 style="margin: 0; color: #4ade80; font-size: 1.2rem">
             <i class="fas fa-user-plus"></i> Form Pendaftaran
           </h3>
           <button
@@ -1017,7 +982,7 @@
               background: none;
               border: none;
               color: #aaa;
-              font-size: 1.5rem;
+              font-size: 1.8rem;
               cursor: pointer;
             "
             onclick="tutupModalDaftarBaru()"
@@ -1025,14 +990,12 @@
             &times;
           </button>
         </div>
-
         <div
-          style="padding: 15px; overflow-y: auto; flex: 1"
+          style="padding: 20px; overflow-y: auto; flex: 1"
           id="scrollFormArea"
         >
           <form id="formPendaftaran" onsubmit="submitDaftarPesertaWA(event)">
             <div id="formsContainerMitra"></div>
-
             <button
               type="button"
               class="btn-fab-add"
@@ -1040,7 +1003,6 @@
             >
               <i class="fas fa-plus"></i> Tambah Peserta Lain
             </button>
-
             <button
               type="submit"
               class="btn-checkout"
@@ -1049,7 +1011,8 @@
                 background: #4ade80;
                 color: #000;
                 justify-content: center;
-                padding: 15px;
+                padding: 16px;
+                font-size: 1.05rem;
               "
             >
               <i class="fas fa-paper-plane"></i> Kirim Pendaftaran via WA
@@ -1072,7 +1035,7 @@
       >
         <div
           style="
-            padding: 15px 20px;
+            padding: 18px 20px;
             border-bottom: 1px solid #333;
             background: #111;
             display: flex;
@@ -1080,7 +1043,7 @@
             align-items: center;
           "
         >
-          <h3 style="margin: 0; color: #ffd700; font-size: 1.1rem" id="pbTitle">
+          <h3 style="margin: 0; color: #ffd700; font-size: 1.2rem" id="pbTitle">
             <i class="fas fa-box-open"></i> Pilih Barang
           </h3>
           <button
@@ -1089,7 +1052,7 @@
               background: none;
               border: none;
               color: #aaa;
-              font-size: 1.5rem;
+              font-size: 1.8rem;
               cursor: pointer;
             "
             onclick="tutupPilihBarang()"
@@ -1097,7 +1060,6 @@
             &times;
           </button>
         </div>
-
         <div
           id="pbBody"
           style="
@@ -1107,22 +1069,20 @@
             position: relative;
           "
         ></div>
-
         <div
           id="pbSelectedItems"
           style="
-            padding: 10px 15px;
+            padding: 15px;
             background: #1a1a1a;
             border-top: 1px solid #333;
-            max-height: 120px;
+            max-height: 150px;
             overflow-y: auto;
             display: none;
           "
         ></div>
-
         <div
           style="
-            padding: 15px;
+            padding: 18px 20px;
             background: #050505;
             border-top: 1px solid #333;
             display: flex;
@@ -1131,12 +1091,12 @@
           "
         >
           <div>
-            <div style="font-size: 0.7rem; color: #888" id="pbTotalLabel">
+            <div style="font-size: 0.8rem; color: #888" id="pbTotalLabel">
               Total Nilai Barang
             </div>
             <div
               id="pbTotal"
-              style="color: #4ade80; font-weight: bold; font-size: 1.1rem"
+              style="color: #4ade80; font-weight: bold; font-size: 1.2rem"
             >
               Rp 0
             </div>
@@ -1145,7 +1105,7 @@
             type="button"
             onclick="selesaiPilihBarang()"
             class="btn-checkout"
-            style="padding: 10px 15px"
+            style="padding: 12px 25px; font-size: 1.05rem"
           >
             <i class="fas fa-check"></i> Selesai
           </button>
@@ -1326,6 +1286,7 @@
               }
               return {
                 id: item.id || item.id_peserta || item.idpeserta,
+                no_anggota: item.no_anggota,
                 nama: item.nama || item.nama_peserta,
                 hp: no_hp_db,
                 paket: item.paket || item.jenis_paket,
@@ -1337,7 +1298,7 @@
             processAndRender(rawPesertaData);
           } else {
             document.getElementById("pesertaContainer").innerHTML =
-              '<div style="text-align:center; color:#888; padding:30px;">Belum ada peserta terdaftar.</div>';
+              '<div style="text-align:center; color:#888; padding:30px; font-size:1.1rem;">Belum ada peserta terdaftar.</div>';
           }
         } catch (e) {
           console.error("Gagal load data", e);
@@ -1436,7 +1397,7 @@
           );
 
         if (filtered.length === 0) {
-          container.innerHTML = `<div style="text-align:center; padding:30px; color:#666;">Tidak ada peserta di kategori ini.</div>`;
+          container.innerHTML = `<div style="text-align:center; padding:30px; color:#666; font-size:1.1rem;">Tidak ada peserta di kategori ini.</div>`;
           return;
         }
 
@@ -1445,22 +1406,15 @@
           let cardStyle = "lancar";
           if (kal.kategori === "nunggak") cardStyle = "nunggak";
           if (kal.kategori === "lunas") cardStyle = "lunas";
-          let qtyCart = batchCart[p.id] ? batchCart[p.id].qty : 0;
 
-          let idBtnHtml = `<span class="badge-id" onclick="window.location.href='kartu-digital.html?id=${p.id}'" title="Kartu Digital"><i class="fas fa-id-card"></i> ${p.id}</span>`;
-          let kalenderBtnHtml = `<span class="badge-cal" onclick="window.location.href='kalender.html?id=${p.id}&nama=${encodeURIComponent(p.nama)}&paket=${encodeURIComponent(p.paket)}&jumlah=${p.done}'" title="Kalender Setoran"><i class="far fa-calendar-alt"></i></span>`;
-          let waBtnHtml = `<span class="badge-wa" onclick="hubungiWA('${p.hp || ""}', '${p.nama.replace(/'/g, "\\'")}')" title="Hubungi WA Peserta"><i class="fab fa-whatsapp"></i></span>`;
-
-          let stepperHtml = "";
-          if (kal.kategori !== "lunas") {
-            stepperHtml = `<div class="stepper-control"><button class="stepper-btn" onclick="updateDraft('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, -1)">-</button><input type="number" class="stepper-input" id="draft-input-${p.id}" value="${qtyCart}" onchange="setDraft('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, this.value)" /><button class="stepper-btn" onclick="updateDraft('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, 1)">+</button></div>`;
-          } else {
-            stepperHtml = `<div style="font-size:0.75rem; color:#3498db; font-weight:bold;"><i class="fas fa-check-circle"></i> Selesai</div>`;
-          }
+          let idBtnHtml = `<span class="badge-id" onclick="window.location.href='kartu-digital.html?id=${p.id}'" title="Kartu Digital"><i class="fas fa-id-card"></i> Buka Kartu</span>`;
+          let noAnggotaHtml = p.no_anggota
+            ? `<span class="badge-no" title="Nomor Anggota"><i class="fas fa-hashtag"></i> No. ${p.no_anggota}</span>`
+            : "";
 
           let btnWaTunggakanHtml = "";
           if (kal.kategori === "nunggak" && p.harga > 0) {
-            btnWaTunggakanHtml = `<div class="wa-action-box"><button class="btn-wa" onclick="tagihWA('${p.hp || ""}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${kal.telatCount}, ${p.harga * kal.telatCount})"><i class="fab fa-whatsapp" style="font-size:1rem;"></i> Tagih Tunggakan (Rp ${(p.harga * kal.telatCount).toLocaleString("id-ID")})</button></div>`;
+            btnWaTunggakanHtml = `<div class="wa-action-box"><button class="btn-wa" onclick="tagihWA('${p.hp || ""}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${kal.telatCount}, ${p.harga * kal.telatCount})"><i class="fab fa-whatsapp" style="font-size:1.3rem;"></i> Kirim Tagihan via WA (Rp ${(p.harga * kal.telatCount).toLocaleString("id-ID")})</button></div>`;
           }
 
           container.insertAdjacentHTML(
@@ -1469,13 +1423,18 @@
             <div class="peserta-card ${cardStyle}">
               <div class="pc-head">
                 <div class="pc-info">
-                  <div class="pc-name">${p.nama} ${idBtnHtml} ${kalenderBtnHtml} ${waBtnHtml}</div>
+                  <div class="pc-name">${p.nama}</div>
+                  <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+                    ${noAnggotaHtml}
+                    ${idBtnHtml}
+                  </div>
                   <div class="pc-paket">${p.paket}</div>
                   <div class="pc-status ${kal.colorClass}"><i class="fas ${kal.icon}"></i> ${kal.text}</div>
                 </div>
                 <div class="pc-right">
-                  <div class="pc-done">${p.done}<span style="font-size:0.75rem; color:#888;">/${p.target}</span></div>
-                  ${stepperHtml}
+                  <div style="font-size: 0.75rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: bold;">Tercapai</div>
+                  <div style="font-size: 2rem; color: #ffd700; font-weight: bold; line-height: 1;">${p.done}</div>
+                  <div style="font-size: 0.95rem; color: #888; font-weight: bold; border-top: 1px solid #333; margin-top: 5px; padding-top: 5px; width: 100%; text-align: center;">/ ${p.target}</div>
                 </div>
               </div>
               ${btnWaTunggakanHtml}
@@ -1483,22 +1442,6 @@
           );
         });
         updateBatchUI();
-      }
-
-      function hubungiWA(hp, nama) {
-        if (!hp || hp.trim() === "" || hp === "undefined" || hp === "null") {
-          alert(
-            "Nomor WhatsApp tidak tersedia/belum diinput untuk peserta ini di Database.",
-          );
-          return;
-        }
-        let hpClean = String(hp).replace(/\D/g, "");
-        if (hpClean.startsWith("0")) hpClean = "62" + hpClean.substring(1);
-        let txt = `Assalamu'alaikum Kak *${nama}*,\n\nIni dengan admin/mitra dari Tabungan Nizami.`;
-        window.open(
-          `https://wa.me/${hpClean}?text=${encodeURIComponent(txt)}`,
-          "_blank",
-        );
       }
 
       function tagihWA(hp, nama, paket, telat, nominal) {
@@ -1526,10 +1469,11 @@
         document.getElementById("modalSetorMasal").classList.remove("show");
         saveDraftAndRender();
       }
+
       function renderSetorMasal() {
         const body = document.getElementById("smBody");
         if (rawPesertaData.length === 0) {
-          body.innerHTML = `<div style="text-align:center; padding:20px; color:#888;">Belum ada peserta.</div>`;
+          body.innerHTML = `<div style="text-align:center; padding:30px; color:#888; font-size:1.1rem;">Belum ada peserta.</div>`;
           return;
         }
         let html = "";
@@ -1539,12 +1483,28 @@
           let subtotal = qty * p.harga;
           totalRp += subtotal;
           let curr = p.done + qty;
-          html += `<div class="sm-item" id="sm_row_${p.id}"><div class="sm-info"><div class="sm-name">${p.nama}</div><div class="sm-paket">${p.paket}</div><div class="sm-calc" id="sm_calc_${p.id}"><i class="fas fa-history"></i> Setoran: ${p.done} ➔ <b style="color:#fff">${curr}</b></div></div><div class="sm-right"><div class="sm-subtotal" id="sm_sub_${p.id}">Rp ${subtotal.toLocaleString("id-ID")}</div><div class="stepper-control"><button type="button" class="stepper-btn" onclick="updateQtySM('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, -1)">-</button><input type="number" readonly class="stepper-input" id="sm_qty_${p.id}" value="${qty}"><button type="button" class="stepper-btn" onclick="updateQtySM('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, 1)">+</button></div></div></div>`;
+          html += `
+          <div class="sm-item" id="sm_row_${p.id}">
+            <div class="sm-info">
+                <div class="sm-name">${p.nama}</div>
+                <div class="sm-paket">${p.paket}</div>
+                <div class="sm-calc" id="sm_calc_${p.id}"><i class="fas fa-history"></i> Masuk: ${p.done} ➔ <b style="color:#fff; font-size:0.9rem;">${curr}</b></div>
+            </div>
+            <div class="sm-right">
+                <div class="sm-subtotal" id="sm_sub_${p.id}">Rp ${subtotal.toLocaleString("id-ID")}</div>
+                <div class="stepper-control">
+                    <button type="button" class="stepper-btn" onclick="updateQtySM('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, -1)">-</button>
+                    <input type="number" readonly class="stepper-input" id="sm_qty_${p.id}" value="${qty}">
+                    <button type="button" class="stepper-btn" onclick="updateQtySM('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, 1)">+</button>
+                </div>
+            </div>
+          </div>`;
         });
         body.innerHTML = html;
         document.getElementById("smTotalRp").innerText =
           "Rp " + totalRp.toLocaleString("id-ID");
       }
+
       function updateQtySM(id, nama, paket, harga, done, change) {
         if (!batchCart[id]) {
           batchCart[id] = {
@@ -1566,7 +1526,7 @@
         let newCurr = done + newQty;
         document.getElementById(`sm_qty_${id}`).value = newQty;
         document.getElementById(`sm_calc_${id}`).innerHTML =
-          `<i class="fas fa-history"></i> Setoran: ${done} ➔ <b style="color:#fff">${newCurr}</b>`;
+          `<i class="fas fa-history"></i> Masuk: ${done} ➔ <b style="color:#fff; font-size:0.9rem;">${newCurr}</b>`;
         document.getElementById(`sm_sub_${id}`).innerText =
           "Rp " + newSub.toLocaleString("id-ID");
         let totalRp = 0;
@@ -1577,41 +1537,6 @@
           "Rp " + totalRp.toLocaleString("id-ID");
       }
 
-      function updateDraft(id, nama, paket, harga, currentDone, change) {
-        if (!batchCart[id]) {
-          batchCart[id] = {
-            nama: nama,
-            paket: paket,
-            harga: harga,
-            currentDone: currentDone,
-            qty: 0,
-          };
-        }
-        batchCart[id].qty += change;
-        batchCart[id].date = getFormattedDate();
-        if (batchCart[id].qty <= 0) delete batchCart[id];
-        saveDraftAndRender();
-        if (change > 0) showToast("Tersimpan di Draft!");
-      }
-      function setDraft(id, nama, paket, harga, currentDone, val) {
-        let qty = parseInt(val) || 0;
-        if (qty <= 0) {
-          delete batchCart[id];
-        } else {
-          if (!batchCart[id])
-            batchCart[id] = {
-              nama: nama,
-              paket: paket,
-              harga: harga,
-              currentDone: currentDone,
-              qty: 0,
-            };
-          batchCart[id].qty = qty;
-          batchCart[id].date = getFormattedDate();
-        }
-        saveDraftAndRender();
-        showToast("Tersimpan di Draft!");
-      }
       function hapusDariBatch(id) {
         delete batchCart[id];
         saveDraftAndRender();
@@ -1643,6 +1568,7 @@
         const bar = document.getElementById("batchBar");
         if (Object.keys(batchCart).length > 0) bar.classList.toggle("expanded");
       }
+
       function updateBatchUI() {
         let totalUang = 0,
           countItem = 0,
@@ -1653,7 +1579,7 @@
           let subtotal = item.qty * item.harga;
           totalUang += subtotal;
           countItem++;
-          html += `<div class="batch-item"><div style="max-width:65%;"><div style="font-weight:bold; color:#fff; font-size: 0.9rem;">${item.nama} <span style="color:#ffd700; font-size:0.8rem; margin-left: 5px;">x${item.qty}</span></div><div style="font-size:0.65rem; color:#888;">${item.paket}</div><div style="font-size:0.6rem; color:#4ade80; margin-top:4px;"><i class="far fa-clock"></i> Draft: ${item.date}</div></div><div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;"><span style="color:#4ade80; font-weight:bold; font-size: 0.9rem;">Rp ${subtotal.toLocaleString("id-ID")}</span><i class="fas fa-trash" style="color:#ff6b6b; cursor:pointer; font-size:0.9rem; background: #222; padding: 5px 8px; border-radius: 4px;" onclick="hapusDariBatch('${id}')"></i></div></div>`;
+          html += `<div class="batch-item"><div style="max-width:65%;"><div style="font-weight:bold; color:#fff; font-size: 1rem;">${item.nama} <span style="color:#ffd700; font-size:0.9rem; margin-left: 5px;">x${item.qty}</span></div><div style="font-size:0.75rem; color:#888;">${item.paket}</div><div style="font-size:0.7rem; color:#4ade80; margin-top:4px;"><i class="far fa-clock"></i> Draft: ${item.date}</div></div><div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;"><span style="color:#4ade80; font-weight:bold; font-size: 1rem;">Rp ${subtotal.toLocaleString("id-ID")}</span><i class="fas fa-trash" style="color:#ff6b6b; cursor:pointer; font-size:1rem; background: #222; padding: 6px 10px; border-radius: 6px;" onclick="hapusDariBatch('${id}')"></i></div></div>`;
         }
         document.getElementById("batchDetails").innerHTML = html;
         document.getElementById("batchTotalRp").innerText =
@@ -1740,9 +1666,6 @@
         document.getElementById("batchBar").classList.remove("expanded");
       }
 
-      // ==========================================
-      // LOGIKA PENDAFTARAN PESERTA
-      // ==========================================
       function bukaModalDaftarBaru() {
         document.getElementById("formsContainerMitra").innerHTML = "";
         formCountMitra = 0;
@@ -1750,15 +1673,12 @@
         addParticipantRowMitra();
         document.getElementById("modalDaftarBaru").classList.add("show");
       }
-
       function tutupModalDaftarBaru() {
         document.getElementById("modalDaftarBaru").classList.remove("show");
       }
 
-      // AUTO FILL BARANG JIKA PAKET STANDAR
       function getPaketItems(pktName) {
         let items = {};
-
         if (masterIsiPaket && masterIsiPaket.length > 0) {
           let found = false;
           masterIsiPaket.forEach((isi) => {
@@ -1782,10 +1702,8 @@
           });
           if (found) return items;
         }
-
         let pkt = masterPaket.find((p) => p.nama === pktName);
         if (!pkt) return items;
-
         let rawText =
           pkt.rincian ||
           pkt.isi_paket ||
@@ -1804,12 +1722,10 @@
                 const xBeforeMatch = part.match(/(\d+)\s*(?:x|X)/);
                 const parenMatch = part.match(/\(\s*(\d+)\s*[a-zA-Z]*\s*\)/);
                 const startMatch = part.match(/^(?:-|\*|\•|\d+\.)?\s*(\d+)/);
-
                 if (xMatch) qty = parseInt(xMatch[1]);
                 else if (xBeforeMatch) qty = parseInt(xBeforeMatch[1]);
                 else if (parenMatch) qty = parseInt(parenMatch[1]);
                 else if (startMatch) qty = parseInt(startMatch[1]);
-
                 if (items[b.nama]) items[b.nama] += qty;
                 else items[b.nama] = qty;
                 break;
@@ -1824,41 +1740,33 @@
         formCountMitra++;
         const id = formCountMitra;
         rowDataMitra[`row_${id}`] = { packages: [] };
-
         let optHtml =
           '<option value="" disabled selected>-- Pilih Jenis Paket --</option>';
         masterPaket.forEach((p) => {
           optHtml += `<option value="${p.nama}">${p.nama}</option>`;
         });
-
         let defHp =
           globalMitraHp || localStorage.getItem("mitra_hp_cache") || "";
         let defAlamat =
           globalMitraAlamat || localStorage.getItem("mitra_alamat_cache") || "";
-
         const html = `
         <div class="peserta-card" id="rowMitra_${id}" style="margin-bottom:20px; border:1px solid #333;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:12px; align-items:center;">
-                <b style="color:#ffd700; font-size:1.1rem;"><i class="fas fa-user"></i> Peserta #${id}</b>
-                ${id > 1 ? `<button type="button" style="background:none; border:none; color:#ff6b6b; cursor:pointer;" onclick="removeRowMitra(${id})"><i class="fas fa-trash"></i> Batal</button>` : ""}
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px; align-items:center;">
+                <b style="color:#ffd700; font-size:1.2rem;"><i class="fas fa-user"></i> Peserta #${id}</b>
+                ${id > 1 ? `<button type="button" style="background:none; border:none; color:#ff6b6b; cursor:pointer; font-size:1rem; font-weight:bold;" onclick="removeRowMitra(${id})"><i class="fas fa-trash"></i> Batal</button>` : ""}
             </div>
-            
-            <input type="text" id="regNama_${id}" class="input-dark" style="margin-bottom:8px;" placeholder="Nama Lengkap" required />
-            <input type="tel" id="regHP_${id}" class="input-dark" style="margin-bottom:8px;" placeholder="No. WhatsApp" value="${defHp}" required />
-            <textarea id="regAlamat_${id}" class="input-dark" style="margin-bottom:12px;" placeholder="Alamat Lengkap" rows="2" required>${defAlamat}</textarea>
-
-            <div style="background: #1a1a1a; padding: 10px; border-radius: 8px; border: 1px dashed #444; margin-bottom: 10px;">
-                <label class="cs-label" style="color: #ffd700; font-weight: bold; margin-bottom:5px;">Tambahkan Paket:</label>
-                <div style="display:flex; gap:8px;">
-                    <select id="regPaketSel_${id}" class="cs-select" style="margin-bottom:0;">
-                        ${optHtml}
-                    </select>
-                    <button type="button" onclick="addPaketToRow(${id})" style="background:#4ade80; color:#000; border:none; border-radius:8px; padding:0 15px; font-weight:bold; cursor:pointer; flex-shrink:0;"><i class="fas fa-plus"></i></button>
+            <input type="text" id="regNama_${id}" class="input-dark" style="margin-bottom:12px;" placeholder="Nama Lengkap" required />
+            <input type="tel" id="regHP_${id}" class="input-dark" style="margin-bottom:12px;" placeholder="No. WhatsApp" value="${defHp}" required />
+            <textarea id="regAlamat_${id}" class="input-dark" style="margin-bottom:15px;" placeholder="Alamat Lengkap" rows="2" required>${defAlamat}</textarea>
+            <div style="background: #1a1a1a; padding: 15px; border-radius: 10px; border: 1px dashed #444; margin-bottom: 15px;">
+                <label class="cs-label" style="color: #ffd700; font-weight: bold; margin-bottom:8px; display:block; font-size:1rem;">Tambahkan Paket:</label>
+                <div style="display:flex; gap:10px;">
+                    <select id="regPaketSel_${id}" class="cs-select" style="margin-bottom:0;">${optHtml}</select>
+                    <button type="button" onclick="addPaketToRow(${id})" style="background:#4ade80; color:#000; border:none; border-radius:10px; padding:0 20px; font-weight:bold; font-size:1.2rem; cursor:pointer; flex-shrink:0;"><i class="fas fa-plus"></i></button>
                 </div>
             </div>
-
             <div id="paketListContainer_${id}" style="margin-bottom:10px;">
-                <div style="text-align: center; color: #555; font-size: 0.8rem; padding: 10px; border: 1px dashed #333; border-radius:8px;">Belum ada paket ditambahkan. Pilih lalu tekan <i class="fas fa-plus"></i></div>
+                <div style="text-align: center; color: #666; font-size: 0.9rem; padding: 15px; border: 1px dashed #333; border-radius:10px;">Belum ada paket ditambahkan. Pilih lalu tekan <i class="fas fa-plus"></i></div>
             </div>
         </div>`;
         document
@@ -1875,25 +1783,20 @@
         const sel = document.getElementById(`regPaketSel_${rowId}`);
         if (!sel.value)
           return alert("Pilih paket dari daftar terlebih dahulu!");
-
         const pktName = sel.options[sel.selectedIndex].text;
         const valLower = pktName.toLowerCase();
-
         let mode = "normal";
         if (valLower.includes("mingguan")) mode = "mingguan";
         else if (valLower.includes("cookies") || valLower.includes("kue"))
           mode = "cookies";
-
         const pkgId = "pkg_" + Date.now() + Math.floor(Math.random() * 1000);
-
         rowDataMitra[`row_${rowId}`].packages.push({
           id: pkgId,
           name: pktName,
           mode: mode,
-          isRequested: false, // Penanda apakah user sudah menekan tombol Edit Request
+          isRequested: false,
           items: {},
         });
-
         renderPaketList(rowId);
       }
 
@@ -1910,20 +1813,15 @@
           `paketListContainer_${rowId}`,
         );
         const pkgs = rowDataMitra[`row_${rowId}`].packages;
-
         if (pkgs.length === 0) {
-          container.innerHTML = `<div style="text-align: center; color: #555; font-size: 0.8rem; padding: 10px; border: 1px dashed #333; border-radius:8px;">Belum ada paket ditambahkan. Pilih lalu tekan <i class="fas fa-plus"></i></div>`;
+          container.innerHTML = `<div style="text-align: center; color: #666; font-size: 0.9rem; padding: 15px; border: 1px dashed #333; border-radius:10px;">Belum ada paket ditambahkan. Pilih lalu tekan <i class="fas fa-plus"></i></div>`;
           return;
         }
-
         let html = "";
-
         pkgs.forEach((pkg) => {
           let btnBarangHtml = "";
           let rincianHtml = "";
-
           let txtSetoran = "";
-
           let itemKeys = Object.keys(pkg.items);
           if (itemKeys.length > 0) {
             let rincianArr = [];
@@ -1943,9 +1841,7 @@
                 rincianArr.push(`${qty}x ${k}`);
               }
             });
-
-            rincianHtml = `<div style="font-size:0.75rem; color:#aaa; margin-top:10px; padding:8px; background:#000; border-radius:4px; border:1px dashed #333;">${rincianArr.join("<br>")}</div>`;
-
+            rincianHtml = `<div style="font-size:0.85rem; color:#ccc; margin-top:10px; padding:10px; background:#000; border-radius:6px; border:1px dashed #333;">${rincianArr.join("<br>")}</div>`;
             if (pkg.mode === "mingguan")
               txtSetoran = `Rp ${totalSetoranPkg.toLocaleString("id-ID")} /mgg`;
             else if (pkg.mode === "cookies")
@@ -1974,63 +1870,34 @@
               txtSetoran = `Rp 0`;
             }
           }
-
           if (pkg.mode === "mingguan") {
-            btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:10px; margin-bottom:0;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-shopping-basket"></i> Pilih Sembako</button>`;
+            btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:12px; margin-bottom:0;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-shopping-basket"></i> Pilih Sembako</button>`;
           } else if (pkg.mode === "cookies") {
-            btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:10px; margin-bottom:0;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-cookie-bite"></i> Pilih Kue</button>`;
+            btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:12px; margin-bottom:0;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-cookie-bite"></i> Pilih Kue</button>`;
           } else {
             let btnText =
               pkg.isRequested && Object.keys(pkg.items).length > 0
                 ? "Edit Request Brg"
                 : "Request Brg (Opsional)";
-            btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:10px; margin-bottom:0; background:transparent; color:#ffd700; border-color:#ffd700;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-edit"></i> ${btnText}</button>`;
+            btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:12px; margin-bottom:0; background:transparent; color:#ffd700; border-color:#ffd700;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-edit"></i> ${btnText}</button>`;
           }
-
-          html += `
-              <div style="background:#1a1a1a; border:1px solid #333; padding:15px; border-radius:12px; margin-bottom:15px; position:relative;">
-                  <i class="fas fa-trash-alt" onclick="removePaketFromRow(${rowId}, '${pkg.id}')" style="position:absolute; top:15px; right:15px; color:#ff4d4d; cursor:pointer; font-size:1.1rem; padding:5px;"></i>
-                  
-                  <div style="font-weight:bold; color:#ffd700; font-size:1rem; margin-bottom:10px; padding-right:30px;">
-                      <i class="fas fa-box"></i> ${pkg.name} ${pkg.isRequested && Object.keys(pkg.items).length > 0 ? "<span style='font-size:0.7rem; color:#aaa;'>(Request)</span>" : ""}
-                  </div>
-                  
-                  ${rincianHtml}
-                  ${btnBarangHtml}
-                  
-                  ${
-                    txtSetoran
-                      ? `
-                  <div style="text-align:right; margin-top:10px; border-top:1px dashed #444; padding-top:10px;">
-                      <span style="font-size:0.8rem; color:#aaa;">Target Setoran:</span><br>
-                      <span style="font-size:1.1rem; color:#4ade80; font-weight:bold;">${txtSetoran}</span>
-                  </div>
-                  `
-                      : ""
-                  }
-              </div>`;
+          html += `<div style="background:#1a1a1a; border:1px solid #333; padding:18px; border-radius:12px; margin-bottom:15px; position:relative;"><i class="fas fa-trash-alt" onclick="removePaketFromRow(${rowId}, '${pkg.id}')" style="position:absolute; top:18px; right:18px; color:#ff4d4d; cursor:pointer; font-size:1.3rem; padding:5px;"></i><div style="font-weight:bold; color:#ffd700; font-size:1.1rem; margin-bottom:10px; padding-right:35px;"><i class="fas fa-box"></i> ${pkg.name} ${pkg.isRequested && Object.keys(pkg.items).length > 0 ? "<span style='font-size:0.8rem; color:#aaa;'>(Request)</span>" : ""}</div>${rincianHtml}${btnBarangHtml}${txtSetoran ? `<div style="text-align:right; margin-top:12px; border-top:1px dashed #444; padding-top:12px;"><span style="font-size:0.85rem; color:#aaa;">Target Setoran:</span><br><span style="font-size:1.2rem; color:#4ade80; font-weight:bold;">${txtSetoran}</span></div>` : ""}</div>`;
         });
-
         container.innerHTML = html;
       }
 
       function bukaPilihBarangMitra(rowId, pkgId) {
         currentEditingRowIdMitra = rowId;
         currentEditingPkgIdMitra = pkgId;
-
         const pkg = rowDataMitra[`row_${rowId}`].packages.find(
           (p) => p.id === pkgId,
         );
         const mode = pkg.mode;
-
-        // AUTO LOAD BARANG JIKA PAKET NORMAL DAN BELUM PERNAH DI-REQUEST
         if (mode === "normal" && !pkg.isRequested) {
           pkg.items = getPaketItems(pkg.name);
           pkg.isRequested = true;
         }
-
         document.getElementById("modalPilihBarang").classList.add("show");
-
         if (mode === "cookies") renderCookiesOnly();
         else renderCatMitraAccordion();
       }
@@ -2046,11 +1913,7 @@
         const pkg = rowDataMitra[
           `row_${currentEditingRowIdMitra}`
         ].packages.find((p) => p.id === currentEditingPkgIdMitra);
-
-        let html = `<div style="height: 15px;"></div><div style="background:rgba(255, 215, 0, 0.1); border:1px solid rgba(255, 215, 0, 0.3); color:#ffd700; padding:10px; border-radius:8px; margin-bottom:15px; font-size:0.8rem; text-align:center;">
-            <i class="fas fa-exclamation-circle"></i> <b>Wajib Tepat 5 Toples!</b> Anda harus memilih tepat 5 item untuk melanjutkan.
-        </div>`;
-
+        let html = `<div style="height: 15px;"></div><div style="background:rgba(255, 215, 0, 0.1); border:1px solid rgba(255, 215, 0, 0.3); color:#ffd700; padding:12px; border-radius:8px; margin-bottom:18px; font-size:0.9rem; text-align:center; line-height: 1.5;"><i class="fas fa-exclamation-circle"></i> <b>Wajib Tepat 5 Toples!</b><br>Anda harus memilih tepat 5 item untuk melanjutkan.</div>`;
         masterBarang.forEach((b) => {
           if (b.kategori && b.kategori.toLowerCase().trim() === "cookies") {
             const qty = pkg.items[b.nama] || 0;
@@ -2066,28 +1929,23 @@
         const body = document.getElementById("pbBody");
         document.getElementById("pbTitle").innerHTML =
           `<i class="fas fa-box-open"></i> Pilih Barang`;
-
         const pkg = rowDataMitra[
           `row_${currentEditingRowIdMitra}`
         ].packages.find((p) => p.id === currentEditingPkgIdMitra);
         const mode = pkg.mode;
-
         const categories = [
           ...new Set(masterBarang.map((item) => item.kategori)),
         ];
         let html = `<div style="height: 15px;"></div>`;
-
         categories.forEach((cat) => {
           if (!cat) return;
           let cLow = cat.toLowerCase();
-
           if (
             cLow.includes("wadah") ||
             cLow === "minuman 2" ||
             cLow === "lainnya"
           )
             return;
-
           if (mode === "mingguan") {
             if (
               cLow === "sembako 2" ||
@@ -2108,23 +1966,13 @@
             )
               return;
           }
-
           let catId = cat.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_]/g, "");
-
-          html += `
-          <div class="accordion-header" onclick="toggleAccordion('${catId}')">
-              <span><i class="fas fa-tag" style="margin-right:8px; opacity:0.7;"></i> ${cat}</span>
-              <i class="fas fa-chevron-down" id="icon_${catId}"></i>
-          </div>
-          <div class="accordion-body" id="body_${catId}" style="display:none;">
-          `;
-
+          html += `<div class="accordion-header" onclick="toggleAccordion('${catId}')"><span><i class="fas fa-tag" style="margin-right:10px; opacity:0.7;"></i> ${cat}</span><i class="fas fa-chevron-down" id="icon_${catId}"></i></div><div class="accordion-body" id="body_${catId}" style="display:none;">`;
           masterBarang.forEach((b) => {
             if (b.kategori === cat) {
               const qty = pkg.items[b.nama] || 0;
               let displayPrice = b.harga;
               let labelSatuan = b.satuan;
-
               if (mode === "mingguan") {
                 displayPrice = Math.ceil(b.harga / 40);
                 labelSatuan = "minggu";
@@ -2134,7 +1982,6 @@
           });
           html += `</div>`;
         });
-
         body.innerHTML = html;
         updatePilihBarangTotalMitra();
       }
@@ -2142,24 +1989,12 @@
       function generateItemRowHTML(b, displayPrice, labelSatuan, qty) {
         let safeName = b.nama.replace(/'/g, "\\'");
         let inputId = `pb_qty_${b.nama.replace(/[\s\W]/g, "")}`;
-        return `
-            <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #222;">
-                <div style="flex:1; padding-right:10px;">
-                    <div style="font-weight:bold; color:#fff; font-size:0.9rem;">${b.nama}</div>
-                    <div style="font-size:0.75rem; color:#aaa;">Rp ${displayPrice.toLocaleString("id-ID")} / ${labelSatuan}</div>
-                </div>
-                <div class="stepper-control">
-                    <button type="button" class="stepper-btn" onclick="changeQtyMitra('${safeName}', -1)">-</button>
-                    <input type="number" readonly class="stepper-input" id="${inputId}" value="${qty}">
-                    <button type="button" class="stepper-btn" onclick="changeQtyMitra('${safeName}', 1)">+</button>
-                </div>
-            </div>`;
+        return `<div style="display:flex; justify-content:space-between; align-items:center; padding:16px 0; border-bottom:1px solid #222;"><div style="flex:1; padding-right:15px;"><div style="font-weight:bold; color:#fff; font-size:1.05rem; margin-bottom:4px;">${b.nama}</div><div style="font-size:0.85rem; color:#aaa;">Rp ${displayPrice.toLocaleString("id-ID")} / ${labelSatuan}</div></div><div class="stepper-control"><button type="button" class="stepper-btn" onclick="changeQtyMitra('${safeName}', -1)">-</button><input type="number" readonly class="stepper-input" id="${inputId}" value="${qty}"><button type="button" class="stepper-btn" onclick="changeQtyMitra('${safeName}', 1)">+</button></div></div>`;
       }
 
       function toggleAccordion(catId) {
         const body = document.getElementById(`body_${catId}`);
         const icon = document.getElementById(`icon_${catId}`);
-
         if (body.style.display === "none") {
           body.style.display = "block";
           icon.classList.replace("fa-chevron-down", "fa-chevron-up");
@@ -2174,25 +2009,19 @@
           `row_${currentEditingRowIdMitra}`
         ].packages.find((p) => p.id === currentEditingPkgIdMitra);
         const mode = pkg.mode;
-
         let currentTotalQty = 0;
         for (let k in pkg.items) {
           currentTotalQty += pkg.items[k];
         }
-
         let current = pkg.items[nama] || 0;
-
         if (mode === "cookies" && change > 0 && currentTotalQty >= 5) {
           alert("Paket Cookies maksimal hanya boleh memilih 5 toples.");
           return;
         }
-
         current += change;
         if (current < 0) current = 0;
-
         if (current === 0) delete pkg.items[nama];
         else pkg.items[nama] = current;
-
         document.getElementById(`pb_qty_${nama.replace(/[\s\W]/g, "")}`).value =
           current;
         updatePilihBarangTotalMitra();
@@ -2203,20 +2032,16 @@
           `row_${currentEditingRowIdMitra}`
         ].packages.find((p) => p.id === currentEditingPkgIdMitra);
         const mode = pkg.mode;
-
         let total = 0;
         let lblTxt = "Total Nilai Barang";
         let selectedItemsHtml = "";
         let totalQtyCookies = 0;
-
         for (let key in pkg.items) {
           let item = masterBarang.find((b) => b.nama === key);
           let qty = pkg.items[key];
-
           if (item && qty > 0) {
             let displayPrice = item.harga;
             totalQtyCookies += qty;
-
             if (mode === "mingguan") {
               let perMgg = Math.ceil(item.harga / 40);
               total += perMgg * qty;
@@ -2232,31 +2057,22 @@
               lblTxt = "Total Nilai Barang Request";
               displayPrice = item.harga;
             }
-
             let subtotal = displayPrice * qty;
-            selectedItemsHtml += `
-                <div style="display:flex; justify-content:space-between; margin-bottom: 4px; border-bottom: 1px dotted #333; padding-bottom: 2px;">
-                    <span style="flex:1; padding-right:10px; font-size:0.75rem; color:#ccc;">${qty}x ${item.nama}</span>
-                    <span style="color:#ffd700; font-size:0.75rem; font-weight:bold;">Rp ${subtotal.toLocaleString("id-ID")}</span>
-                </div>
-              `;
+            selectedItemsHtml += `<div style="display:flex; justify-content:space-between; margin-bottom: 6px; border-bottom: 1px dotted #333; padding-bottom: 4px;"><span style="flex:1; padding-right:10px; font-size:0.85rem; color:#ccc;">${qty}x ${item.nama}</span><span style="color:#ffd700; font-size:0.85rem; font-weight:bold;">Rp ${subtotal.toLocaleString("id-ID")}</span></div>`;
           }
         }
-
         document.getElementById("pbTotalLabel").innerText = lblTxt;
-
         if (mode === "cookies") {
           document.getElementById("pbTotal").innerHTML =
-            `Rp ${total.toLocaleString("id-ID")} <br><span style="font-size:0.7rem; color:${totalQtyCookies === 5 ? "#4ade80" : "#ff6b6b"}">(${totalQtyCookies}/5 Toples)</span>`;
+            `Rp ${total.toLocaleString("id-ID")} <br><span style="font-size:0.8rem; color:${totalQtyCookies === 5 ? "#4ade80" : "#ff6b6b"}">(${totalQtyCookies}/5 Toples)</span>`;
         } else {
           document.getElementById("pbTotal").innerText =
             "Rp " + total.toLocaleString("id-ID");
         }
-
         const summaryDiv = document.getElementById("pbSelectedItems");
         if (selectedItemsHtml !== "") {
           summaryDiv.innerHTML =
-            `<div style="font-size:0.7rem; color:#4ade80; margin-bottom:6px; font-weight:bold;">Telah Dipilih:</div>` +
+            `<div style="font-size:0.85rem; color:#4ade80; margin-bottom:8px; font-weight:bold;">Telah Dipilih:</div>` +
             selectedItemsHtml;
           summaryDiv.style.display = "block";
         } else {
@@ -2269,7 +2085,6 @@
         const pkg = rowDataMitra[
           `row_${currentEditingRowIdMitra}`
         ].packages.find((p) => p.id === currentEditingPkgIdMitra);
-
         if (pkg.mode === "cookies") {
           let totalQty = 0;
           for (let k in pkg.items) totalQty += pkg.items[k];
@@ -2280,7 +2095,6 @@
             return;
           }
         }
-
         tutupPilihBarang();
         renderPaketList(currentEditingRowIdMitra);
       }
@@ -2290,21 +2104,17 @@
         const mitra = document.getElementById("mitraName").innerText;
         let msg = `Halo Admin, saya Mitra *${mitra}* ingin mendaftarkan *PESERTA BARU*.\n\n`;
         let validCount = 0;
-
         for (let i = 1; i <= formCountMitra; i++) {
           if (!document.getElementById(`rowMitra_${i}`)) continue;
-
           const n = document.getElementById(`regNama_${i}`).value.trim();
           const h = document.getElementById(`regHP_${i}`).value.trim();
           const a = document.getElementById(`regAlamat_${i}`).value.trim();
-
           if (!n || !h) {
             alert(
               `Pendaftaran gagal! Harap lengkapi Nama dan No WhatsApp pada Peserta #${i}`,
             );
             return;
           }
-
           const pkgs = rowDataMitra[`row_${i}`].packages;
           if (pkgs.length === 0) {
             alert(
@@ -2312,12 +2122,10 @@
             );
             return;
           }
-
           if (validCount === 0) {
             localStorage.setItem("mitra_hp_cache", h);
             localStorage.setItem("mitra_alamat_cache", a);
           }
-
           for (let pkg of pkgs) {
             if (pkg.mode === "cookies") {
               let checkQty = 0;
@@ -2330,16 +2138,10 @@
               }
             }
           }
-
           validCount++;
-          msg += `*👤 DATA PESERTA ${validCount}*\n`;
-          msg += `Nama: ${n}\nWA: ${h}\nAlamat: ${a}\n\n`;
-          msg += `*📦 PAKET YANG DIAMBIL:*\n\n`;
-
+          msg += `*👤 DATA PESERTA ${validCount}*\nNama: ${n}\nWA: ${h}\nAlamat: ${a}\n\n*📦 PAKET YANG DIAMBIL:*\n\n`;
           pkgs.forEach((pkg, pIdx) => {
             let displayPkgName = pkg.name;
-
-            // Menambahkan label (Request) jika ada modifikasi
             if (
               pkg.mode === "normal" &&
               pkg.isRequested &&
@@ -2347,13 +2149,10 @@
             ) {
               displayPkgName += " (Request)";
             }
-
             msg += `*${pIdx + 1}. ${displayPkgName}*\n`;
-
             if (Object.keys(pkg.items).length > 0) {
               msg += `Rincian Barang:\n`;
               let pkgTotalSetoran = 0;
-
               for (let key in pkg.items) {
                 let qty = pkg.items[key];
                 let b = masterBarang.find((item) => item.nama === key);
@@ -2367,7 +2166,6 @@
                   msg += ` - ${qty}x ${key}\n`;
                 }
               }
-
               let txtTarget = "";
               if (pkg.mode === "mingguan")
                 txtTarget = `Rp ${pkgTotalSetoran.toLocaleString("id-ID")} /minggu`;
@@ -2383,7 +2181,6 @@
                     txtTarget = `Rp ${pMaster.harga.toLocaleString("id-ID")} /hari`;
                 }
               }
-
               if (txtTarget) msg += `🎯 Target Setoran: ${txtTarget}\n\n`;
               else msg += `\n`;
             } else {
@@ -2400,14 +2197,11 @@
           });
           msg += `---------------------------\n\n`;
         }
-
         if (validCount === 0) {
           alert("Tidak ada data peserta untuk didaftarkan!");
           return;
         }
-
         msg += `Mohon dibantu pembuatan akunnya. Terima kasih! 🙏`;
-
         window.open(
           `https://wa.me/628122261036?text=${encodeURIComponent(msg)}`,
           "_blank",
