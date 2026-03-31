@@ -26,8 +26,6 @@
         margin: 0;
         padding-bottom: 90px;
       }
-
-      /* HEADER */
       header {
         padding: 15px 20px;
         position: sticky;
@@ -57,7 +55,6 @@
         color: #aaa;
         margin-top: 2px;
       }
-
       .katalog-btn {
         background: rgba(255, 215, 0, 0.1);
         color: #ffd700;
@@ -76,14 +73,11 @@
         color: #ff4d4d;
         border-color: rgba(255, 77, 77, 0.3);
       }
-
       .container {
         padding: 20px;
         max-width: 500px;
         margin: 0 auto;
       }
-
-      /* MULTI-PAKET SELECTOR */
       .paket-selector {
         background: #111;
         border: 1px solid #333;
@@ -109,8 +103,6 @@
         font-weight: bold;
         outline: none;
       }
-
-      /* KARTU EMAS NIZAMI */
       .card-container {
         margin-bottom: 20px;
         perspective: 1000px;
@@ -179,7 +171,6 @@
         border-left: 1px solid #888;
         border-right: 1px solid #888;
       }
-
       .mc-label {
         font-size: 0.7rem;
         text-transform: uppercase;
@@ -196,7 +187,6 @@
         display: inline-block;
         border: 1px solid rgba(0, 0, 0, 0.2);
       }
-
       .mc-footer {
         display: flex;
         justify-content: space-between;
@@ -211,15 +201,14 @@
       }
       .mc-id {
         font-family: monospace;
-        font-size: 1rem;
+        font-size: 0.85rem;
         font-weight: 700;
         opacity: 0.8;
         background: rgba(255, 255, 255, 0.3);
         padding: 3px 8px;
         border-radius: 6px;
+        display: inline-block;
       }
-
-      /* INFO KHUSUS DALAM KARTU */
       .info-hybrid {
         margin-top: 15px;
         background: rgba(0, 0, 0, 0.1);
@@ -267,7 +256,6 @@
         color: #000;
         letter-spacing: -1px;
       }
-
       .btn-rincian {
         width: 100%;
         background: #1a1a1a;
@@ -287,7 +275,6 @@
       .btn-rincian:active {
         background: #333;
       }
-
       .stats-box {
         background: #111;
         border: 1px solid #222;
@@ -313,8 +300,6 @@
         text-transform: uppercase;
         margin-top: 4px;
       }
-
-      /* KOTAK INFO PEMBAYARAN MINI */
       .payment-box-mini {
         background: #111;
         border: 1px solid #222;
@@ -361,8 +346,6 @@
         color: #000;
         border-color: #4ade80;
       }
-
-      /* KALENDER */
       .section-title {
         font-size: 1rem;
         color: #fff;
@@ -485,8 +468,6 @@
         color: #ffd700;
         background: #1f1a00;
       }
-
-      /* MODAL UMUM */
       .modal-overlay {
         display: none;
         position: fixed;
@@ -534,8 +515,6 @@
         font-size: 1.5rem;
         cursor: pointer;
       }
-
-      /* FORM PENCARIAN */
       .search-box {
         background: #111;
         padding: 25px;
@@ -569,14 +548,11 @@
         cursor: pointer;
         font-size: 1rem;
       }
-
       .loader {
         text-align: center;
         padding: 50px 20px;
         color: #ffd700;
       }
-
-      /* === TOMBOL FLOATING SETOR === */
       .fab-setor {
         position: fixed;
         bottom: 25px;
@@ -603,11 +579,6 @@
         transform: scale(0.95);
         box-shadow: 0 2px 10px rgba(74, 222, 128, 0.3);
       }
-      .fab-setor i {
-        font-size: 1.4rem;
-      }
-
-      /* === KALKULATOR SETORAN === */
       .cart-qty-ctrl {
         display: flex;
         align-items: center;
@@ -659,7 +630,6 @@
         gap: 10px;
         font-family: "Poppins", sans-serif;
       }
-
       @keyframes slideDown {
         from {
           opacity: 0;
@@ -686,15 +656,13 @@
         <h1 class="title">Kartu Setoran</h1>
         <div class="subtitle">NIZAMI 2026-2027</div>
       </div>
-
       <div style="display: flex; gap: 10px">
         <a
           href="index.html?view=katalog"
           class="katalog-btn"
           title="Lihat Katalog Promo"
-        >
-          <i class="fas fa-store"></i>
-        </a>
+          ><i class="fas fa-store"></i
+        ></a>
         <a
           href="#"
           onclick="logoutPeserta()"
@@ -702,9 +670,8 @@
           id="btnLogout"
           style="display: none"
           title="Keluar Akun"
-        >
-          <i class="fas fa-sign-out-alt"></i>
-        </a>
+          ><i class="fas fa-sign-out-alt"></i
+        ></a>
       </div>
     </header>
 
@@ -771,19 +738,16 @@
             &times;
           </button>
         </div>
-
         <div style="padding: 15px 20px 5px 20px">
           <p style="color: #aaa; font-size: 0.75rem; margin-top: 0">
             Tentukan berapa kali Anda ingin menyetor hari ini untuk
             masing-masing paket:
           </p>
         </div>
-
         <div
           style="padding: 0 20px 20px 20px; overflow-y: auto; max-height: 55vh"
           id="setoranCartArea"
         ></div>
-
         <div
           style="
             background: #111;
@@ -874,13 +838,8 @@
         return match ? match[1] : fullId;
       }
 
-      // =======================================================
-      // FUNGSI PENGAMBIL HARGA SUPER AGRESIF (FIX NILAI STORAN)
-      // =======================================================
       function getHargaPaket(p) {
         let rawVal = null;
-
-        // 1. Cek langsung key yang umum
         rawVal =
           p["Nilai Storan"] ||
           p.nilai_storan ||
@@ -888,11 +847,9 @@
           p.nilai ||
           p.harga;
 
-        // 2. Pencarian ekstra agresif di semua property object (jika format Backend berbeda)
         if (rawVal === undefined || rawVal === null || rawVal === "") {
           for (let key in p) {
             let k = key.toLowerCase().replace(/[^a-z0-9]/g, "");
-            // Memburu kata kunci: nilaistoran, nilaisetoran, nilai, harga
             if (
               k === "nilaistoran" ||
               k === "nilaisetoran" ||
@@ -905,11 +862,9 @@
           }
         }
 
-        // Jika berhasil mendapatkan angka dari backend
         if (rawVal !== undefined && rawVal !== null && rawVal !== "") {
           let val = parseInt(String(rawVal).replace(/[^0-9]/g, ""));
           if (!isNaN(val) && val > 0) {
-            // Aturan khusus: Cookies selalu 1000/hari cicilannya
             if (
               String(p.paket).toLowerCase().includes("cookies") &&
               val > 10000
@@ -919,7 +874,6 @@
           }
         }
 
-        // 3. Fallback Terakhir: Ekstraksi angka dari nama paket (Misal "Munggah 5000" -> 5000)
         let str = String(p.paket).replace(/\./g, "");
         let match = str.match(/\d{3,}/g);
         if (match) {
@@ -931,8 +885,7 @@
             return 1000;
           return parsed;
         }
-
-        return 0; // Jika benar-benar gagal
+        return 0;
       }
 
       async function initPage() {
@@ -953,14 +906,15 @@
           if (dataUser && !dataUser.error && dataUser.list_paket.length > 0) {
             const currentBaseId = getBaseId(paramId);
 
+            // Simpan NO ANGGOTA ke variable Global agar mudah dipanggil di fungsi renderCard
+            window.noAnggota = dataUser.no_anggota || "";
+
             allUserPackages = dataUser.list_paket.filter((p) => {
               const packageBaseId = getBaseId(p.id);
               return packageBaseId === currentBaseId;
             });
 
-            if (allUserPackages.length === 0) {
-              throw new Error("Kosong");
-            }
+            if (allUserPackages.length === 0) throw new Error("Kosong");
 
             let activePaket =
               allUserPackages.find((p) => p.id === paramId) ||
@@ -1049,7 +1003,6 @@
         const setoranMasuk = parseInt(paketInfo.tercapai) || 0;
         const saldoInfo = parseInt(paketInfo.saldo) || 0;
 
-        // --- PENYEMPURNAAN POSISI DAN WARNA NILAI SETORAN ---
         let nilaiSetoran = getHargaPaket(paketInfo);
         let labelSetoran = isMingguan
           ? "/mgg"
@@ -1059,7 +1012,6 @@
 
         let textNilaiHtml = "";
         if (nilaiSetoran > 0) {
-          // Warna gelap transparan agar lebih terbaca di atas background emas
           textNilaiHtml = `
           <div style="text-align: right;">
             <span style="background: rgba(0, 0, 0, 0.4); color: #ffd700; padding: 5px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; border: 1px solid rgba(0, 0, 0, 0.5); box-shadow: 0 2px 5px rgba(0,0,0,0.3);">
@@ -1109,6 +1061,7 @@
             </div>`;
         }
 
+        // --- PENAMBAHAN TAMPILAN NOMOR ANGGOTA ---
         let htmlCard = `
             <div class="card-container">
                 <div class="member-card-box">
@@ -1129,16 +1082,16 @@
                             <div class="mc-label">Pemilik</div>
                             <div class="mc-name">${window.namaPemilik}</div>
                         </div>
-                        <div class="mc-id">${paketInfo.id}</div>
+                        <div style="text-align: right;">
+                            <div class="mc-label" style="margin-bottom:2px;">No. Anggota</div>
+                            <div style="font-size: 1.1rem; font-weight: 800; color: #fff;">${window.noAnggota ? window.noAnggota : "-"}</div>
+                            <div class="mc-id" style="margin-top: 5px;">${paketInfo.id}</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            ${
-              !isUangOnly
-                ? `<button class="btn-rincian" onclick="lihatRincian('${paketInfo.id}')"><i class="fas fa-box-open"></i> Lihat Rincian Isi Paket</button>`
-                : ""
-            }
+            ${!isUangOnly ? `<button class="btn-rincian" onclick="lihatRincian('${paketInfo.id}')"><i class="fas fa-box-open"></i> Lihat Rincian Isi Paket</button>` : ""}
 
             <div class="stats-box">
                 <div class="sb-item">
@@ -1162,9 +1115,7 @@
                     <div class="pbm-bank">MANDIRI <span style="color:#aaa;">a.n</span> Evi Fitriawati</div>
                     <div class="pbm-rek">1310011534676</div>
                 </div>
-                <button class="btn-copy-mini" id="btnCopyRek" onclick="copyRekening()">
-                    <i class="far fa-copy"></i> Salin
-                </button>
+                <button class="btn-copy-mini" id="btnCopyRek" onclick="copyRekening()"><i class="far fa-copy"></i> Salin</button>
             </div>
         `;
 
@@ -1189,9 +1140,6 @@
         document.getElementById("modalBarang").classList.add("show");
       }
 
-      // ==========================================
-      // FUNGSI KALKULATOR SETORAN
-      // ==========================================
       function bukaModalSetoran() {
         setoranCart = allUserPackages.map((p) => {
           let isMingguan = p.paket.toLowerCase().includes("mingguan");
@@ -1289,7 +1237,6 @@
         tutupModalSetoran();
       }
 
-      // --- LOGIKA KALENDER ---
       function generateWeeklyCalendar(setoranMasuk, targetBarang, totalTarget) {
         let html = "";
         let currentDate = new Date(2026, 3, 1, 12, 0, 0);
