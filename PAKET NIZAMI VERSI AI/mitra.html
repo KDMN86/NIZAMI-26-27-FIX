@@ -187,6 +187,34 @@
         color: #000;
         border-style: solid;
       }
+
+      .search-box-mitra {
+        position: relative;
+        margin-bottom: 15px;
+      }
+      .search-box-mitra i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #888;
+      }
+      .search-box-mitra input {
+        width: 100%;
+        padding: 12px 12px 12px 40px;
+        border-radius: 12px;
+        border: 1px solid #333;
+        background: #111;
+        color: #fff;
+        font-family: "Poppins", sans-serif;
+        font-size: 0.9rem;
+        outline: none;
+        transition: 0.2s;
+      }
+      .search-box-mitra input:focus {
+        border-color: #ffd700;
+      }
+
       .filter-wrapper {
         display: flex;
         gap: 8px;
@@ -216,7 +244,6 @@
         border-color: #ffd700;
       }
 
-      /* KARTU PESERTA BERANDA */
       .peserta-card {
         background: #111;
         border: 1px solid #333;
@@ -261,10 +288,24 @@
       }
       .pc-name {
         font-weight: 800;
-        font-size: 1.25rem;
+        font-size: 1.15rem;
         color: #fff;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
         letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .pc-paket {
+        font-size: 0.7rem;
+        color: #bbb;
+        background: #222;
+        padding: 3px 8px;
+        border-radius: 6px;
+        display: inline-block;
+        border: 1px solid #444;
+        font-weight: 600;
       }
       .badge-id,
       .badge-no {
@@ -292,23 +333,13 @@
         border: 1px solid rgba(255, 215, 0, 0.4);
         cursor: default;
       }
-      .pc-paket {
-        font-size: 0.8rem;
-        color: #bbb;
-        background: #222;
-        padding: 4px 10px;
-        border-radius: 6px;
-        display: inline-block;
-        margin-top: 10px;
-        border: 1px solid #333;
-      }
       .pc-status {
         font-size: 0.85rem;
         font-weight: bold;
         display: flex;
         align-items: center;
         gap: 6px;
-        margin-top: 10px;
+        margin-top: 4px;
       }
 
       .stepper-control {
@@ -349,6 +380,12 @@
         outline: none;
         height: 100%;
         padding: 0;
+        -moz-appearance: textfield;
+      }
+      .stepper-input::-webkit-outer-spin-button,
+      .stepper-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
       }
 
       .wa-action-box {
@@ -377,6 +414,7 @@
         color: #000;
       }
 
+      /* BATCH CART DRAFT BAWAH */
       .batch-bar {
         position: fixed;
         bottom: 0;
@@ -474,6 +512,7 @@
         font-size: 1rem;
       }
 
+      /* MODALS */
       .modal-overlay {
         position: fixed;
         inset: 0;
@@ -497,6 +536,17 @@
         border: 1px solid #444;
         position: relative;
       }
+
+      /* REVISI: Class Khusus Fullscreen untuk Modal Setoran Masal */
+      .modal-fullscreen {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        border-radius: 0 !important;
+        border: none !important;
+      }
+
       .input-dark {
         width: 100%;
         padding: 14px;
@@ -628,6 +678,7 @@
       .sm-info {
         flex: 1;
         padding-right: 15px;
+        min-width: 0; /* Penting untuk teks truncation */
       }
       .sm-calc {
         font-size: 0.85rem;
@@ -693,7 +744,7 @@
           </div>
           <div class="stat-box">
             <span class="stat-val red" id="stat-nunggak">0</span
-            ><span class="stat-label">Nunggak</span>
+            ><span class="stat-label">Tdk Lancar</span>
           </div>
           <div class="stat-box">
             <span class="stat-val gold" id="stat-lancar">0</span
@@ -723,6 +774,16 @@
         </div>
       </div>
 
+      <div class="search-box-mitra">
+        <i class="fas fa-search"></i>
+        <input
+          type="text"
+          id="searchPeserta"
+          placeholder="Cari nama peserta atau ID..."
+          onkeyup="searchPesertaData()"
+        />
+      </div>
+
       <div class="filter-wrapper">
         <div
           class="filter-chip active"
@@ -736,7 +797,7 @@
           id="flt-nunggak"
           onclick="applyFilter('nunggak')"
         >
-          🔴 Perlu Ditagih
+          🔴 Tidak Lancar
         </div>
         <div
           class="filter-chip"
@@ -871,11 +932,10 @@
 
     <div id="modalSetorMasal" class="modal-overlay" style="z-index: 9999">
       <div
-        class="modal-card"
+        class="modal-card modal-fullscreen"
         style="
           padding: 0;
           overflow: hidden;
-          max-height: 90vh;
           display: flex;
           flex-direction: column;
         "
@@ -905,6 +965,24 @@
           >
             &times;
           </button>
+        </div>
+
+        <div
+          style="
+            padding: 10px 20px;
+            background: #111;
+            border-bottom: 1px solid #222;
+          "
+        >
+          <div class="search-box-mitra" style="margin-bottom: 0">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              id="searchSetorMasal"
+              placeholder="Cari nama peserta..."
+              onkeyup="filterSetorMasal()"
+            />
+          </div>
         </div>
 
         <div
@@ -1386,6 +1464,26 @@
         applyFilter("semua");
       }
 
+      function searchPesertaData() {
+        const keyword = document
+          .getElementById("searchPeserta")
+          .value.toLowerCase();
+        const cards = document.querySelectorAll(".peserta-card");
+
+        cards.forEach((card) => {
+          const name = card.querySelector(".pc-name").innerText.toLowerCase();
+          const idBadge = card.querySelector(".badge-id")
+            ? card.querySelector(".badge-id").innerText.toLowerCase()
+            : "";
+
+          if (name.includes(keyword) || idBadge.includes(keyword)) {
+            card.style.display = "flex";
+          } else {
+            card.style.display = "none";
+          }
+        });
+      }
+
       function applyFilter(tipe) {
         document
           .querySelectorAll(".filter-chip")
@@ -1417,7 +1515,7 @@
 
           let btnWaTunggakanHtml = "";
           if (kal.kategori === "nunggak" && p.harga > 0) {
-            btnWaTunggakanHtml = `<div class="wa-action-box"><button class="btn-wa" onclick="tagihWA('${p.hp || ""}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${kal.telatCount}, ${p.harga * kal.telatCount})"><i class="fab fa-whatsapp" style="font-size:1.3rem;"></i> Kirim Tagihan via WA (Rp ${(p.harga * kal.telatCount).toLocaleString("id-ID")})</button></div>`;
+            btnWaTunggakanHtml = `<div class="wa-action-box"><button class="btn-wa" onclick="pengingatWA('${p.hp || ""}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${kal.telatCount}, ${p.harga * kal.telatCount})"><i class="fab fa-whatsapp" style="font-size:1.3rem;"></i> Kirim Pengingat via WA (Rp ${(p.harga * kal.telatCount).toLocaleString("id-ID")})</button></div>`;
           }
 
           container.insertAdjacentHTML(
@@ -1426,13 +1524,15 @@
             <div class="peserta-card ${cardStyle}">
               <div class="pc-head">
                 <div class="pc-info">
-                  <div class="pc-name">${p.nama}</div>
-                  <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+                  <div class="pc-name">
+                    ${p.nama} 
+                    <span class="pc-paket" style="margin-top:0;">${p.paket}</span>
+                  </div>
+                  <div style="display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap;">
                     ${noAnggotaHtml}
                     ${idBtnHtml}
                   </div>
-                  <div class="pc-paket">${p.paket}</div>
-                  <div class="pc-status ${kal.colorClass}"><i class="fas ${kal.icon}"></i> ${kal.text}</div>
+                  <div class="pc-status ${kal.colorClass}" style="margin-top:4px;"><i class="fas ${kal.icon}"></i> ${kal.text}</div>
                 </div>
                 <div class="pc-right">
                   <div style="font-size: 0.75rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: bold;">Tercapai</div>
@@ -1445,12 +1545,13 @@
           );
         });
         updateBatchUI();
+        searchPesertaData();
       }
 
-      function tagihWA(hp, nama, paket, telat, nominal) {
+      function pengingatWA(hp, nama, paket, telat, nominal) {
         let hpClean = String(hp || "").replace(/\D/g, "");
         if (hpClean.startsWith("0")) hpClean = "62" + hpClean.substring(1);
-        let txt = `Assalamu'alaikum Kak *${nama}*,\n\nSekadar mengingatkan untuk setoran *${paket}* saat ini ada keterlambatan *${telat}x setoran* (Total: Rp ${nominal.toLocaleString("id-ID")}).\n\nYuk semangat nabungnya biar Lebaran panen! 🙏`;
+        let txt = `Assalamu'alaikum Kak *${nama}*,\n\nSekadar mengingatkan untuk setoran *${paket}* saat ini ada yang belum masuk sebanyak *${telat}x setoran* (Total: Rp ${nominal.toLocaleString("id-ID")}).\n\nYuk semangat nabungnya biar Lebaran panen! 🙏`;
         if (hpClean && hpClean.length > 8) {
           window.open(
             `https://wa.me/${hpClean}?text=${encodeURIComponent(txt)}`,
@@ -1464,6 +1565,23 @@
         }
       }
 
+      function filterSetorMasal() {
+        const keyword = document
+          .getElementById("searchSetorMasal")
+          .value.toLowerCase();
+        const items = document.querySelectorAll(".sm-item");
+        items.forEach((item) => {
+          const name = item
+            .querySelector(".sm-name span")
+            .innerText.toLowerCase();
+          if (name.includes(keyword)) {
+            item.style.display = "flex";
+          } else {
+            item.style.display = "none";
+          }
+        });
+      }
+
       function bukaModalSetorMasal() {
         renderSetorMasal();
         document.getElementById("modalSetorMasal").classList.add("show");
@@ -1473,7 +1591,6 @@
         saveDraftAndRender();
       }
 
-      // REVISI: UPDATE TAMPILAN SETOR MASAL
       function renderSetorMasal() {
         const body = document.getElementById("smBody");
         if (rawPesertaData.length === 0) {
@@ -1490,15 +1607,16 @@
           let curr = p.done + qty;
 
           let noAnggotaBadge = p.no_anggota
-            ? `<span style="background:rgba(255,215,0,0.15); color:#ffd700; border:1px solid rgba(255,215,0,0.3); padding:3px 8px; border-radius:6px; font-size:0.75rem;">#${p.no_anggota}</span>`
+            ? `<span style="background:rgba(255,215,0,0.15); color:#ffd700; border:1px solid rgba(255,215,0,0.3); padding:3px 6px; border-radius:6px; font-size:0.7rem; white-space:nowrap; flex-shrink:0;">#${p.no_anggota}</span>`
             : "";
-          let paketBadge = `<span style="background:#222; color:#ccc; padding:3px 8px; border-radius:6px; font-size:0.75rem; border:1px solid #444;">${p.paket}</span>`;
+          let paketBadge = `<span style="background:#222; color:#ccc; padding:3px 6px; border-radius:6px; font-size:0.7rem; border:1px solid #444; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:110px; flex-shrink:0;">${p.paket}</span>`;
 
+          // REVISI: Tampilan sejajar & Input bisa diketik
           html += `
           <div class="sm-item" id="sm_row_${p.id}">
-            <div class="sm-info">
-                <div class="sm-name" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom: 10px;">
-                    <span style="font-weight:800; font-size:1.1rem; color:#fff;">${p.nama}</span>
+            <div class="sm-info" style="min-width: 0;">
+                <div class="sm-name" style="display:flex; align-items:center; gap:6px; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    <span style="font-weight:800; font-size:1.05rem; color:#fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 1;">${p.nama}</span>
                     ${noAnggotaBadge}
                     ${paketBadge}
                 </div>
@@ -1508,7 +1626,7 @@
                 <div class="sm-subtotal" id="sm_sub_${p.id}">Rp ${subtotal.toLocaleString("id-ID")}</div>
                 <div class="stepper-control">
                     <button type="button" class="stepper-btn" onclick="updateQtySM('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, -1)">-</button>
-                    <input type="number" readonly class="stepper-input" id="sm_qty_${p.id}" value="${qty}">
+                    <input type="number" class="stepper-input" id="sm_qty_${p.id}" value="${qty}" onchange="setQtySM('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, this.value)">
                     <button type="button" class="stepper-btn" onclick="updateQtySM('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, 1)">+</button>
                 </div>
             </div>
@@ -1518,7 +1636,7 @@
         body.innerHTML = html;
         document.getElementById("smTotalRp").innerText =
           "Rp " + totalRp.toLocaleString("id-ID");
-        updatePreviewSM(); // Panggil fungsi preview
+        updatePreviewSM();
       }
 
       function updateQtySM(id, nama, paket, harga, done, change) {
@@ -1555,10 +1673,47 @@
         document.getElementById("smTotalRp").innerText =
           "Rp " + totalRp.toLocaleString("id-ID");
 
-        updatePreviewSM(); // Update preview setiap ada perubahan angka
+        updatePreviewSM();
       }
 
-      // FUNGSI BARU: PREVIEW SETORAN MASAL DI BAGIAN BAWAH MODAL
+      // REVISI: Fungsi baru agar input bisa diketik
+      function setQtySM(id, nama, paket, harga, done, val) {
+        let qty = parseInt(val) || 0;
+        if (qty <= 0) {
+          delete batchCart[id];
+          qty = 0;
+        } else {
+          if (!batchCart[id])
+            batchCart[id] = {
+              nama: nama,
+              paket: paket,
+              harga: harga,
+              currentDone: done,
+              qty: 0,
+            };
+          batchCart[id].qty = qty;
+          batchCart[id].date = getFormattedDate();
+        }
+
+        let newSub = qty * harga;
+        let newCurr = done + qty;
+
+        document.getElementById(`sm_qty_${id}`).value = qty;
+        document.getElementById(`sm_calc_${id}`).innerHTML =
+          `<i class="fas fa-history"></i> Masuk: ${done} ➔ <b style="color:#fff; font-size:0.95rem;">${newCurr}</b>`;
+        document.getElementById(`sm_sub_${id}`).innerText =
+          "Rp " + newSub.toLocaleString("id-ID");
+
+        let totalRp = 0;
+        for (let k in batchCart) {
+          totalRp += batchCart[k].qty * batchCart[k].harga;
+        }
+        document.getElementById("smTotalRp").innerText =
+          "Rp " + totalRp.toLocaleString("id-ID");
+
+        updatePreviewSM();
+      }
+
       function updatePreviewSM() {
         let html = "";
         let count = 0;
