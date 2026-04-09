@@ -288,14 +288,14 @@
       }
       .pc-name {
         font-weight: 800;
-        font-size: 1.15rem;
+        font-size: 1.05rem; /* Ukuran sedikit diperkecil agar tidak terlalu memakan ruang */
         color: #fff;
         margin-bottom: 6px;
         letter-spacing: 0.5px;
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 8px;
+        display: block; /* Ubah ke block agar bisa wrap */
+        white-space: normal; /* MEMBOLEHKAN teks turun ke baris baru */
+        word-wrap: break-word; /* Memastikan kata panjang tidak keluar jalur */
+        line-height: 1.3;
       }
       .pc-paket {
         font-size: 0.7rem;
@@ -677,9 +677,27 @@
       }
       .sm-info {
         flex: 1;
-        padding-right: 15px;
-        min-width: 0; /* Penting untuk teks truncation */
+        padding-right: 10px;
+        min-width: 0;
       }
+
+      /* Ubah selector ini untuk menghilangkan pembatasan teks */
+      .sm-name {
+        display: block !important; /* Ubah dari flex ke block agar nama di atas, badge di bawah jika sempit */
+        margin-bottom: 6px;
+      }
+
+      .sm-name span:first-child {
+        display: block; /* Paksa nama mengambil satu baris sendiri */
+        white-space: normal !important; /* Hapus ellipsis (titik-titik) */
+        overflow: visible !important;
+        text-overflow: clip !important;
+        font-weight: 800;
+        font-size: 1rem;
+        line-height: 1.2;
+        margin-bottom: 4px;
+      }
+
       .sm-calc {
         font-size: 0.85rem;
         color: #bbb;
