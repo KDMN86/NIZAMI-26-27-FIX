@@ -1851,52 +1851,48 @@
         a.click();
         document.body.removeChild(a);
       }
+
       function kirimWaAdmin() {
         const u = JSON.parse(localStorage.getItem("nizami_user"));
-        let namaMitra = u ? u.nama : "-";
+        const namaMitra = u ? u.nama : "-";
+        const idMitra = u ? u.userId : "-";
 
-        let t = 0;
         let rincianMsg = "";
+        let totalSetor = 0;
 
-        // Looping isi batchCart untuk menyusun rincian pesan
-        for (let k in batchCart) {
-          let item = batchCart[k];
+        for (let id in batchCart) {
+          let item = batchCart[id];
           let subtotal = item.qty * item.harga;
-          t += subtotal;
+          totalSetor += subtotal;
 
-          rincianMsg += `👤 *${item.nama}*\n`;
-          rincianMsg += `   Paket: ${item.paket}\n`;
-          rincianMsg += `   Setoran: +${item.qty}x (Rp ${subtotal.toLocaleString("id-ID")})\n\n`;
+          // Pastikan ID tidak undefined
+          const cleanId = id !== "undefined" ? id : item.id || "0";
+          rincianMsg += `📍 [${cleanId}] ${item.nama} | ${item.paket} | +${item.qty}x\n`;
         }
 
-        // Menyusun format pesan akhir
-        let msg = `*LAPORAN SETORAN HARIAN*\n`;
-        msg += `Mitra: ${namaMitra}\n`;
-        msg += `Waktu: ${new Date().toLocaleString("id-ID")}\n`;
+        let msg = `*LAPORAN SETORAN NIZAMI*\n`;
+        msg += `DARI: ${namaMitra} (${idMitra})\n`;
+        msg += `WAKTU: ${new Date().toLocaleString("id-ID")}\n`;
         msg += `---------------------------\n\n`;
-
-        // Memasukkan rincian list peserta
         msg += rincianMsg;
+        msg += `\n---------------------------\n`;
+        msg += `*TOTAL SETORAN: Rp ${totalSetor.toLocaleString("id-ID")}*\n\n`;
+        msg += `Mohon diproses Admin. Terima kasih! 🙏`;
 
-        msg += `---------------------------\n`;
-        msg += `*TOTAL SETOR: Rp ${t.toLocaleString("id-ID")}*\n\n`;
-        msg += `Struk gambar juga akan saya kirimkan sebagai bukti. Terima kasih! 🙏`;
-
-        // Buka WhatsApp
         window.open(
           `https://wa.me/628122261036?text=${encodeURIComponent(msg)}`,
         );
 
-        // Mengosongkan keranjang (draft) setelah link WA terbuka
+        // Reset Keranjang
         batchCart = {};
         localStorage.removeItem("mitra_draft_" + userId);
         document
           .querySelectorAll(".stepper-input")
           .forEach((inp) => (inp.value = 0));
         updateBatchUI();
-        tutupPreviewImg();
-        document.getElementById("batchBar").classList.remove("expanded");
+        if (typeof tutupPreviewImg === "function") tutupPreviewImg();
       }
+
       function bukaModalDaftarBaru() {
         document.getElementById("formsContainerMitra").innerHTML = "";
         formCountMitra = 0;
