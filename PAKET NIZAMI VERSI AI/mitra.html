@@ -218,25 +218,23 @@
       .filter-wrapper {
         display: flex;
         gap: 8px;
-        overflow-x: auto;
-        padding-bottom: 15px;
-        margin-bottom: 10px;
-        scrollbar-width: none;
-      }
-      .filter-wrapper::-webkit-scrollbar {
-        display: none;
+        flex-wrap: wrap; /* Menjadikan tombol turun ke bawah jika layar sempit */
+        padding-bottom: 5px;
+        margin-bottom: 15px;
       }
       .filter-chip {
         background: #1a1a1a;
         color: #888;
         border: 1px solid #333;
-        padding: 10px 18px;
+        padding: 8px 12px;
         border-radius: 50px;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         font-weight: 600;
         white-space: nowrap;
         cursor: pointer;
         transition: 0.2s;
+        flex: 1 1 auto; /* Membuat tombol membagi ruang dengan rapi */
+        text-align: center;
       }
       .filter-chip.active {
         background: #ffd700;
@@ -1245,6 +1243,73 @@
       >
         <span>TOTAL SETOR:</span><span id="struk-total-val">Rp 0</span>
       </div>
+
+      <div id="modalFotoPaket" class="modal-overlay" style="z-index: 10000">
+        <div
+          class="modal-card"
+          style="padding: 20px; max-height: 90vh; overflow-y: auto"
+        >
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 15px;
+            "
+          >
+            <h3 style="margin: 0; color: #ffd700" id="judulFotoPaket">
+              <i class="fas fa-box-open"></i> Detail Paket
+            </h3>
+            <button
+              onclick="
+                document
+                  .getElementById('modalFotoPaket')
+                  .classList.remove('show')
+              "
+              style="
+                background: none;
+                border: none;
+                color: #aaa;
+                font-size: 1.8rem;
+                cursor: pointer;
+              "
+            >
+              &times;
+            </button>
+          </div>
+          <div
+            style="
+              text-align: center;
+              background: #000;
+              border-radius: 10px;
+              padding: 10px;
+              border: 1px solid #333;
+            "
+          >
+            <img
+              id="imgFotoPaket"
+              src=""
+              style="
+                max-width: 100%;
+                border-radius: 8px;
+                max-height: 40vh;
+                object-fit: contain;
+                display: none;
+              "
+            />
+            <div
+              id="noFotoMsg"
+              style="color: #666; padding: 20px; display: none"
+            >
+              <i class="fas fa-image fa-3x"></i><br />Foto belum diunggah Admin
+            </div>
+          </div>
+          <div
+            id="descFotoPaket"
+            style="margin-top: 15px; font-size: 0.9rem; color: #ccc"
+          ></div>
+        </div>
+      </div>
     </div>
 
     <script src="script.js"></script>
@@ -1507,8 +1572,10 @@
           .querySelectorAll(".filter-chip")
           .forEach((el) => el.classList.remove("active"));
         document.getElementById(`flt-${tipe}`).classList.add("active");
+
         const container = document.getElementById("pesertaContainer");
         container.innerHTML = "";
+
         let filtered = rawPesertaData;
         if (tipe !== "semua")
           filtered = rawPesertaData.filter(
@@ -1531,6 +1598,18 @@
             ? `<span class="badge-no" title="Nomor Anggota"><i class="fas fa-hashtag"></i> No. ${p.no_anggota}</span>`
             : "";
 
+          // PERBAIKAN 2: Menampilkan Nilai Setoran Per Hari/Minggu
+          let teksSatuan = p.paket.toLowerCase().includes("mingguan")
+            ? "minggu"
+            : "hari";
+          let labelHarga =
+            p.harga > 0
+              ? `<div style="font-size:0.85rem; color:#4ade80; margin-top:8px; margin-bottom:4px; font-weight:600;"><i class="fas fa-coins"></i> Rp ${p.harga.toLocaleString("id-ID")} /${teksSatuan}</div>`
+              : "";
+
+          // PERBAIKAN 3: Label Paket bisa diklik
+          let clickablePaket = `<span class="pc-paket" style="margin-top:4px; cursor:pointer; background:rgba(255,215,0,0.1); color:#ffd700; border-color:rgba(255,215,0,0.4);" onclick="lihatFotoPaket('${p.paket}')"><i class="fas fa-image"></i> ${p.paket}</span>`;
+
           let btnWaTunggakanHtml = "";
           if (kal.kategori === "nunggak" && p.harga > 0) {
             btnWaTunggakanHtml = `<div class="wa-action-box"><button class="btn-wa" onclick="pengingatWA('${p.hp || ""}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${kal.telatCount}, ${p.harga * kal.telatCount})"><i class="fab fa-whatsapp" style="font-size:1.3rem;"></i> Kirim Pengingat via WA (Rp ${(p.harga * kal.telatCount).toLocaleString("id-ID")})</button></div>`;
@@ -1542,11 +1621,12 @@
             <div class="peserta-card ${cardStyle}">
               <div class="pc-head">
                 <div class="pc-info">
-                  <div class="pc-name">
-                    ${p.nama} 
-                    <span class="pc-paket" style="margin-top:0;">${p.paket}</span>
+                  <div class="pc-name" style="margin-bottom:2px;">
+                    ${p.nama}
                   </div>
-                  <div style="display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap;">
+                  ${clickablePaket}
+                  ${labelHarga}
+                  <div style="display: flex; gap: 8px; margin-bottom: 8px; margin-top: 6px; flex-wrap: wrap;">
                     ${noAnggotaHtml}
                     ${idBtnHtml}
                   </div>
@@ -1564,6 +1644,77 @@
         });
         updateBatchUI();
         searchPesertaData();
+      }
+
+      function lihatFotoPaket(namaPaket) {
+        let pkt = masterPaket.find(
+          (p) => p.nama.trim().toLowerCase() === namaPaket.trim().toLowerCase(),
+        );
+
+        document.getElementById("judulFotoPaket").innerHTML =
+          `<i class="fas fa-box-open"></i> ${namaPaket}`;
+        let imgEl = document.getElementById("imgFotoPaket");
+        let noImgMsg = document.getElementById("noFotoMsg");
+
+        // Setel Gambar dengan Bypass Google Drive Security
+        if (pkt && pkt.foto) {
+          let urlFoto = pkt.foto;
+
+          // MENGUBAH LINK: Dari mode "View" menjadi mode "Thumbnail"
+          if (urlFoto.includes("uc?export=view&id=")) {
+            let fileId = urlFoto.split("id=")[1];
+            // Potong jika ada parameter tambahan seperti &...
+            fileId = fileId.split("&")[0];
+            urlFoto = `https://drive.google.com/thumbnail?id=${fileId}&sz=w800`;
+          }
+
+          imgEl.src = urlFoto;
+          imgEl.style.display = "block";
+          noImgMsg.style.display = "none";
+
+          // Antisipasi jika izin share file di Google Drive belum "Public"
+          imgEl.onerror = function () {
+            imgEl.style.display = "none";
+            noImgMsg.style.display = "block";
+            noImgMsg.innerHTML =
+              '<i class="fas fa-image-slash fa-3x" style="color:#ff6b6b; margin-bottom:10px;"></i><br>Akses gambar ditolak!<br><small>Pastikan di Google Drive, izin share foto adalah "Siapa saja yang memiliki link".</small>';
+          };
+        } else {
+          imgEl.style.display = "none";
+          noImgMsg.style.display = "block";
+          noImgMsg.innerHTML =
+            '<i class="fas fa-image fa-3x"></i><br>Foto belum diunggah Admin';
+        }
+
+        // Cari dan Tampilkan Isi Paket dari MASTER_ISI_PAKET
+        let rincianHtml = "";
+        if (masterIsiPaket && masterIsiPaket.length > 0) {
+          let items = masterIsiPaket.filter(
+            (isi) =>
+              (isi.paket || isi.nama_paket || isi.jenis_paket || "")
+                .trim()
+                .toLowerCase() === namaPaket.trim().toLowerCase(),
+          );
+          if (items.length > 0) {
+            rincianHtml = `<div style="background:#1a1a1a; padding:15px; border-radius:10px; border:1px dashed #444;">
+                                  <b style='color:#4ade80;'><i class="fas fa-list"></i> Daftar Isi Sembako:</b>
+                                  <ul style='padding-left:20px; margin-top:8px; margin-bottom:0;'>`;
+            items.forEach((i) => {
+              let itemName = i.barang || i.nama_barang;
+              let itemQty = i.qty || i.jumlah || 1;
+              let itemSat = i.satuan || "";
+              rincianHtml += `<li style="margin-bottom:4px;"><b>${itemQty}</b> ${itemSat} ${itemName}</li>`;
+            });
+            rincianHtml += `</ul></div>`;
+          }
+        }
+
+        if (rincianHtml === "") {
+          rincianHtml = `<div style="text-align:center; color:#888; font-size:0.85rem;">Rincian barang tidak tersedia untuk paket ini.</div>`;
+        }
+
+        document.getElementById("descFotoPaket").innerHTML = rincianHtml;
+        document.getElementById("modalFotoPaket").classList.add("show");
       }
 
       function pengingatWA(hp, nama, paket, telat, nominal) {
