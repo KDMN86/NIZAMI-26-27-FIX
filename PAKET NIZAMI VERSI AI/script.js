@@ -2,7 +2,7 @@
 // 1. KONFIGURASI URL API (GANTI URL DI SINI JIKA ADA UPDATE)
 // ==============================================================
 const URL_API =
-  "https://script.google.com/macros/s/AKfycbzezhla2SqAB0gQ8UEe484l7hE7QzJn-LtmkyTle-I_z0zPfa9BVJiv2avY-XLipw9y/exec";
+  "https://script.google.com/macros/s/AKfycby5E5fR-rcK7cA-vndzmd_sLvWCT8xjHxTRDe2KOA0fskpCPa6UffakJq6jMM_ksI6GeQ/exec";
 
 // ==============================================================
 // 2. FUNGSI PENGAMBILAN DATA (FETCH)
