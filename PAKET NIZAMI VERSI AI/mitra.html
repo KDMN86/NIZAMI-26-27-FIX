@@ -1457,6 +1457,7 @@
                 done: parseInt(item.tercapai) || 0,
                 target: parseInt(item.target) || 330,
                 harga: parseInt(item.nilai) || 0,
+                rincian: item.rincian || [],
               };
             });
             processAndRender(rawPesertaData);
@@ -1607,8 +1608,8 @@
               ? `<div style="font-size:0.85rem; color:#4ade80; margin-top:8px; margin-bottom:4px; font-weight:600;"><i class="fas fa-coins"></i> Rp ${p.harga.toLocaleString("id-ID")} /${teksSatuan}</div>`
               : "";
 
-          // PERBAIKAN 3: Label Paket bisa diklik
-          let clickablePaket = `<span class="pc-paket" style="margin-top:4px; cursor:pointer; background:rgba(255,215,0,0.1); color:#ffd700; border-color:rgba(255,215,0,0.4);" onclick="lihatFotoPaket('${p.paket}')"><i class="fas fa-image"></i> ${p.paket}</span>`;
+          // PERBAIKAN: Menambahkan '${p.id}' ke dalam fungsi klik
+          let clickablePaket = `<span class="pc-paket" style="margin-top:4px; cursor:pointer; background:rgba(255,215,0,0.1); color:#ffd700; border-color:rgba(255,215,0,0.4);" onclick="lihatFotoPaket('${p.paket}', '${p.id}')"><i class="fas fa-image"></i> ${p.paket}</span>`;
 
           let btnWaTunggakanHtml = "";
           if (kal.kategori === "nunggak" && p.harga > 0) {
@@ -1646,7 +1647,7 @@
         searchPesertaData();
       }
 
-      function lihatFotoPaket(namaPaket) {
+      function lihatFotoPaket(namaPaket, idPeserta = null) {
         let pkt = masterPaket.find(
           (p) => p.nama.trim().toLowerCase() === namaPaket.trim().toLowerCase(),
         );
@@ -1656,28 +1657,20 @@
         let imgEl = document.getElementById("imgFotoPaket");
         let noImgMsg = document.getElementById("noFotoMsg");
 
-        // Setel Gambar dengan Bypass Google Drive Security
         if (pkt && pkt.foto) {
           let urlFoto = pkt.foto;
-
-          // MENGUBAH LINK: Dari mode "View" menjadi mode "Thumbnail"
           if (urlFoto.includes("uc?export=view&id=")) {
-            let fileId = urlFoto.split("id=")[1];
-            // Potong jika ada parameter tambahan seperti &...
-            fileId = fileId.split("&")[0];
+            let fileId = urlFoto.split("id=")[1].split("&")[0];
             urlFoto = `https://drive.google.com/thumbnail?id=${fileId}&sz=w800`;
           }
-
           imgEl.src = urlFoto;
           imgEl.style.display = "block";
           noImgMsg.style.display = "none";
-
-          // Antisipasi jika izin share file di Google Drive belum "Public"
           imgEl.onerror = function () {
             imgEl.style.display = "none";
             noImgMsg.style.display = "block";
             noImgMsg.innerHTML =
-              '<i class="fas fa-image-slash fa-3x" style="color:#ff6b6b; margin-bottom:10px;"></i><br>Akses gambar ditolak!<br><small>Pastikan di Google Drive, izin share foto adalah "Siapa saja yang memiliki link".</small>';
+              '<i class="fas fa-image-slash fa-3x" style="color:#ff6b6b; margin-bottom:10px;"></i><br>Akses gambar ditolak!';
           };
         } else {
           imgEl.style.display = "none";
@@ -1686,9 +1679,26 @@
             '<i class="fas fa-image fa-3x"></i><br>Foto belum diunggah Admin';
         }
 
-        // Cari dan Tampilkan Isi Paket dari MASTER_ISI_PAKET
         let rincianHtml = "";
-        if (masterIsiPaket && masterIsiPaket.length > 0) {
+        let isCustom = false;
+
+        // 1. CEK BARANG CUSTOM DARI DATA_PESANAN_DETAIL
+        if (idPeserta) {
+          let p = rawPesertaData.find((x) => x.id === idPeserta);
+          if (p && p.rincian && p.rincian.length > 0) {
+            isCustom = true;
+            rincianHtml = `<div style="background:#1a1a1a; padding:15px; border-radius:10px; border:1px dashed #3498db;">
+                                  <b style='color:#3498db;'><i class="fas fa-shopping-basket"></i> Daftar Barang Pilihan:</b>
+                                  <ul style='padding-left:20px; margin-top:8px; margin-bottom:0; color:#eee;'>`;
+            p.rincian.forEach((item) => {
+              rincianHtml += `<li style="margin-bottom:6px;">${item}</li>`;
+            });
+            rincianHtml += `</ul></div>`;
+          }
+        }
+
+        // 2. JIKA BUKAN MINGGUAN/COOKIES, AMBIL DARI MASTER_ISI_PAKET (DEFAULT)
+        if (!isCustom && masterIsiPaket && masterIsiPaket.length > 0) {
           let items = masterIsiPaket.filter(
             (isi) =>
               (isi.paket || isi.nama_paket || isi.jenis_paket || "")
@@ -1697,7 +1707,7 @@
           );
           if (items.length > 0) {
             rincianHtml = `<div style="background:#1a1a1a; padding:15px; border-radius:10px; border:1px dashed #444;">
-                                  <b style='color:#4ade80;'><i class="fas fa-list"></i> Daftar Isi Sembako:</b>
+                                  <b style='color:#4ade80;'><i class="fas fa-list"></i> Daftar Isi Paket:</b>
                                   <ul style='padding-left:20px; margin-top:8px; margin-bottom:0;'>`;
             items.forEach((i) => {
               let itemName = i.barang || i.nama_barang;
@@ -1710,7 +1720,7 @@
         }
 
         if (rincianHtml === "") {
-          rincianHtml = `<div style="text-align:center; color:#888; font-size:0.85rem;">Rincian barang tidak tersedia untuk paket ini.</div>`;
+          rincianHtml = `<div style="text-align:center; color:#888; font-size:0.85rem; padding-top: 10px;">Rincian barang tidak tersedia untuk paket ini.</div>`;
         }
 
         document.getElementById("descFotoPaket").innerHTML = rincianHtml;
