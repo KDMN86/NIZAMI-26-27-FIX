@@ -2189,12 +2189,23 @@
         const sel = document.getElementById(`regPaketSel_${rowId}`);
         if (!sel.value)
           return alert("Pilih paket dari daftar terlebih dahulu!");
+
         const pktName = sel.options[sel.selectedIndex].text;
         const valLower = pktName.toLowerCase();
+
         let mode = "normal";
-        if (valLower.includes("mingguan")) mode = "mingguan";
-        else if (valLower.includes("cookies") || valLower.includes("kue"))
+
+        // REVISI: Jika mengandung kata "mingguan" = mode mingguan
+        // Jika mengandung "cookies" ATAU ("kue" TAPI BUKAN "kaleng") = mode cookies custom
+        if (valLower.includes("mingguan")) {
+          mode = "mingguan";
+        } else if (
+          valLower.includes("cookies") ||
+          (valLower.includes("kue") && !valLower.includes("kaleng"))
+        ) {
           mode = "cookies";
+        }
+
         const pkgId = "pkg_" + Date.now() + Math.floor(Math.random() * 1000);
         rowDataMitra[`row_${rowId}`].packages.push({
           id: pkgId,
