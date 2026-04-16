@@ -1639,28 +1639,28 @@
           container.insertAdjacentHTML(
             "beforeend",
             `
-            <div class="peserta-card ${cardStyle}">
-              <div class="pc-head">
-                <div class="pc-info">
-                  <div class="pc-name" style="margin-bottom:2px;">
-                    ${p.nama}
-                  </div>
-                  ${clickablePaket}
-                  ${labelHarga}
-                  <div style="display: flex; gap: 8px; margin-bottom: 8px; margin-top: 6px; flex-wrap: wrap;">
-                    ${noAnggotaHtml}
-                    ${idBtnHtml}
-                  </div>
-                  <div class="pc-status ${kal.colorClass}" style="margin-top:4px;"><i class="fas ${kal.icon}"></i> ${kal.text}</div>
-                </div>
-                <div class="pc-right">
-                  <div style="font-size: 0.75rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: bold;">Tercapai</div>
-                  <div style="font-size: 2rem; color: #ffd700; font-weight: bold; line-height: 1;">${p.done}</div>
-                  <div style="font-size: 0.95rem; color: #888; font-weight: bold; border-top: 1px solid #333; margin-top: 5px; padding-top: 5px; width: 100%; text-align: center;">/ ${p.target}</div>
-                </div>
-              </div>
-              ${btnWaTunggakanHtml}
-            </div>`,
+             <div class="peserta-card ${cardStyle}">
+               <div class="pc-head">
+                 <div class="pc-info">
+                   <div class="pc-name" style="margin-bottom:2px;">
+                     ${p.nama}
+                   </div>
+                   ${clickablePaket}
+                   ${labelHarga}
+                   <div style="display: flex; gap: 8px; margin-bottom: 8px; margin-top: 6px; flex-wrap: wrap;">
+                     ${noAnggotaHtml}
+                     ${idBtnHtml}
+                   </div>
+                   <div class="pc-status ${kal.colorClass}" style="margin-top:4px;"><i class="fas ${kal.icon}"></i> ${kal.text}</div>
+                 </div>
+                 <div class="pc-right">
+                   <div style="font-size: 0.75rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: bold;">Tercapai</div>
+                   <div style="font-size: 2rem; color: #ffd700; font-weight: bold; line-height: 1;">${p.done}</div>
+                   <div style="font-size: 0.95rem; color: #888; font-weight: bold; border-top: 1px solid #333; margin-top: 5px; padding-top: 5px; width: 100%; text-align: center;">/ ${p.target}</div>
+                 </div>
+               </div>
+               ${btnWaTunggakanHtml}
+             </div>`,
           );
         });
         updateBatchUI();
@@ -1708,8 +1708,8 @@
           if (p && p.rincian && p.rincian.length > 0) {
             isCustom = true;
             rincianHtml = `<div style="background:#1a1a1a; padding:15px; border-radius:10px; border:1px dashed #3498db;">
-                                  <b style='color:#3498db;'><i class="fas fa-shopping-basket"></i> Daftar Barang Pilihan:</b>
-                                  <ul style='padding-left:20px; margin-top:8px; margin-bottom:0; color:#eee;'>`;
+                                   <b style='color:#3498db;'><i class="fas fa-shopping-basket"></i> Daftar Barang Pilihan:</b>
+                                   <ul style='padding-left:20px; margin-top:8px; margin-bottom:0; color:#eee;'>`;
             p.rincian.forEach((item) => {
               rincianHtml += `<li style="margin-bottom:6px;">${item}</li>`;
             });
@@ -1727,8 +1727,8 @@
           );
           if (items.length > 0) {
             rincianHtml = `<div style="background:#1a1a1a; padding:15px; border-radius:10px; border:1px dashed #444;">
-                                  <b style='color:#4ade80;'><i class="fas fa-list"></i> Daftar Isi Paket:</b>
-                                  <ul style='padding-left:20px; margin-top:8px; margin-bottom:0;'>`;
+                                   <b style='color:#4ade80;'><i class="fas fa-list"></i> Daftar Isi Paket:</b>
+                                   <ul style='padding-left:20px; margin-top:8px; margin-bottom:0;'>`;
             items.forEach((i) => {
               let itemName = i.barang || i.nama_barang;
               let itemQty = i.qty || i.jumlah || 1;
@@ -1812,24 +1812,24 @@
 
           // REVISI: Tampilan sejajar & Input bisa diketik
           html += `
-          <div class="sm-item" id="sm_row_${p.id}">
-            <div class="sm-info" style="min-width: 0;">
-                <div class="sm-name" style="display:flex; align-items:center; gap:6px; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                    <span style="font-weight:800; font-size:1.05rem; color:#fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 1;">${p.nama}</span>
-                    ${noAnggotaBadge}
-                    ${paketBadge}
-                </div>
-                <div class="sm-calc" id="sm_calc_${p.id}"><i class="fas fa-history"></i> Masuk: ${p.done} ➔ <b style="color:#fff; font-size:0.95rem;">${curr}</b></div>
-            </div>
-            <div class="sm-right">
-                <div class="sm-subtotal" id="sm_sub_${p.id}">Rp ${subtotal.toLocaleString("id-ID")}</div>
-                <div class="stepper-control">
-                    <button type="button" class="stepper-btn" onclick="updateQtySM('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, -1)">-</button>
-                    <input type="number" class="stepper-input" id="sm_qty_${p.id}" value="${qty}" onchange="setQtySM('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, this.value)">
-                    <button type="button" class="stepper-btn" onclick="updateQtySM('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, 1)">+</button>
-                </div>
-            </div>
-          </div>`;
+           <div class="sm-item" id="sm_row_${p.id}">
+             <div class="sm-info" style="min-width: 0;">
+                 <div class="sm-name" style="display:flex; align-items:center; gap:6px; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                     <span style="font-weight:800; font-size:1.05rem; color:#fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 1;">${p.nama}</span>
+                     ${noAnggotaBadge}
+                     ${paketBadge}
+                 </div>
+                 <div class="sm-calc" id="sm_calc_${p.id}"><i class="fas fa-history"></i> Masuk: ${p.done} ➔ <b style="color:#fff; font-size:0.95rem;">${curr}</b></div>
+             </div>
+             <div class="sm-right">
+                 <div class="sm-subtotal" id="sm_sub_${p.id}">Rp ${subtotal.toLocaleString("id-ID")}</div>
+                 <div class="stepper-control">
+                     <button type="button" class="stepper-btn" onclick="updateQtySM('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, -1)">-</button>
+                     <input type="number" class="stepper-input" id="sm_qty_${p.id}" value="${qty}" onchange="setQtySM('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, this.value)">
+                     <button type="button" class="stepper-btn" onclick="updateQtySM('${p.id}', '${p.nama.replace(/'/g, "\\'")}', '${p.paket}', ${p.harga}, ${p.done}, 1)">+</button>
+                 </div>
+             </div>
+           </div>`;
         });
 
         body.innerHTML = html;
@@ -1922,9 +1922,9 @@
           if (item.qty > 0) {
             let sub = item.qty * item.harga;
             html += `<div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px dotted #444; padding-bottom:6px; line-height: 1.4;">
-                    <span style="color:#ccc; font-size:0.85rem;"><b>${item.qty}x</b> ${item.nama} <br><small style="color:#888;">${item.paket}</small></span>
-                    <span style="color:#ffd700; font-size:0.95rem; font-weight:bold;">Rp ${sub.toLocaleString("id-ID")}</span>
-                </div>`;
+                     <span style="color:#ccc; font-size:0.85rem;"><b>${item.qty}x</b> ${item.nama} <br><small style="color:#888;">${item.paket}</small></span>
+                     <span style="color:#ffd700; font-size:0.95rem; font-weight:bold;">Rp ${sub.toLocaleString("id-ID")}</span>
+                 </div>`;
             count++;
           }
         }
@@ -2176,25 +2176,25 @@
         let defAlamat =
           globalMitraAlamat || localStorage.getItem("mitra_alamat_cache") || "";
         const html = `
-        <div class="peserta-card" id="rowMitra_${id}" style="margin-bottom:20px; border:1px solid #333;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:15px; align-items:center;">
-                <b style="color:#ffd700; font-size:1.2rem;"><i class="fas fa-user"></i> Peserta #${id}</b>
-                ${id > 1 ? `<button type="button" style="background:none; border:none; color:#ff6b6b; cursor:pointer; font-size:1rem; font-weight:bold;" onclick="removeRowMitra(${id})"><i class="fas fa-trash"></i> Batal</button>` : ""}
-            </div>
-            <input type="text" id="regNama_${id}" class="input-dark" style="margin-bottom:12px;" placeholder="Nama Lengkap" required />
-            <input type="tel" id="regHP_${id}" class="input-dark" style="margin-bottom:12px;" placeholder="No. WhatsApp" value="${defHp}" required />
-            <textarea id="regAlamat_${id}" class="input-dark" style="margin-bottom:15px;" placeholder="Alamat Lengkap" rows="2" required>${defAlamat}</textarea>
-            <div style="background: #1a1a1a; padding: 15px; border-radius: 10px; border: 1px dashed #444; margin-bottom: 15px;">
-                <label class="cs-label" style="color: #ffd700; font-weight: bold; margin-bottom:8px; display:block; font-size:1rem;">Tambahkan Paket:</label>
-                <div style="display:flex; gap:10px;">
-                    <select id="regPaketSel_${id}" class="cs-select" style="margin-bottom:0;">${optHtml}</select>
-                    <button type="button" onclick="addPaketToRow(${id})" style="background:#4ade80; color:#000; border:none; border-radius:10px; padding:0 20px; font-weight:bold; font-size:1.2rem; cursor:pointer; flex-shrink:0;"><i class="fas fa-plus"></i></button>
-                </div>
-            </div>
-            <div id="paketListContainer_${id}" style="margin-bottom:10px;">
-                <div style="text-align: center; color: #666; font-size: 0.9rem; padding: 15px; border: 1px dashed #333; border-radius:10px;">Belum ada paket ditambahkan. Pilih lalu tekan <i class="fas fa-plus"></i></div>
-            </div>
-        </div>`;
+         <div class="peserta-card" id="rowMitra_${id}" style="margin-bottom:20px; border:1px solid #333;">
+             <div style="display:flex; justify-content:space-between; margin-bottom:15px; align-items:center;">
+                 <b style="color:#ffd700; font-size:1.2rem;"><i class="fas fa-user"></i> Peserta #${id}</b>
+                 ${id > 1 ? `<button type="button" style="background:none; border:none; color:#ff6b6b; cursor:pointer; font-size:1rem; font-weight:bold;" onclick="removeRowMitra(${id})"><i class="fas fa-trash"></i> Batal</button>` : ""}
+             </div>
+             <input type="text" id="regNama_${id}" class="input-dark" style="margin-bottom:12px;" placeholder="Nama Lengkap" required />
+             <input type="tel" id="regHP_${id}" class="input-dark" style="margin-bottom:12px;" placeholder="No. WhatsApp" value="${defHp}" required />
+             <textarea id="regAlamat_${id}" class="input-dark" style="margin-bottom:15px;" placeholder="Alamat Lengkap" rows="2" required>${defAlamat}</textarea>
+             <div style="background: #1a1a1a; padding: 15px; border-radius: 10px; border: 1px dashed #444; margin-bottom: 15px;">
+                 <label class="cs-label" style="color: #ffd700; font-weight: bold; margin-bottom:8px; display:block; font-size:1rem;">Tambahkan Paket:</label>
+                 <div style="display:flex; gap:10px;">
+                     <select id="regPaketSel_${id}" class="cs-select" style="margin-bottom:0;">${optHtml}</select>
+                     <button type="button" onclick="addPaketToRow(${id})" style="background:#4ade80; color:#000; border:none; border-radius:10px; padding:0 20px; font-weight:bold; font-size:1.2rem; cursor:pointer; flex-shrink:0;"><i class="fas fa-plus"></i></button>
+                 </div>
+             </div>
+             <div id="paketListContainer_${id}" style="margin-bottom:10px;">
+                 <div style="text-align: center; color: #666; font-size: 0.9rem; padding: 15px; border: 1px dashed #333; border-radius:10px;">Belum ada paket ditambahkan. Pilih lalu tekan <i class="fas fa-plus"></i></div>
+             </div>
+         </div>`;
         document
           .getElementById("formsContainerMitra")
           .insertAdjacentHTML("beforeend", html);
@@ -2250,16 +2250,20 @@
           `paketListContainer_${rowId}`,
         );
         const pkgs = rowDataMitra[`row_${rowId}`].packages;
+
         if (pkgs.length === 0) {
           container.innerHTML = `<div style="text-align: center; color: #666; font-size: 0.9rem; padding: 15px; border: 1px dashed #333; border-radius:10px;">Belum ada paket ditambahkan. Pilih lalu tekan <i class="fas fa-plus"></i></div>`;
           return;
         }
+
         let html = "";
         pkgs.forEach((pkg) => {
           let btnBarangHtml = "";
           let rincianHtml = "";
           let txtSetoran = "";
           let itemKeys = Object.keys(pkg.items);
+
+          // --- 1. HITUNG RINCIAN BARANG & HARGA SETORAN ---
           if (itemKeys.length > 0) {
             let rincianArr = [];
             let totalSetoranPkg = 0;
@@ -2267,11 +2271,13 @@
               let qty = pkg.items[k];
               let b = masterBarang.find((mb) => mb.nama === k);
               if (b) {
-                let sub = b.harga * qty;
+                let sub = 0;
                 if (pkg.mode === "mingguan")
                   sub = Math.ceil(b.harga / 40) * qty;
                 else if (pkg.mode === "cookies")
                   sub = Math.ceil(b.harga / 330) * qty;
+                else sub = b.harga * qty;
+
                 totalSetoranPkg += sub;
                 rincianArr.push(`${qty}x ${k}`);
               } else {
@@ -2279,47 +2285,67 @@
               }
             });
             rincianHtml = `<div style="font-size:0.85rem; color:#ccc; margin-top:10px; padding:10px; background:#000; border-radius:6px; border:1px dashed #333;">${rincianArr.join("<br>")}</div>`;
+
             if (pkg.mode === "mingguan")
               txtSetoran = `Rp ${totalSetoranPkg.toLocaleString("id-ID")} /mgg`;
             else if (pkg.mode === "cookies")
               txtSetoran = `Rp ${totalSetoranPkg.toLocaleString("id-ID")} /hari`;
-            else {
-              let ext = pkg.name.replace(/\./g, "").match(/\d+/);
-              if (ext)
-                txtSetoran = `Rp ${parseInt(ext[0]).toLocaleString("id-ID")} /hari`;
-              else {
-                let pMaster = masterPaket.find((p) => p.nama === pkg.name);
-                if (pMaster && pMaster.harga > 0)
-                  txtSetoran = `Rp ${pMaster.harga.toLocaleString("id-ID")} /hari`;
-              }
-            }
+            else
+              txtSetoran = `Rp ${totalSetoranPkg.toLocaleString("id-ID")} /hari`;
           } else {
-            if (pkg.mode === "normal") {
-              let ext = pkg.name.replace(/\./g, "").match(/\d+/);
-              if (ext)
-                txtSetoran = `Rp ${parseInt(ext[0]).toLocaleString("id-ID")} /hari`;
-              else {
-                let pMaster = masterPaket.find((p) => p.nama === pkg.name);
-                if (pMaster && pMaster.harga > 0)
-                  txtSetoran = `Rp ${pMaster.harga.toLocaleString("id-ID")} /hari`;
-              }
-            } else {
-              txtSetoran = `Rp 0`;
+            // Jika belum ada barang custom (masih standar)
+            let ext = pkg.name.replace(/\./g, "").match(/\d+/);
+            if (ext)
+              txtSetoran = `Rp ${parseInt(ext[0]).toLocaleString("id-ID")} /hari`;
+            else {
+              let pMaster = masterPaket.find((p) => p.nama === pkg.name);
+              if (pMaster && pMaster.harga > 0)
+                txtSetoran = `Rp ${pMaster.harga.toLocaleString("id-ID")} /hari`;
             }
           }
+
+          // --- 2. TENTUKAN TAMPILAN TOMBOL ---
           if (pkg.mode === "mingguan") {
             btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:12px; margin-bottom:0;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-shopping-basket"></i> Pilih Sembako</button>`;
           } else if (pkg.mode === "cookies") {
             btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:12px; margin-bottom:0;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-cookie-bite"></i> Pilih Kue</button>`;
           } else {
-            let btnText =
-              pkg.isRequested && Object.keys(pkg.items).length > 0
-                ? "Edit Request Brg"
-                : "Request Brg (Opsional)";
-            btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:12px; margin-bottom:0; background:transparent; color:#ffd700; border-color:#ffd700;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-edit"></i> ${btnText}</button>`;
+            // Mode normal (Kids/Mom/Lebaran)
+            if (pkg.isRequested && itemKeys.length > 0) {
+              btnBarangHtml = `<button type="button" class="btn-pilih-barang" style="margin-top:12px; margin-bottom:0; background:rgba(255, 215, 0, 0.1); color:#ffd700; border-color:#ffd700;" onclick="bukaPilihBarangMitra(${rowId}, '${pkg.id}')"><i class="fas fa-edit"></i> Edit Request Brg</button>`;
+            } else {
+              // Tampilan Hijau untuk Sembako Standar agar Mitra tidak salah klik
+              btnBarangHtml = `
+                <div style="margin-top:12px; padding:10px; background:rgba(74, 222, 128, 0.1); border-radius:8px; border:1px solid rgba(74, 222, 128, 0.3); text-align:center;">
+                    <div style="color:#4ade80; font-size:0.85rem; font-weight:bold; margin-bottom:4px;"><i class="fas fa-check-circle"></i> Sembako Standar Terpilih</div>
+                    <button type="button" style="background:transparent; color:#888; border:none; text-decoration:underline; font-size:0.75rem; cursor:pointer; padding:5px; margin-top:2px;" onclick="konfirmasiRequestMitra(${rowId}, '${pkg.id}')">
+                        Ubah isi standar (Request Khusus)
+                    </button>
+                </div>`;
+            }
           }
-          html += `<div style="background:#1a1a1a; border:1px solid #333; padding:18px; border-radius:12px; margin-bottom:15px; position:relative;"><i class="fas fa-trash-alt" onclick="removePaketFromRow(${rowId}, '${pkg.id}')" style="position:absolute; top:18px; right:18px; color:#ff4d4d; cursor:pointer; font-size:1.3rem; padding:5px;"></i><div style="font-weight:bold; color:#ffd700; font-size:1.1rem; margin-bottom:10px; padding-right:35px;"><i class="fas fa-box"></i> ${pkg.name} ${pkg.isRequested && Object.keys(pkg.items).length > 0 ? "<span style='font-size:0.8rem; color:#aaa;'>(Request)</span>" : ""}</div>${rincianHtml}${btnBarangHtml}${txtSetoran ? `<div style="text-align:right; margin-top:12px; border-top:1px dashed #444; padding-top:12px;"><span style="font-size:0.85rem; color:#aaa;">Target Setoran:</span><br><span style="font-size:1.2rem; color:#4ade80; font-weight:bold;">${txtSetoran}</span></div>` : ""}</div>`;
+
+          // --- 3. SUSUN TEMPLATE KARTU PAKET ---
+          let targetDisplay = txtSetoran
+            ? `
+            <div style="text-align:right; margin-top:12px; border-top:1px dashed #444; padding-top:12px;">
+                <span style="font-size:0.85rem; color:#aaa;">Target Setoran:</span><br>
+                <span style="font-size:1.2rem; color:#4ade80; font-weight:bold;">${txtSetoran}</span>
+            </div>`
+            : "";
+
+          html += `
+            <div style="background:#1a1a1a; border:1px solid #333; padding:18px; border-radius:12px; margin-bottom:15px; position:relative;">
+                <i class="fas fa-trash-alt" onclick="removePaketFromRow(${rowId}, '${pkg.id}')" style="position:absolute; top:18px; right:18px; color:#ff4d4d; cursor:pointer; font-size:1.3rem; padding:5px;"></i>
+                <div style="font-weight:bold; color:#ffd700; font-size:1.1rem; margin-bottom:10px; padding-right:35px;">
+                    <i class="fas fa-box"></i> ${pkg.name} ${pkg.isRequested && itemKeys.length > 0 ? "<span style='font-size:0.8rem; color:#aaa;'>(Request)</span>" : ""}
+                </div>
+                ${rincianHtml}
+                ${btnBarangHtml}
+                ${targetDisplay}
+            </div>`;
         });
+
         container.innerHTML = html;
       }
 
@@ -2436,17 +2462,17 @@
 
         // Menambahkan class pb-item-row dan data-nama untuk kebutuhan filter
         return `
-          <div class="pb-item-row" data-nama="${b.nama.toLowerCase()}" style="display:flex; justify-content:space-between; align-items:center; padding:16px 0; border-bottom:1px solid #222;">
-            <div style="flex:1; padding-right:15px;">
-              <div style="font-weight:bold; color:#fff; font-size:1.05rem; margin-bottom:4px;">${b.nama}</div>
-              <div style="font-size:0.85rem; color:#aaa;">Rp ${displayPrice.toLocaleString("id-ID")} / ${labelSatuan}</div>
-            </div>
-            <div class="stepper-control">
-              <button type="button" class="stepper-btn" onclick="changeQtyMitra('${safeName}', -1)">-</button>
-              <input type="number" readonly class="stepper-input" id="${inputId}" value="${qty}">
-              <button type="button" class="stepper-btn" onclick="changeQtyMitra('${safeName}', 1)">+</button>
-            </div>
-          </div>`;
+           <div class="pb-item-row" data-nama="${b.nama.toLowerCase()}" style="display:flex; justify-content:space-between; align-items:center; padding:16px 0; border-bottom:1px solid #222;">
+             <div style="flex:1; padding-right:15px;">
+               <div style="font-weight:bold; color:#fff; font-size:1.05rem; margin-bottom:4px;">${b.nama}</div>
+               <div style="font-size:0.85rem; color:#aaa;">Rp ${displayPrice.toLocaleString("id-ID")} / ${labelSatuan}</div>
+             </div>
+             <div class="stepper-control">
+               <button type="button" class="stepper-btn" onclick="changeQtyMitra('${safeName}', -1)">-</button>
+               <input type="number" readonly class="stepper-input" id="${inputId}" value="${qty}">
+               <button type="button" class="stepper-btn" onclick="changeQtyMitra('${safeName}', 1)">+</button>
+             </div>
+           </div>`;
       }
 
       function toggleAccordion(catId) {
@@ -2735,6 +2761,24 @@
               ).className = "fas fa-chevron-down";
             }
           });
+        }
+      }
+
+      function konfirmasiRequestMitra(rowId, pkgId) {
+        const confirmMsg =
+          "INFO PENTING:\n\nPaket ini sudah memiliki daftar SEMBAKO STANDAR dari pusat. Anda TIDAK PERLU mengubah apapun jika peserta ingin barang standar.\n\nApakah peserta benar-benar ingin me-REQUEST (merombak/mengubah) isi standarnya?";
+
+        if (confirm(confirmMsg)) {
+          bukaPilihBarangMitra(rowId, pkgId);
+        }
+      }
+
+      function konfirmasiRequestMitra(rowId, pkgId) {
+        const confirmMsg =
+          "INFO PENTING:\n\nPaket ini sudah memiliki daftar SEMBAKO STANDAR dari pusat. Anda TIDAK PERLU mengubah apapun jika peserta ingin barang standar.\n\nApakah Anda benar-benar ingin me-REQUEST (merombak/mengubah) isi standarnya?";
+
+        if (confirm(confirmMsg)) {
+          bukaPilihBarangMitra(rowId, pkgId);
         }
       }
     </script>
