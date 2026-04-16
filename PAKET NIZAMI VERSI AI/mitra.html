@@ -1157,6 +1157,26 @@
             &times;
           </button>
         </div>
+
+        <div
+          id="pbSearchContainer"
+          style="
+            padding: 10px 20px;
+            background: #111;
+            border-bottom: 1px solid #222;
+          "
+        >
+          <div class="search-box-mitra" style="margin-bottom: 0">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              id="searchBarangModal"
+              placeholder="Ketik nama barang untuk mencari..."
+              onkeyup="filterBarangModal()"
+            />
+          </div>
+        </div>
+
         <div
           id="pbBody"
           style="
@@ -2310,10 +2330,17 @@
           (p) => p.id === pkgId,
         );
         const mode = pkg.mode;
+
         if (mode === "normal" && !pkg.isRequested) {
           pkg.items = getPaketItems(pkg.name);
           pkg.isRequested = true;
         }
+
+        // Reset input pencarian setiap kali modal dibuka
+        if (document.getElementById("searchBarangModal")) {
+          document.getElementById("searchBarangModal").value = "";
+        }
+
         document.getElementById("modalPilihBarang").classList.add("show");
         if (mode === "cookies") renderCookiesOnly();
         else renderCatMitraAccordion();
@@ -2406,7 +2433,20 @@
       function generateItemRowHTML(b, displayPrice, labelSatuan, qty) {
         let safeName = b.nama.replace(/'/g, "\\'");
         let inputId = `pb_qty_${b.nama.replace(/[\s\W]/g, "")}`;
-        return `<div style="display:flex; justify-content:space-between; align-items:center; padding:16px 0; border-bottom:1px solid #222;"><div style="flex:1; padding-right:15px;"><div style="font-weight:bold; color:#fff; font-size:1.05rem; margin-bottom:4px;">${b.nama}</div><div style="font-size:0.85rem; color:#aaa;">Rp ${displayPrice.toLocaleString("id-ID")} / ${labelSatuan}</div></div><div class="stepper-control"><button type="button" class="stepper-btn" onclick="changeQtyMitra('${safeName}', -1)">-</button><input type="number" readonly class="stepper-input" id="${inputId}" value="${qty}"><button type="button" class="stepper-btn" onclick="changeQtyMitra('${safeName}', 1)">+</button></div></div>`;
+
+        // Menambahkan class pb-item-row dan data-nama untuk kebutuhan filter
+        return `
+          <div class="pb-item-row" data-nama="${b.nama.toLowerCase()}" style="display:flex; justify-content:space-between; align-items:center; padding:16px 0; border-bottom:1px solid #222;">
+            <div style="flex:1; padding-right:15px;">
+              <div style="font-weight:bold; color:#fff; font-size:1.05rem; margin-bottom:4px;">${b.nama}</div>
+              <div style="font-size:0.85rem; color:#aaa;">Rp ${displayPrice.toLocaleString("id-ID")} / ${labelSatuan}</div>
+            </div>
+            <div class="stepper-control">
+              <button type="button" class="stepper-btn" onclick="changeQtyMitra('${safeName}', -1)">-</button>
+              <input type="number" readonly class="stepper-input" id="${inputId}" value="${qty}">
+              <button type="button" class="stepper-btn" onclick="changeQtyMitra('${safeName}', 1)">+</button>
+            </div>
+          </div>`;
       }
 
       function toggleAccordion(catId) {
@@ -2641,6 +2681,61 @@
           toast.style.opacity = "0";
           setTimeout(() => (toast.style.display = "none"), 300);
         }, 2000);
+      }
+
+      function filterBarangModal() {
+        const keyword = document
+          .getElementById("searchBarangModal")
+          .value.toLowerCase();
+        const pkg = rowDataMitra[
+          `row_${currentEditingRowIdMitra}`
+        ].packages.find((p) => p.id === currentEditingPkgIdMitra);
+
+        if (pkg.mode === "cookies") {
+          const rows = document.querySelectorAll("#pbBody .pb-item-row");
+          rows.forEach((row) => {
+            const nama = row.getAttribute("data-nama");
+            row.style.display = nama.includes(keyword) ? "flex" : "none";
+          });
+        } else {
+          const categories = document.querySelectorAll(
+            "#pbBody .accordion-header",
+          );
+          categories.forEach((header) => {
+            const body = header.nextElementSibling;
+            const rows = body.querySelectorAll(".pb-item-row");
+            let hasVisibleRow = false;
+
+            rows.forEach((row) => {
+              const nama = row.getAttribute("data-nama");
+              if (nama.includes(keyword)) {
+                row.style.display = "flex";
+                hasVisibleRow = true;
+              } else {
+                row.style.display = "none";
+              }
+            });
+
+            if (keyword !== "") {
+              if (hasVisibleRow) {
+                header.style.display = "flex";
+                body.style.display = "block";
+                header.querySelector(
+                  "i.fa-chevron-down, i.fa-chevron-up",
+                ).className = "fas fa-chevron-up";
+              } else {
+                header.style.display = "none";
+                body.style.display = "none";
+              }
+            } else {
+              header.style.display = "flex";
+              body.style.display = "none";
+              header.querySelector(
+                "i.fa-chevron-up, i.fa-chevron-down",
+              ).className = "fas fa-chevron-down";
+            }
+          });
+        }
       }
     </script>
   </body>
