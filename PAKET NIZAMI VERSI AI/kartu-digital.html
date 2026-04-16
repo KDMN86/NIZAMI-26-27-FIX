@@ -26,6 +26,8 @@
         margin: 0;
         padding-bottom: 90px;
       }
+
+      /* HEADER */
       header {
         padding: 15px 20px;
         position: sticky;
@@ -55,6 +57,7 @@
         color: #aaa;
         margin-top: 2px;
       }
+
       .katalog-btn {
         background: rgba(255, 215, 0, 0.1);
         color: #ffd700;
@@ -73,11 +76,14 @@
         color: #ff4d4d;
         border-color: rgba(255, 77, 77, 0.3);
       }
+
       .container {
         padding: 20px;
         max-width: 500px;
         margin: 0 auto;
       }
+
+      /* MULTI-PAKET SELECTOR */
       .paket-selector {
         background: #111;
         border: 1px solid #333;
@@ -103,6 +109,8 @@
         font-weight: bold;
         outline: none;
       }
+
+      /* KARTU EMAS NIZAMI */
       .card-container {
         margin-bottom: 20px;
         perspective: 1000px;
@@ -171,6 +179,7 @@
         border-left: 1px solid #888;
         border-right: 1px solid #888;
       }
+
       .mc-label {
         font-size: 0.7rem;
         text-transform: uppercase;
@@ -187,6 +196,7 @@
         display: inline-block;
         border: 1px solid rgba(0, 0, 0, 0.2);
       }
+
       .mc-footer {
         display: flex;
         justify-content: space-between;
@@ -201,14 +211,15 @@
       }
       .mc-id {
         font-family: monospace;
-        font-size: 0.85rem;
+        font-size: 1rem;
         font-weight: 700;
         opacity: 0.8;
         background: rgba(255, 255, 255, 0.3);
         padding: 3px 8px;
         border-radius: 6px;
-        display: inline-block;
       }
+
+      /* INFO KHUSUS DALAM KARTU */
       .info-hybrid {
         margin-top: 15px;
         background: rgba(0, 0, 0, 0.1);
@@ -256,6 +267,7 @@
         color: #000;
         letter-spacing: -1px;
       }
+
       .btn-rincian {
         width: 100%;
         background: #1a1a1a;
@@ -275,6 +287,7 @@
       .btn-rincian:active {
         background: #333;
       }
+
       .stats-box {
         background: #111;
         border: 1px solid #222;
@@ -300,6 +313,8 @@
         text-transform: uppercase;
         margin-top: 4px;
       }
+
+      /* KOTAK INFO PEMBAYARAN MINI */
       .payment-box-mini {
         background: #111;
         border: 1px solid #222;
@@ -346,6 +361,8 @@
         color: #000;
         border-color: #4ade80;
       }
+
+      /* KALENDER */
       .section-title {
         font-size: 1rem;
         color: #fff;
@@ -468,6 +485,8 @@
         color: #ffd700;
         background: #1f1a00;
       }
+
+      /* MODAL UMUM */
       .modal-overlay {
         display: none;
         position: fixed;
@@ -515,6 +534,8 @@
         font-size: 1.5rem;
         cursor: pointer;
       }
+
+      /* FORM PENCARIAN */
       .search-box {
         background: #111;
         padding: 25px;
@@ -548,11 +569,14 @@
         cursor: pointer;
         font-size: 1rem;
       }
+
       .loader {
         text-align: center;
         padding: 50px 20px;
         color: #ffd700;
       }
+
+      /* === TOMBOL FLOATING SETOR === */
       .fab-setor {
         position: fixed;
         bottom: 25px;
@@ -579,6 +603,11 @@
         transform: scale(0.95);
         box-shadow: 0 2px 10px rgba(74, 222, 128, 0.3);
       }
+      .fab-setor i {
+        font-size: 1.4rem;
+      }
+
+      /* === KALKULATOR SETORAN === */
       .cart-qty-ctrl {
         display: flex;
         align-items: center;
@@ -630,6 +659,7 @@
         gap: 10px;
         font-family: "Poppins", sans-serif;
       }
+
       @keyframes slideDown {
         from {
           opacity: 0;
@@ -656,13 +686,15 @@
         <h1 class="title">Kartu Setoran</h1>
         <div class="subtitle">NIZAMI 2026-2027</div>
       </div>
+
       <div style="display: flex; gap: 10px">
         <a
           href="index.html?view=katalog"
           class="katalog-btn"
           title="Lihat Katalog Promo"
-          ><i class="fas fa-store"></i
-        ></a>
+        >
+          <i class="fas fa-store"></i>
+        </a>
         <a
           href="#"
           onclick="logoutPeserta()"
@@ -670,8 +702,9 @@
           id="btnLogout"
           style="display: none"
           title="Keluar Akun"
-          ><i class="fas fa-sign-out-alt"></i
-        ></a>
+        >
+          <i class="fas fa-sign-out-alt"></i>
+        </a>
       </div>
     </header>
 
@@ -738,16 +771,19 @@
             &times;
           </button>
         </div>
+
         <div style="padding: 15px 20px 5px 20px">
           <p style="color: #aaa; font-size: 0.75rem; margin-top: 0">
             Tentukan berapa kali Anda ingin menyetor hari ini untuk
             masing-masing paket:
           </p>
         </div>
+
         <div
           style="padding: 0 20px 20px 20px; overflow-y: auto; max-height: 55vh"
           id="setoranCartArea"
         ></div>
+
         <div
           style="
             background: #111;
@@ -775,16 +811,29 @@
             class="btn-gold-full"
             style="background: #4ade80"
           >
-            <i class="fab fa-whatsapp" style="font-size: 1.2rem"></i> Kirim
-            Konfirmasi ke WA
+            <i class="fab fa-whatsapp" style="font-size: 1.2rem"></i> Tambah
+            Setoran
           </button>
         </div>
       </div>
     </div>
 
-    <script src="script.js"></script>
-
     <script>
+      const scriptURL =
+        "https://script.google.com/macros/s/AKfycby0JjnOFjmI9oOmNQ3skhbPpxmHI_avxCAL_777ZD1zaWa1xlbqBAxdmYnIe83xm4s-sQ/exec";
+
+      async function fetchData(action, data = {}) {
+        try {
+          const url = new URL(scriptURL);
+          url.searchParams.append("action", action);
+          for (let key in data) url.searchParams.append(key, data[key]);
+          const response = await fetch(url);
+          return await response.json();
+        } catch (error) {
+          return null;
+        }
+      }
+
       function formatRupiah(angka) {
         let value = parseInt(angka) || 0;
         return new Intl.NumberFormat("id-ID", {
@@ -839,8 +888,7 @@
       }
 
       function getHargaPaket(p) {
-        let rawVal = null;
-        rawVal =
+        let rawVal =
           p["Nilai Storan"] ||
           p.nilai_storan ||
           p.nilai_setoran ||
@@ -863,7 +911,13 @@
         }
 
         if (rawVal !== undefined && rawVal !== null && rawVal !== "") {
-          let val = parseInt(String(rawVal).replace(/[^0-9]/g, ""));
+          let val = 0;
+          if (typeof rawVal === "number" && rawVal > 0 && rawVal < 1000) {
+            val = rawVal * 1000;
+          } else {
+            val = parseInt(String(rawVal).replace(/[^0-9]/g, ""));
+          }
+
           if (!isNaN(val) && val > 0) {
             if (
               String(p.paket).toLowerCase().includes("cookies") &&
@@ -885,6 +939,7 @@
             return 1000;
           return parsed;
         }
+
         return 0;
       }
 
@@ -906,15 +961,14 @@
           if (dataUser && !dataUser.error && dataUser.list_paket.length > 0) {
             const currentBaseId = getBaseId(paramId);
 
-            // Simpan NO ANGGOTA ke variable Global agar mudah dipanggil di fungsi renderCard
-            window.noAnggota = dataUser.no_anggota || "";
-
             allUserPackages = dataUser.list_paket.filter((p) => {
               const packageBaseId = getBaseId(p.id);
               return packageBaseId === currentBaseId;
             });
 
-            if (allUserPackages.length === 0) throw new Error("Kosong");
+            if (allUserPackages.length === 0) {
+              throw new Error("Kosong");
+            }
 
             let activePaket =
               allUserPackages.find((p) => p.id === paramId) ||
@@ -1061,7 +1115,63 @@
             </div>`;
         }
 
-        // --- PENAMBAHAN TAMPILAN NOMOR ANGGOTA ---
+        // ==========================================
+        // LOGIKA PESAN MOTIVASI CERDAS (BARU)
+        // ==========================================
+        let startDate = new Date(2026, 3, 1); // 1 April 2026
+        startDate.setHours(0, 0, 0, 0);
+        let today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        let expected = 0;
+        if (today >= startDate) {
+          let diffTime = today.getTime() - startDate.getTime();
+          let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+          expected = isMingguan ? Math.floor(diffDays / 7) + 1 : diffDays + 1;
+        }
+        if (expected > tTotal) expected = tTotal;
+
+        let selisih = setoranMasuk - expected;
+        let pesanMotivasi = "";
+        let bgMotivasi = "";
+        let iconMotivasi = "";
+
+        if (setoranMasuk >= tTotal) {
+          bgMotivasi =
+            "background: rgba(52, 152, 219, 0.15); border: 1px solid rgba(52, 152, 219, 0.4); color: #3498db;";
+          iconMotivasi = "fa-trophy";
+          pesanMotivasi = `<b>Alhamdulillah, Lunas!</b><br>Tabungan Anda sudah mencapai target akhir. Persiapan Lebaran jadi makin tenang!`;
+        } else if (selisih < 0) {
+          let telat = Math.abs(selisih);
+          let nominalTelat = telat * nilaiSetoran;
+          let txtNominal =
+            nominalTelat > 0
+              ? ` sebesar <b style="color:#ff6b6b; font-size:1rem;">Rp ${nominalTelat.toLocaleString("id-ID")}</b>`
+              : "";
+
+          bgMotivasi =
+            "background: rgba(255, 107, 107, 0.15); border: 1px solid rgba(255, 107, 107, 0.4); color: #ffcccb;";
+          iconMotivasi = "fa-bullhorn";
+          pesanMotivasi = `<b style="color:#ff6b6b; font-size:0.95rem;">Halo, Semangat Yuk!</b><br>Saat ini target tabungan Anda tertinggal <b>${telat}x setoran</b>. Yuk segera tambah setoran${txtNominal} agar bisa kembali sesuai jadwal!`;
+        } else if (selisih === 0) {
+          bgMotivasi =
+            "background: rgba(74, 222, 128, 0.15); border: 1px solid rgba(74, 222, 128, 0.4); color: #ccffcc;";
+          iconMotivasi = "fa-check-circle";
+          pesanMotivasi = `<b style="color:#4ade80; font-size:0.95rem;">Luar Biasa!</b><br>Setoran Anda sangat lancar dan tepat waktu. Pertahankan terus kedisiplinannya ya, sedikit lagi menuju panen Lebaran!`;
+        } else {
+          bgMotivasi =
+            "background: rgba(255, 215, 0, 0.15); border: 1px solid rgba(255, 215, 0, 0.4); color: #fff4cc;";
+          iconMotivasi = "fa-rocket";
+          pesanMotivasi = `<b style="color:#ffd700; font-size:0.95rem;">Super Rajin!</b><br>Wah, Anda melampaui target jadwal sebanyak <b>${selisih}x setoran</b>! Keren banget, panen Lebaran dijamin makin tenang tanpa beban.`;
+        }
+
+        let htmlPesanMotivasi = `
+            <div style="${bgMotivasi} padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 12px; line-height: 1.5; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                <i class="fas ${iconMotivasi}" style="font-size: 1.8rem; margin-top: 2px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); color: inherit;"></i>
+                <div style="font-size: 0.85rem; color: #ddd;">${pesanMotivasi}</div>
+            </div>
+        `;
+
         let htmlCard = `
             <div class="card-container">
                 <div class="member-card-box">
@@ -1082,16 +1192,18 @@
                             <div class="mc-label">Pemilik</div>
                             <div class="mc-name">${window.namaPemilik}</div>
                         </div>
-                        <div style="text-align: right;">
-                            <div class="mc-label" style="margin-bottom:2px;">No. Anggota</div>
-                            <div style="font-size: 1.1rem; font-weight: 800; color: #fff;">${window.noAnggota ? window.noAnggota : "-"}</div>
-                            <div class="mc-id" style="margin-top: 5px;">${paketInfo.id}</div>
-                        </div>
+                        <div class="mc-id">${paketInfo.id}</div>
                     </div>
                 </div>
             </div>
 
-            ${!isUangOnly ? `<button class="btn-rincian" onclick="lihatRincian('${paketInfo.id}')"><i class="fas fa-box-open"></i> Lihat Rincian Isi Paket</button>` : ""}
+            ${htmlPesanMotivasi}
+
+            ${
+              !isUangOnly
+                ? `<button class="btn-rincian" onclick="lihatRincian('${paketInfo.id}')"><i class="fas fa-box-open"></i> Lihat Rincian Isi Paket</button>`
+                : ""
+            }
 
             <div class="stats-box">
                 <div class="sb-item">
@@ -1115,7 +1227,9 @@
                     <div class="pbm-bank">MANDIRI <span style="color:#aaa;">a.n</span> Evi Fitriawati</div>
                     <div class="pbm-rek">1310011534676</div>
                 </div>
-                <button class="btn-copy-mini" id="btnCopyRek" onclick="copyRekening()"><i class="far fa-copy"></i> Salin</button>
+                <button class="btn-copy-mini" id="btnCopyRek" onclick="copyRekening()">
+                    <i class="far fa-copy"></i> Salin
+                </button>
             </div>
         `;
 
@@ -1140,6 +1254,9 @@
         document.getElementById("modalBarang").classList.add("show");
       }
 
+      // ==========================================
+      // FUNGSI KALKULATOR SETORAN
+      // ==========================================
       function bukaModalSetoran() {
         setoranCart = allUserPackages.map((p) => {
           let isMingguan = p.paket.toLowerCase().includes("mingguan");
@@ -1237,6 +1354,7 @@
         tutupModalSetoran();
       }
 
+      // --- LOGIKA KALENDER ---
       function generateWeeklyCalendar(setoranMasuk, targetBarang, totalTarget) {
         let html = "";
         let currentDate = new Date(2026, 3, 1, 12, 0, 0);
