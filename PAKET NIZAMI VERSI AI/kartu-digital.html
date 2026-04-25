@@ -820,13 +820,17 @@
 
     <script>
       const scriptURL =
-        "https://script.google.com/macros/s/AKfycby0JjnOFjmI9oOmNQ3skhbPpxmHI_avxCAL_777ZD1zaWa1xlbqBAxdmYnIe83xm4s-sQ/exec";
+        "https://script.google.com/macros/s/AKfycbxsVNdsEyeMLH1QibaoUYgeOIeoFYjHCn-pb-R91WzMWeoVOgAjeYKLHB-QCld58bqpRw/exec";
 
       async function fetchData(action, data = {}) {
         try {
           const url = new URL(scriptURL);
           url.searchParams.append("action", action);
           for (let key in data) url.searchParams.append(key, data[key]);
+
+          // KODE ANTI-CACHE: Menambahkan timestamp agar URL selalu dianggap baru
+          url.searchParams.append("t", new Date().getTime());
+
           const response = await fetch(url);
           return await response.json();
         } catch (error) {
@@ -868,8 +872,12 @@
 
       const urlParams = new URLSearchParams(window.location.search);
       const paramId = urlParams.get("id");
+
       let allUserPackages = [];
       let setoranCart = [];
+
+      // TAMBAHAN: Menyimpan master katalog sebagai bypass jika API macet
+      let globalMasterPaket = [];
 
       window.onload = () => {
         const userStr = localStorage.getItem("nizami_user");
@@ -887,38 +895,18 @@
         return match ? match[1] : fullId;
       }
 
+      // =======================================================
+      // FUNGSI PENGAMBIL HARGA SUPER KEBAL (BYPASS CACHE SERVER)
+      // =======================================================
       function getHargaPaket(p) {
-        let rawVal =
-          p["Nilai Storan"] ||
-          p.nilai_storan ||
-          p.nilai_setoran ||
-          p.nilai ||
-          p.harga;
-
-        if (rawVal === undefined || rawVal === null || rawVal === "") {
-          for (let key in p) {
-            let k = key.toLowerCase().replace(/[^a-z0-9]/g, "");
-            if (
-              k === "nilaistoran" ||
-              k === "nilaisetoran" ||
-              k === "nilai" ||
-              k === "harga"
-            ) {
-              rawVal = p[key];
-              break;
-            }
-          }
-        }
+        // 1. Coba Tarik dari data API terbaru (Jika Server sudah Update)
+        let rawVal = p.nilai !== undefined ? p.nilai : p.harga;
 
         if (rawVal !== undefined && rawVal !== null && rawVal !== "") {
-          let val = 0;
-          if (typeof rawVal === "number" && rawVal > 0 && rawVal < 1000) {
-            val = rawVal * 1000;
-          } else {
-            val = parseInt(String(rawVal).replace(/[^0-9]/g, ""));
-          }
-
+          let numStr = String(rawVal).replace(/[^0-9]/g, "");
+          let val = parseInt(numStr);
           if (!isNaN(val) && val > 0) {
+            if (val > 0 && val < 1000) val = val * 1000; // Fix Bug Desimal
             if (
               String(p.paket).toLowerCase().includes("cookies") &&
               val > 10000
@@ -928,6 +916,25 @@
           }
         }
 
+        // 2. JALUR ALTERNATIF: Tarik dari Master Katalog (Jika Server Cache Lama)
+        if (globalMasterPaket && globalMasterPaket.length > 0) {
+          let masterInfo = globalMasterPaket.find(
+            (mp) =>
+              String(mp.nama).trim().toLowerCase() ===
+              String(p.paket).trim().toLowerCase(),
+          );
+          if (masterInfo && masterInfo.harga > 0) {
+            let mVal = masterInfo.harga;
+            if (
+              String(p.paket).toLowerCase().includes("cookies") &&
+              mVal > 10000
+            )
+              return 1000;
+            return mVal;
+          }
+        }
+
+        // 3. Fallback Terakhir: Ekstraksi dari teks nama paket
         let str = String(p.paket).replace(/\./g, "");
         let match = str.match(/\d{3,}/g);
         if (match) {
@@ -940,7 +947,7 @@
           return parsed;
         }
 
-        return 0;
+        return 0; // Jika benar-benar kosong
       }
 
       async function initPage() {
@@ -956,7 +963,16 @@
         }
 
         try {
-          const dataUser = await fetchData("getInfoKartu", { id: paramId });
+          // Melakukan 2 tarikan data sekaligus (Data Peserta & Data Master Katalog)
+          const [dataUser, dataPaket] = await Promise.all([
+            fetchData("getInfoKartu", { id: paramId }),
+            fetchData("getPaket").catch(() => null),
+          ]);
+
+          // Simpan katalog untuk bypass jika dibutuhkan
+          if (dataPaket && Array.isArray(dataPaket)) {
+            globalMasterPaket = dataPaket;
+          }
 
           if (dataUser && !dataUser.error && dataUser.list_paket.length > 0) {
             const currentBaseId = getBaseId(paramId);
@@ -1057,7 +1073,15 @@
         const setoranMasuk = parseInt(paketInfo.tercapai) || 0;
         const saldoInfo = parseInt(paketInfo.saldo) || 0;
 
-        let nilaiSetoran = getHargaPaket(paketInfo);
+        // MENGAMBIL NILAI SETORAN LANGSUNG DARI KOLOM H (DATA_PESERTA2)
+        let strNilai = String(paketInfo.nilai || "0").replace(/[^0-9]/g, "");
+        let nilaiSetoran = parseInt(strNilai) || 0;
+
+        // Koreksi otomatis: Jika admin mengetik "22" alih-alih "22000" di Excel
+        if (nilaiSetoran > 0 && nilaiSetoran < 1000) {
+          nilaiSetoran = nilaiSetoran * 1000;
+        }
+
         let labelSetoran = isMingguan
           ? "/mgg"
           : isCookies
@@ -1116,9 +1140,9 @@
         }
 
         // ==========================================
-        // LOGIKA PESAN MOTIVASI CERDAS (BARU)
+        // LOGIKA PESAN MOTIVASI CERDAS
         // ==========================================
-        let startDate = new Date(2026, 3, 1); // 1 April 2026
+        let startDate = new Date(2026, 3, 1);
         startDate.setHours(0, 0, 0, 0);
         let today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -1144,15 +1168,19 @@
         } else if (selisih < 0) {
           let telat = Math.abs(selisih);
           let nominalTelat = telat * nilaiSetoran;
+
           let txtNominal =
             nominalTelat > 0
-              ? ` sebesar <b style="color:#ff6b6b; font-size:1rem;">Rp ${nominalTelat.toLocaleString("id-ID")}</b>`
+              ? `<div style="margin-top: 12px; background: rgba(255, 107, 107, 0.2); padding: 10px; border-radius: 8px; border: 1px dashed #ff6b6b; text-align: center;">
+                  <div style="font-size: 0.75rem; color: #ffcccb; margin-bottom: 4px;">Kekurangan Setoran Saat Ini:</div>
+                  <div style="font-size: 1.2rem; font-weight: 800; color: #ff6b6b; letter-spacing: 1px;">Rp ${nominalTelat.toLocaleString("id-ID")}</div>
+                 </div>`
               : "";
 
           bgMotivasi =
             "background: rgba(255, 107, 107, 0.15); border: 1px solid rgba(255, 107, 107, 0.4); color: #ffcccb;";
           iconMotivasi = "fa-bullhorn";
-          pesanMotivasi = `<b style="color:#ff6b6b; font-size:0.95rem;">Halo, Semangat Yuk!</b><br>Saat ini target tabungan Anda tertinggal <b>${telat}x setoran</b>. Yuk segera tambah setoran${txtNominal} agar bisa kembali sesuai jadwal!`;
+          pesanMotivasi = `<b style="color:#ff6b6b; font-size:0.95rem;">Halo, Semangat Yuk!</b><br>Saat ini target tabungan Anda <b>tidak lancar</b>, tertinggal <b>${telat}x setoran</b>. Yuk segera tambah setoran agar bisa kembali sesuai jadwal! ${txtNominal}`;
         } else if (selisih === 0) {
           bgMotivasi =
             "background: rgba(74, 222, 128, 0.15); border: 1px solid rgba(74, 222, 128, 0.4); color: #ccffcc;";
@@ -1221,6 +1249,20 @@
                     <span class="sb-label">Sisa Kali</span>
                 </div>
             </div>
+
+            ${
+              nilaiSetoran > 0 && tTotal - setoranMasuk > 0
+                ? `<div style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-size: 0.75rem; color: #aaa; text-transform: uppercase; font-weight: bold;">Total Sisa Setoran</span>
+                        <span style="font-size: 0.7rem; color: #666;">(${tTotal - setoranMasuk}x sisa setoran)</span>
+                    </div>
+                    <div style="font-size: 1.2rem; font-weight: 900; color: #ff6b6b;">
+                        Rp ${((tTotal - setoranMasuk) * nilaiSetoran).toLocaleString("id-ID")}
+                    </div>
+                 </div>`
+                : ""
+            }
 
             <div class="payment-box-mini">
                 <div class="pbm-left">
