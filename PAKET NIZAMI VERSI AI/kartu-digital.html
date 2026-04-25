@@ -1250,19 +1250,7 @@
                 </div>
             </div>
 
-            ${
-              nilaiSetoran > 0 && tTotal - setoranMasuk > 0
-                ? `<div style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                    <div style="display: flex; flex-direction: column;">
-                        <span style="font-size: 0.75rem; color: #aaa; text-transform: uppercase; font-weight: bold;">Total Sisa Setoran</span>
-                        <span style="font-size: 0.7rem; color: #666;">(${tTotal - setoranMasuk}x sisa setoran)</span>
-                    </div>
-                    <div style="font-size: 1.2rem; font-weight: 900; color: #ff6b6b;">
-                        Rp ${((tTotal - setoranMasuk) * nilaiSetoran).toLocaleString("id-ID")}
-                    </div>
-                 </div>`
-                : ""
-            }
+           
 
             <div class="payment-box-mini">
                 <div class="pbm-left">
