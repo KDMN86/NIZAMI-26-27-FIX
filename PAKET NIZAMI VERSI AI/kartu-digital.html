@@ -820,7 +820,7 @@
 
     <script>
       const scriptURL =
-        "https://script.google.com/macros/s/AKfycbxsVNdsEyeMLH1QibaoUYgeOIeoFYjHCn-pb-R91WzMWeoVOgAjeYKLHB-QCld58bqpRw/exec";
+        "https://script.google.com/macros/s/AKfycby0JjnOFjmI9oOmNQ3skhbPpxmHI_avxCAL_777ZD1zaWa1xlbqBAxdmYnIe83xm4s-sQ/exec";
 
       async function fetchData(action, data = {}) {
         try {
@@ -828,7 +828,6 @@
           url.searchParams.append("action", action);
           for (let key in data) url.searchParams.append(key, data[key]);
 
-          // KODE ANTI-CACHE: Menambahkan timestamp agar URL selalu dianggap baru
           url.searchParams.append("t", new Date().getTime());
 
           const response = await fetch(url);
@@ -876,7 +875,6 @@
       let allUserPackages = [];
       let setoranCart = [];
 
-      // TAMBAHAN: Menyimpan master katalog sebagai bypass jika API macet
       let globalMasterPaket = [];
 
       window.onload = () => {
@@ -895,18 +893,14 @@
         return match ? match[1] : fullId;
       }
 
-      // =======================================================
-      // FUNGSI PENGAMBIL HARGA SUPER KEBAL (BYPASS CACHE SERVER)
-      // =======================================================
       function getHargaPaket(p) {
-        // 1. Coba Tarik dari data API terbaru (Jika Server sudah Update)
         let rawVal = p.nilai !== undefined ? p.nilai : p.harga;
 
         if (rawVal !== undefined && rawVal !== null && rawVal !== "") {
           let numStr = String(rawVal).replace(/[^0-9]/g, "");
           let val = parseInt(numStr);
           if (!isNaN(val) && val > 0) {
-            if (val > 0 && val < 1000) val = val * 1000; // Fix Bug Desimal
+            if (val > 0 && val < 1000) val = val * 1000;
             if (
               String(p.paket).toLowerCase().includes("cookies") &&
               val > 10000
@@ -916,7 +910,6 @@
           }
         }
 
-        // 2. JALUR ALTERNATIF: Tarik dari Master Katalog (Jika Server Cache Lama)
         if (globalMasterPaket && globalMasterPaket.length > 0) {
           let masterInfo = globalMasterPaket.find(
             (mp) =>
@@ -934,7 +927,6 @@
           }
         }
 
-        // 3. Fallback Terakhir: Ekstraksi dari teks nama paket
         let str = String(p.paket).replace(/\./g, "");
         let match = str.match(/\d{3,}/g);
         if (match) {
@@ -947,7 +939,7 @@
           return parsed;
         }
 
-        return 0; // Jika benar-benar kosong
+        return 0;
       }
 
       async function initPage() {
@@ -963,13 +955,11 @@
         }
 
         try {
-          // Melakukan 2 tarikan data sekaligus (Data Peserta & Data Master Katalog)
           const [dataUser, dataPaket] = await Promise.all([
             fetchData("getInfoKartu", { id: paramId }),
             fetchData("getPaket").catch(() => null),
           ]);
 
-          // Simpan katalog untuk bypass jika dibutuhkan
           if (dataPaket && Array.isArray(dataPaket)) {
             globalMasterPaket = dataPaket;
           }
@@ -1022,10 +1012,17 @@
             let selected = p.id === paramId ? "selected" : "";
             options += `<option value="${p.id}" ${selected}>${p.paket} (ID: ${p.id})</option>`;
           });
+
+          // --- DESAIN BARU YANG LEBIH MENONJOL ---
           html += `
-              <div class="paket-selector" style="display:block;">
-                  <span class="ps-label"><i class="fas fa-layer-group"></i> Anda memiliki ${allUserPackages.length} Paket:</span>
-                  <select class="ps-select" onchange="gantiPaket(this.value)">${options}</select>
+              <div class="paket-selector" style="display:block; background: linear-gradient(145deg, #111, #0a0a0a); border: 1px solid #333; border-left: 4px solid #ffd700; padding: 18px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                      <span style="font-size: 0.9rem; font-weight: bold; color: #fff;"><i class="fas fa-boxes" style="color:#ffd700; margin-right:5px;"></i> Tabungan Anda</span>
+                      <span style="background: #ffd700; color: #000; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 800; box-shadow: 0 0 10px rgba(255,215,0,0.3);">
+                          ${allUserPackages.length} Paket Aktif
+                      </span>
+                  </div>
+                  <select class="ps-select" onchange="gantiPaket(this.value)" style="border-color:#555; background:#000; padding:12px; font-size:0.95rem; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);">${options}</select>
               </div>`;
         }
 
@@ -1073,14 +1070,7 @@
         const setoranMasuk = parseInt(paketInfo.tercapai) || 0;
         const saldoInfo = parseInt(paketInfo.saldo) || 0;
 
-        // MENGAMBIL NILAI SETORAN LANGSUNG DARI KOLOM H (DATA_PESERTA2)
-        let strNilai = String(paketInfo.nilai || "0").replace(/[^0-9]/g, "");
-        let nilaiSetoran = parseInt(strNilai) || 0;
-
-        // Koreksi otomatis: Jika admin mengetik "22" alih-alih "22000" di Excel
-        if (nilaiSetoran > 0 && nilaiSetoran < 1000) {
-          nilaiSetoran = nilaiSetoran * 1000;
-        }
+        let nilaiSetoran = getHargaPaket(paketInfo);
 
         let labelSetoran = isMingguan
           ? "/mgg"
@@ -1139,9 +1129,6 @@
             </div>`;
         }
 
-        // ==========================================
-        // LOGIKA PESAN MOTIVASI CERDAS
-        // ==========================================
         let startDate = new Date(2026, 3, 1);
         startDate.setHours(0, 0, 0, 0);
         let today = new Date();
@@ -1249,8 +1236,6 @@
                     <span class="sb-label">Sisa Kali</span>
                 </div>
             </div>
-
-           
 
             <div class="payment-box-mini">
                 <div class="pbm-left">
